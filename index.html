@@ -1,818 +1,893 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0d0d15">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
 <title>ClaudeMAX</title>
+<meta name="theme-color" content="#0d0d12">
 <style>
-:root{--bg:#0d0d15;--g:rgba(255,255,255,.07);--gb:rgba(255,255,255,.14);--mut:rgba(255,255,255,.55);--acc:#d97757}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;height:100%;background:var(--bg);color:#fff;font-family:-apple-system,"SF Pro Display",Roboto,system-ui,sans-serif;overflow:hidden}
-body::before{content:"";position:fixed;inset:-20%;background:radial-gradient(circle at 20% 15%,rgba(217,119,87,.25),transparent 45%),radial-gradient(circle at 80% 85%,rgba(120,100,220,.2),transparent 45%),radial-gradient(circle at 50% 50%,rgba(60,180,200,.12),transparent 55%);z-index:-1;pointer-events:none}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+html,body{height:100%;overflow:hidden;background:#0d0d12;color:#f2f2f5}
+body{position:fixed;inset:0;-webkit-user-select:none;user-select:none}
+input{-webkit-user-select:text;user-select:text;font-size:16px;color:#fff}
+button{border:0;background:none;color:inherit;cursor:pointer}
+:root{--acc:#d97757;--hh:calc(58px + env(safe-area-inset-top));--nh:calc(60px + env(safe-area-inset-bottom));--mut:#a6a6b3}
 
-.glass{background:var(--g);backdrop-filter:blur(24px) saturate(160%);-webkit-backdrop-filter:blur(24px) saturate(160%);border:1px solid var(--gb)}
-.mut{color:var(--mut)}.sm{font-size:13px}.ctr{text-align:center}
+/* ---------- BACKGROUND (яркие фигуры под стеклом, чтобы блюр был виден) ---------- */
+.bg{position:fixed;inset:0;z-index:0;overflow:hidden;background:#0d0d12}
+.bg i{position:absolute;border-radius:50%;will-change:transform}
+.s1{width:320px;height:320px;top:-70px;left:-80px;background:radial-gradient(circle at 30% 30%,#ffa27d,#d97757 55%,#9c3f25);animation:d1 18s ease-in-out infinite alternate}
+.s2{width:360px;height:360px;bottom:-110px;right:-110px;background:radial-gradient(circle at 30% 30%,#9a9bff,#5a5ad8 60%,#2b2b8c);animation:d2 22s ease-in-out infinite alternate}
+.s3{width:210px;height:210px;top:42%;left:52%;background:radial-gradient(circle at 30% 30%,#6ff2dc,#0fb0a4 60%,#05605b);animation:d1 26s ease-in-out infinite alternate-reverse}
+.bg::after{content:"";position:absolute;inset:0;background:rgba(10,10,15,.28)}
+@keyframes d1{to{transform:translate(50px,70px)}}
+@keyframes d2{to{transform:translate(-60px,-50px)}}
 
-.in{width:100%;padding:13px 15px;border-radius:14px;border:1px solid var(--gb);background:rgba(255,255,255,.06);color:#fff;font-size:16px;outline:none;margin-bottom:10px;font-family:inherit}
-.in:focus{border-color:var(--acc);background:rgba(255,255,255,.1)}
-.in::placeholder{color:rgba(255,255,255,.4)}
-textarea.in{resize:none;height:80px}
+/* ---------- GLASS ---------- */
+.glass{background:rgba(24,24,34,.5);-webkit-backdrop-filter:blur(22px) saturate(170%);backdrop-filter:blur(22px) saturate(170%);border:1px solid rgba(255,255,255,.12)}
+.ic{width:24px;height:24px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.ic.fill{fill:#fff}
+.ib{width:42px;height:42px;display:grid;place-items:center;flex-shrink:0;border-radius:50%;cursor:pointer}
+.ib:active{background:rgba(255,255,255,.14)}
 
-.btn{border:0;border-radius:14px;padding:13px 18px;font-size:16px;font-weight:600;color:#fff;background:var(--acc);font-family:inherit;transition:opacity .15s}
-.btn:active{opacity:.7}
-.btn.g{background:rgba(255,255,255,.1)}
-.btn.r{background:rgba(220,70,80,.3)}
-.btn:disabled{opacity:.5}
-.r2{display:flex;gap:8px;margin:8px 0}.r2 .btn{flex:1}
+/* ---------- VIEWS ---------- */
+#app{position:fixed;inset:0;z-index:1}
+.view{position:absolute;inset:0;display:none;flex-direction:column}
+.view.on{display:flex;animation:vin .22s ease-out}
+@keyframes vin{from{transform:translateY(14px)}to{transform:none}}
+.hd{position:absolute;top:0;left:0;right:0;height:var(--hh);padding:env(safe-area-inset-top) 10px 0 14px;display:flex;align-items:center;gap:8px;z-index:5;border-width:0 0 1px 0}
+.hd h1{font-size:21px;font-weight:800;flex:1;letter-spacing:.2px}
+.nav{position:absolute;bottom:0;left:0;right:0;height:var(--nh);padding-bottom:env(safe-area-inset-bottom);display:flex;z-index:5;border-width:1px 0 0 0}
+.nav button{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;color:var(--mut)}
+.nav button.on{color:#fff}
+.nav button.on .ic{stroke:var(--acc)}
+.scroll{position:absolute;inset:0;overflow-y:auto;overscroll-behavior:contain;padding:calc(var(--hh) + 12px) 14px calc(var(--nh) + 14px)}
 
-.ico{width:38px;height:38px;border:0;background:none;color:#fff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-family:inherit}
-.ico svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.pill{border:1.5px solid #fff;border-radius:999px;padding:5px 14px;background:none;color:#fff;font-size:12px;font-weight:600;letter-spacing:.5px;font-family:inherit;cursor:pointer}
+/* ---------- SPLASH / WELCOME ---------- */
+#splash,#welcome{position:fixed;inset:0;z-index:900;background:#0b0b10;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;transition:opacity .45s}
+#splash.off,#welcome.off{opacity:0;pointer-events:none}
+#welcome{display:none;z-index:800}
+#welcome.on{display:flex}
+.spin{animation:spin 9s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.sp-title{font-size:30px;font-weight:800;margin-top:18px;letter-spacing:.5px}
+.sp-tip{height:44px;margin-top:26px;display:flex;align-items:center;text-align:center;color:var(--mut);font-size:14px;max-width:290px}
+.sp-tip span{animation:fi .4s}
+.sp-bar{width:150px;height:4px;border-radius:4px;background:rgba(255,255,255,.12);margin-top:14px;overflow:hidden}
+.sp-bar i{display:block;height:100%;background:var(--acc);border-radius:4px;animation:ld 2.2s ease-out forwards}
+@keyframes ld{from{width:0}to{width:100%}}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.ray{stroke-dasharray:1;stroke-dashoffset:1;animation:ray .45s ease-out forwards;animation-delay:calc(var(--i)*70ms)}
+@keyframes ray{to{stroke-dashoffset:0}}
+.wl-hi{font-size:30px;font-weight:800;margin-top:22px;animation:fi .5s .9s both;text-align:center}
+.wl-sub{color:var(--mut);margin-top:6px;animation:fi .5s 1.1s both}
 
-/* Логотип */
-.logo{display:inline-block;width:72px;height:72px;position:relative}
-.logo svg{width:100%;height:100%;fill:var(--acc)}
+/* ---------- LANG PILL (белая капсула) ---------- */
+.lang{position:relative;display:inline-flex;background:#fff;border-radius:999px;padding:3px;cursor:pointer;flex-shrink:0}
+.lang i{position:absolute;top:3px;bottom:3px;left:3px;width:calc(50% - 3px);background:#111;border-radius:999px;transition:transform .25s}
+.lang.en i{transform:translateX(100%)}
+.lang b{position:relative;z-index:1;min-width:42px;text-align:center;padding:5px 0;font-size:12px;font-weight:800;color:#666;transition:color .25s}
+.lang b.on{color:#fff}
 
-/* Splash */
-#splash{position:fixed;inset:0;z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg);gap:16px;transition:opacity .5s}
-#splash.hide{opacity:0;pointer-events:none}
-#splash .logo{animation:logoIn .9s cubic-bezier(.2,.9,.3,1.3) both}
-@keyframes logoIn{from{opacity:0;transform:scale(.3) rotate(-30deg)}to{opacity:1;transform:none}}
-#splash h1{margin:0;font-size:36px;font-weight:800;letter-spacing:-.5px;animation:fadeUp .7s .3s both}
-#splash .tip{color:var(--mut);height:18px;font-size:14px;animation:fadeUp .7s .5s both;max-width:280px;text-align:center}
-@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+/* ---------- AUTH ---------- */
+#v-auth{align-items:center;justify-content:center;padding:20px;overflow-y:auto}
+.au-top{position:absolute;top:calc(14px + env(safe-area-inset-top));right:14px}
+.au-head{text-align:center;margin-bottom:22px}
+.au-head h2{font-size:30px;font-weight:800;margin-top:14px}
+.au-head p{color:#d8d8e2;margin-top:4px;font-size:14px}
+.au-card{width:100%;max-width:380px;border-radius:28px;padding:20px;box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.seg{display:flex;background:rgba(0,0,0,.3);border-radius:14px;padding:3px;margin-bottom:14px}
+.seg button{flex:1;padding:10px;border-radius:11px;font-weight:700;font-size:14px;color:var(--mut);transition:.2s}
+.seg button.on{background:rgba(255,255,255,.16);color:#fff}
+.fld{width:100%;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:14px 16px;outline:none;margin-bottom:10px;transition:border .2s}
+.fld:focus{border-color:var(--acc)}
+.err{color:#ff8a80;font-size:13px;min-height:18px;margin:2px 2px 8px}
+.btn{width:100%;background:linear-gradient(135deg,#e2825f,#d06a48);color:#fff;border-radius:14px;padding:14px;font-weight:700;font-size:15px;box-shadow:0 6px 18px rgba(217,119,87,.3)}
+.btn:active{transform:scale(.98)}
+.btn:disabled{opacity:.6}
+.btn.ghost{background:rgba(255,255,255,.1);box-shadow:none;margin-top:8px}
+.btn.sm{width:auto;padding:9px 16px;font-size:13px}
 
-/* Auth */
-#auth{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:20px}
-#auth.on{display:flex}
-.acard{width:100%;max-width:400px;border-radius:26px;padding:28px 22px;animation:cardIn .7s cubic-bezier(.2,.9,.3,1.1) both}
-@keyframes cardIn{0%{opacity:0;transform:translateY(40px) scale(.9);filter:blur(10px)}100%{opacity:1;transform:none;filter:none}}
-.acard .logo{width:56px;height:56px;margin:0 auto 10px;display:block}
-.acard h1{margin:0;font-size:28px;text-align:center}
-.seg{display:flex;background:rgba(255,255,255,.08);border-radius:12px;padding:3px;margin:16px 0}
-.seg button{flex:1;border:0;background:none;color:var(--mut);padding:10px;border-radius:9px;font-size:14px;font-weight:600;font-family:inherit}
-.seg button.on{background:rgba(255,255,255,.18);color:#fff}
-#err{color:#ff8a94;min-height:18px;font-size:13px;text-align:center;margin-bottom:6px}
+/* ---------- CHAT LIST ---------- */
+.ci{display:flex;align-items:center;gap:12px;padding:11px 12px;margin-bottom:8px;border-radius:18px;background:rgba(28,28,40,.5);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.09);cursor:pointer}
+.ci:active{background:rgba(255,255,255,.12)}
+.ci .mid{flex:1;min-width:0}
+.ci .nm{font-weight:700;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ci .ls{color:var(--mut);font-size:13.5px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ci .tm{font-size:11px;color:var(--mut);align-self:flex-start;margin-top:4px}
+.av{border-radius:50%;display:grid;place-items:center;font-weight:800;color:#fff;background-size:cover;background-position:center;flex-shrink:0}
+.hint{text-align:center;color:var(--mut);padding:30px 20px;font-size:14px}
 
-/* Pages */
-.page{position:absolute;inset:0;display:none;flex-direction:column}
-.page.on{display:flex}
-.tb{display:flex;align-items:center;gap:8px;padding:calc(env(safe-area-inset-top) + 14px) 16px 8px}
-.tb h2{margin:0;font-size:26px;font-weight:700;flex:1}
-.scroll{flex:1;overflow-y:auto;padding:6px 12px 110px}
-.inchat .page:not(#pChat){display:none!important}
-.inchat .tabbar{display:none}
+/* ---------- ROOM ---------- */
+#room-bg{position:absolute;inset:0}
+#msgs{position:absolute;inset:0;overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column;padding:calc(var(--hh) + 10px) 12px calc(78px + env(safe-area-inset-bottom))}
+.hd .rt{flex:1;min-width:0;line-height:1.2}
+.hd .rt b{font-size:16px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hd .rt small{font-size:12px;color:var(--mut)}
+.hd .rt small.on{color:#7ee2a8}
+.m{max-width:82%;width:fit-content;padding:8px 12px 5px;border-radius:18px;font-size:15px;line-height:1.35;margin-bottom:6px;white-space:pre-wrap;word-break:break-word;-webkit-user-select:text;user-select:text;animation:pop .18s ease-out}
+@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.96)}to{opacity:1;transform:none}}
+.m.in{align-self:flex-start;background:rgba(30,30,42,.6);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.1);border-bottom-left-radius:5px}
+.m.out{align-self:flex-end;background:linear-gradient(135deg,#e2825f,#d06a48);border-bottom-right-radius:5px}
+.m .who{font-size:12px;font-weight:700;color:#ffb596;margin-bottom:2px}
+.m .tm{font-size:10.5px;opacity:.65;text-align:right;margin-top:2px}
+.m img{max-width:100%;max-height:300px;border-radius:12px;display:block;margin:2px 0;cursor:pointer}
+.voice{display:flex;align-items:center;gap:10px;min-width:210px;padding:2px 0}
+.vp{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.22);display:grid;place-items:center;flex-shrink:0}
+.vmid{flex:1}
+.vbar{height:4px;border-radius:3px;background:rgba(255,255,255,.28);overflow:hidden}
+.vbar i{display:block;height:100%;width:0;background:#fff}
+.vt{font-size:11px;opacity:.85;margin-top:5px;display:block}
 
-/* Tabbar */
-.tabbar{position:fixed;left:0;right:0;bottom:0;display:flex;padding:8px 8px calc(8px + env(safe-area-inset-bottom));background:rgba(13,13,21,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--gb);z-index:20}
-.tab{flex:1;border:0;background:none;color:var(--mut);padding:8px 2px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-family:inherit;cursor:pointer}
-.tab svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.tab.on{color:var(--acc)}
+.bar{position:absolute;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));min-height:56px;border-radius:28px;z-index:5;padding:6px;transition:border-color .2s}
+.bar-n,.bar-r{display:flex;align-items:center;gap:6px}
+.bar-r{display:none}
+.bar.rec{border-color:rgba(255,90,90,.6)}
+.bar.rec .bar-n{display:none}
+.bar.rec .bar-r{display:flex}
+.bar .inp{flex:1;min-width:0;background:rgba(255,255,255,.08);border:0;border-radius:22px;padding:11px 16px;outline:none}
+.send{width:42px;height:42px;border-radius:50%;background:var(--acc);display:grid;place-items:center;flex-shrink:0}
+.send:active{transform:scale(.92)}
+.bar:not(.txt) #sendb{display:none}
+.bar.txt #mic{display:none}
+.bar.bot #attach,.bar.bot #mic{display:none}
+.bar.bot #sendb{display:grid}
+.rec-info{flex:1;min-width:0;padding:0 6px}
+.rec-l1{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:#ff8a80}
+.rdot{width:10px;height:10px;border-radius:50%;background:#ff4d4d;animation:rd 1s infinite}
+@keyframes rd{50%{opacity:.25;transform:scale(.7)}}
+.rec-l2{display:flex;align-items:center;gap:10px;margin-top:3px}
+.rec-l2 b{font-variant-numeric:tabular-nums;font-size:15px;min-width:38px}
+.wave{display:flex;align-items:center;gap:3px;height:22px;flex:1;overflow:hidden}
+.wave u{width:3px;height:100%;background:#ff6b6b;border-radius:2px;animation:wv .9s ease-in-out infinite}
+.wave u:nth-child(3n){animation-delay:-.3s}.wave u:nth-child(3n+1){animation-delay:-.6s}.wave u:nth-child(5n){animation-delay:-.15s}
+@keyframes wv{0%,100%{transform:scaleY(.2)}50%{transform:scaleY(1)}}
 
-/* Avatar */
-.av{border-radius:50%;background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;flex-shrink:0;background-color:#333}
+/* ---------- PROFILE ---------- */
+.pcard{border-radius:24px;overflow:hidden;margin-bottom:14px;background:rgba(28,28,40,.5);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.1)}
+.pban{height:110px}
+.pav{margin:-44px auto 0;width:88px;height:88px;position:relative}
+.pav .cam{position:absolute;right:-2px;bottom:-2px;width:30px;height:30px;border-radius:50%;background:var(--acc);display:grid;place-items:center;border:2px solid #1b1b26}
+.pav .cam .ic{width:16px;height:16px}
+.pbody{padding:14px 18px 18px}
+.lbl{font-size:11px;color:var(--mut);font-weight:700;letter-spacing:.6px;margin:6px 2px;text-transform:uppercase}
+.sw{display:flex;gap:10px;flex-wrap:wrap;margin:4px 0 14px}
+.sw i{width:32px;height:32px;border-radius:50%;border:3px solid transparent;cursor:pointer}
+.sw i.on{border-color:#fff}
+.rowb{display:flex;align-items:center;justify-content:space-between;margin:10px 0 14px}
 
-/* Rows */
-.row{display:flex;gap:12px;align-items:center;padding:11px 12px;border-radius:16px;margin-bottom:6px;cursor:pointer;transition:background .15s}
+/* ---------- SHEET / OVERLAYS ---------- */
+.ov{position:fixed;inset:0;z-index:700;display:none;background:rgba(0,0,0,.5);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.ov.on{display:flex}
+#sheet{align-items:flex-end}
+.sh-box{width:100%;max-height:86vh;overflow-y:auto;border-radius:26px 26px 0 0;padding:10px 18px calc(20px + env(safe-area-inset-bottom));animation:up .25s ease-out;background:rgba(26,26,36,.7);-webkit-backdrop-filter:blur(26px);backdrop-filter:blur(26px);border:1px solid rgba(255,255,255,.12)}
+@keyframes up{from{transform:translateY(100%)}to{transform:none}}
+.grab{width:42px;height:4px;border-radius:3px;background:rgba(255,255,255,.3);margin:0 auto 14px}
+.sh-box h3{font-size:18px;margin-bottom:12px}
+.row{display:flex;align-items:center;gap:12px;padding:8px 4px;cursor:pointer;border-radius:12px}
 .row:active{background:rgba(255,255,255,.08)}
-.row .info{flex:1;min-width:0}
-.row b{display:block;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.row .last{color:var(--mut);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
-.row .meta{color:var(--mut);font-size:11px;text-align:right;flex-shrink:0}
-.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#30d158;margin-right:4px;vertical-align:middle}
-.empty{text-align:center;color:var(--mut);padding:50px 24px;line-height:1.5}
-.empty svg{width:48px;height:48px;opacity:.4;margin-bottom:10px;fill:none;stroke:currentColor;stroke-width:1.5}
-
-/* Profile */
-.pcard{border-radius:22px;padding:16px;margin-bottom:12px}
-.pbanner{height:120px;border-radius:16px;margin:-16px -16px 10px;background-size:cover;background-position:center}
-.pname{font-size:22px;font-weight:700;margin-top:-50px;padding-left:4px}
-.pun{color:var(--mut);font-size:14px;padding-left:4px;margin-top:2px}
-.pbio{margin-top:10px;line-height:1.4;font-size:14px}
-
-/* Chat */
-#pChat{z-index:30;background:var(--bg)}
-#pChat.wall::after{content:"";position:absolute;inset:0;background:var(--wall);z-index:-1;opacity:.35}
-.chead{display:flex;align-items:center;gap:10px;padding:calc(env(safe-area-inset-top) + 10px) 10px 10px;background:rgba(13,13,21,.8);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--gb)}
-.chinfo{flex:1;min-width:0}.chinfo b{display:block;font-size:15px}.chinfo small{color:var(--mut);font-size:12px}
-#msgs{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:4px}
-.m{max-width:78%;display:flex;flex-direction:column}
-.m.me{align-self:flex-end;align-items:flex-end}
-.m .b{padding:8px 12px;border-radius:16px;font-size:15px;line-height:1.35;word-wrap:break-word;white-space:pre-wrap}
-.m.me .b{background:var(--acc);border-bottom-right-radius:5px}
-.m.ot .b{background:rgba(255,255,255,.12);border-bottom-left-radius:5px}
-.m small{font-size:10px;color:var(--mut);margin:2px 5px 0}
-.m .author{font-size:11px;color:var(--acc);margin:0 5px 2px;font-weight:600}
-.m img{max-width:220px;border-radius:12px;display:block;cursor:pointer}
-.m audio{height:34px;max-width:220px}
-.cbar{display:flex;gap:6px;align-items:center;padding:6px 8px calc(6px + env(safe-area-inset-bottom));background:rgba(13,13,21,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid var(--gb)}
-.cbar input{flex:1;background:rgba(255,255,255,.08);border:0;outline:none;color:#fff;font-size:15px;padding:10px 14px;border-radius:20px;font-family:inherit}
-#send{background:var(--acc);width:40px;height:40px;border-radius:50%;border:0;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center}
-#send svg{width:20px;height:20px;fill:#fff}
-.rec{color:#ff5a66!important}
-
-/* Sheet */
-.sheet{position:fixed;inset:0;z-index:50;display:none;align-items:flex-end;background:rgba(0,0,0,.5)}
-.sheet.on{display:flex}
-.scard{width:100%;max-height:90dvh;overflow-y:auto;border-radius:24px 24px 0 0;padding:16px 14px calc(18px + env(safe-area-inset-bottom));background:rgba(22,22,34,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);animation:up .3s cubic-bezier(.2,.9,.3,1)}
-@keyframes up{from{transform:translateY(100%)}}
-.scard h3{margin:4px 4px 12px;font-size:20px}
-
-/* Toast */
-.toast{position:fixed;top:calc(env(safe-area-inset-top) + 14px);left:50%;transform:translateX(-50%);z-index:400;padding:10px 18px;border-radius:14px;background:rgba(40,40,55,.95);backdrop-filter:blur(14px);font-size:14px;max-width:88%;text-align:center}
-
-/* Colors */
-.gpick{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 12px}
-.gpick i{width:34px;height:34px;border-radius:50%;border:3px solid transparent;cursor:pointer}
-.gpick i.sel{border-color:#fff}
-
-/* Image preview modal */
-#img{position:fixed;inset:0;z-index:500;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.9);padding:20px}
-#img.on{display:flex}#img img{max-width:100%;max-height:100%;border-radius:12px}
+.row .rm{flex:1;min-width:0}
+.row .rm b{display:block;font-size:15px}
+.row .rm small{color:var(--mut);font-size:12.5px}
+.badge{font-size:11px;font-weight:700;background:rgba(217,119,87,.25);color:#ffb596;padding:3px 8px;border-radius:10px}
+.walls{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.walls i{height:64px;border-radius:14px;border:3px solid transparent;cursor:pointer}
+.walls i.on{border-color:#fff}
+#viewer{align-items:center;justify-content:center;background:rgba(0,0,0,.88)}
+#viewer img{max-width:100%;max-height:100%}
+#toast{position:fixed;top:calc(14px + env(safe-area-inset-top));left:50%;transform:translate(-50%,-90px);z-index:999;padding:11px 18px;border-radius:20px;font-size:14px;max-width:88%;text-align:center;transition:transform .3s}
+#toast.on{transform:translate(-50%,0)}
+@keyframes none{}
 </style>
 </head>
 <body>
+<div class="bg"><i class="s1"></i><i class="s2"></i><i class="s3"></i></div>
 
-<!-- SVG иконки -->
-<svg width="0" height="0" style="position:absolute">
-<defs>
-<symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 11.5c0 4.14-4.03 7.5-9 7.5-1.14 0-2.24-.18-3.25-.5L3 20l1.5-4.5C3.56 14.15 3 12.88 3 11.5 3 7.36 7.03 4 12 4s9 3.36 9 7.5z"/></symbol>
-<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
-<symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></symbol>
-<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
-<symbol id="i-back" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></symbol>
-<symbol id="i-send" viewBox="0 0 24 24"><path d="M3 20l18-8L3 4l4 8-4 8z" fill="#fff"/></symbol>
-<symbol id="i-clip" viewBox="0 0 24 24"><path d="M21 12.5l-8.5 8.5a6 6 0 0 1-8.5-8.5l8.5-8.5a4 4 0 0 1 5.7 5.7l-8.5 8.5a2 2 0 0 1-2.8-2.8l7.8-7.8"/></symbol>
-<symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></symbol>
-<symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L20 8l-4-4L4 16v4z"/></symbol>
-<symbol id="i-out" viewBox="0 0 24 24"><path d="M15 17l5-5-5-5M20 12H9M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></symbol>
-<symbol id="i-group" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15 20c0-2.5 1.8-4.5 4-4.5"/></symbol>
-<symbol id="i-bot" viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="12" rx="3"/><circle cx="9" cy="13" r="1.3" fill="#fff" stroke="none"/><circle cx="15" cy="13" r="1.3" fill="#fff" stroke="none"/><path d="M12 3v4M8 19l-1 2M16 19l1 2"/></symbol>
-<symbol id="i-img" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.5"/><path d="M4 18l5-5 4 4 3-3 4 4"/></symbol>
-</defs>
+<svg style="position:absolute;width:0;height:0" aria-hidden="true">
+<symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9"/><path d="M16 3.1a4 4 0 0 1 0 7.8"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></symbol>
+<symbol id="i-back" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></symbol>
+<symbol id="i-send" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></symbol>
+<symbol id="i-clip" viewBox="0 0 24 24"><path d="M21.4 11l-9.2 9.2a6 6 0 0 1-8.5-8.5l9.2-9.2a4 4 0 0 1 5.7 5.7l-9.2 9.2a2 2 0 0 1-2.8-2.8l8.5-8.5"/></symbol>
+<symbol id="i-mic" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></symbol>
+<symbol id="i-trash" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></symbol>
+<symbol id="i-bot" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><path d="M8 16h.01M16 16h.01"/></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><polygon points="7 4 20 12 7 20 7 4"/></symbol>
+<symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></symbol>
+<symbol id="i-out" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></symbol>
+<symbol id="i-cam" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
 </svg>
 
-<!-- Логотип -->
-<template id="t-logo">
-<svg viewBox="0 0 80 80"><path d="M40 8 L48 32 L72 40 L48 48 L40 72 L32 48 L8 40 L32 32 Z"/></svg>
-</template>
-
-<!-- Splash -->
+<!-- SPLASH -->
 <div id="splash">
-  <div class="logo"></div>
-  <h1>ClaudeMAX</h1>
-  <div class="tip" id="tip"></div>
+  <div class="spin" data-spark="96"></div>
+  <div class="sp-title">ClaudeMAX</div>
+  <div class="sp-tip"><span id="sp-tip"></span></div>
+  <div class="sp-bar"><i></i></div>
 </div>
 
-<!-- Auth -->
-<div id="auth">
-  <div class="acard glass">
-    <div class="logo"></div>
-    <h1 data-t="hi">ClaudeMAX</h1>
-    <div class="ctr mut sm" data-t="slogan">Общайся быстро и красиво</div>
-    <div class="seg"><button id="tLog" class="on" data-t="login">Вход</button><button id="tReg" data-t="reg">Регистрация</button></div>
-    <input class="in" id="nm" data-tp="nmPh" placeholder="Имя" maxlength="30" style="display:none">
-    <input class="in" id="un" data-tp="unPh" placeholder="Ник (латиница, цифры)" autocapitalize="off" maxlength="20">
-    <input class="in" id="pw" type="password" data-tp="pwPh" placeholder="Пароль (мин. 6 символов)">
-    <div id="err"></div>
-    <button class="btn" id="go" style="width:100%" data-t="enter">Войти</button>
-  </div>
+<!-- WELCOME после входа -->
+<div id="welcome">
+  <div id="wl-logo"></div>
+  <div class="wl-hi" id="wl-hi"></div>
+  <div class="wl-sub" data-t="welcomeTo"></div>
 </div>
 
-<!-- App -->
-<div id="app" style="display:none">
-  <div id="pChats" class="page">
-    <div class="tb">
-      <h2 data-t="chats">Чаты</h2>
-      <button class="pill" id="langBtn">RU</button>
-      <button class="ico" id="newChatBtn"><svg><use href="#i-plus"/></svg></button>
+<div id="app">
+
+  <!-- AUTH -->
+  <section class="view" id="v-auth">
+    <div class="au-top"><div class="lang" onclick="toggleLang()"><i></i><b data-l="ru">RU</b><b data-l="en">EN</b></div></div>
+    <div class="au-head">
+      <div class="spin" data-spark="76" style="display:inline-block"></div>
+      <h2 id="greet"></h2>
+      <p data-t="welcomeTo"></p>
     </div>
-    <div class="scroll" id="chatList"></div>
-  </div>
-
-  <div id="pSearch" class="page">
-    <div class="tb"><h2 data-t="search">Поиск</h2></div>
-    <div style="padding:0 14px"><input class="in" id="q" data-tp="searchPh" placeholder="Ник друга" autocapitalize="off"></div>
-    <div class="scroll" id="results"></div>
-  </div>
-
-  <div id="pProfile" class="page">
-    <div class="tb"><h2 data-t="profile">Профиль</h2></div>
-    <div class="scroll" id="prof"></div>
-  </div>
-
-  <!-- Чат -->
-  <div id="pChat" class="page">
-    <div class="chead">
-      <button class="ico" id="back"><svg><use href="#i-back"/></svg></button>
-      <div class="av" id="chAv" style="width:38px;height:38px;font-size:15px"></div>
-      <div class="chinfo" id="chInfo"><b id="chName"></b><small id="chSub"></small></div>
-      <button class="ico" id="chMenu"><svg><use href="#i-group"/></svg></button>
+    <div class="au-card glass">
+      <div class="seg"><button id="m-login" class="on" onclick="setMode('login')" data-t="login"></button><button id="m-reg" onclick="setMode('reg')" data-t="register"></button></div>
+      <input class="fld" id="a-user" data-ph="username" autocomplete="username" autocapitalize="off" autocorrect="off" spellcheck="false">
+      <input class="fld" id="a-pass" type="password" data-ph="password" autocomplete="current-password">
+      <div class="err" id="a-err"></div>
+      <button class="btn" id="a-btn" onclick="doAuth()"></button>
     </div>
+  </section>
+
+  <!-- CHATS -->
+  <section class="view" id="v-chats">
+    <div class="scroll" id="chat-list"></div>
+    <div class="hd glass"><h1>ClaudeMAX</h1>
+      <button class="ib" onclick="openSearch()"><svg class="ic"><use href="#i-search"/></svg></button>
+      <button class="ib" onclick="openNewGroup()"><svg class="ic"><use href="#i-users"/></svg></button>
+    </div>
+    <div class="nav" data-a="chats"></div>
+  </section>
+
+  <!-- BOTS -->
+  <section class="view" id="v-bots">
+    <div class="scroll" id="bots-list"></div>
+    <div class="hd glass"><h1 data-t="bots"></h1><button class="ib" onclick="newBot()"><svg class="ic"><use href="#i-plus"/></svg></button></div>
+    <div class="nav" data-a="bots"></div>
+  </section>
+
+  <!-- PROFILE -->
+  <section class="view" id="v-profile">
+    <div class="scroll">
+      <div class="pcard">
+        <div class="pban" id="p-ban"></div>
+        <div class="pav"><div id="p-av"></div><label class="cam"><svg class="ic"><use href="#i-cam"/></svg><input type="file" id="p-file" accept="image/*" hidden></label></div>
+        <div class="pbody">
+          <div style="text-align:center;margin-bottom:14px"><b id="p-nm" style="font-size:20px"></b><div id="p-un" style="color:var(--mut);font-size:14px"></div></div>
+          <div class="lbl" data-t="name"></div><input class="fld" id="p-name" maxlength="32">
+          <div class="lbl" data-t="bio"></div><input class="fld" id="p-bio" maxlength="120">
+          <div class="lbl" data-t="usernameT"></div><input class="fld" id="p-user" maxlength="20" autocapitalize="off" spellcheck="false">
+          <div class="lbl" data-t="color"></div><div class="sw" id="p-sw"></div>
+          <button class="btn" onclick="saveProfile()" data-t="save"></button>
+        </div>
+      </div>
+      <div class="pcard"><div class="pbody">
+        <div class="rowb"><b data-t="language"></b><div class="lang" onclick="toggleLang()"><i></i><b data-l="ru">RU</b><b data-l="en">EN</b></div></div>
+        <button class="btn ghost" style="margin:0;display:flex;align-items:center;justify-content:center;gap:8px" onclick="logout()"><svg class="ic" style="stroke:#ff8a80"><use href="#i-out"/></svg><span data-t="logout" style="color:#ff8a80"></span></button>
+      </div></div>
+    </div>
+    <div class="hd glass"><h1 data-t="profile"></h1></div>
+    <div class="nav" data-a="profile"></div>
+  </section>
+
+  <!-- ROOM -->
+  <section class="view" id="v-room">
+    <div id="room-bg"></div>
     <div id="msgs"></div>
-    <div class="cbar">
-      <button class="ico" id="attach"><svg><use href="#i-clip"/></svg></button>
-      <button class="ico" id="micBtn"><svg><use href="#i-mic"/></svg></button>
-      <input id="mi" data-tp="msgPh" placeholder="Сообщение" autocomplete="off">
-      <button id="send"><svg><use href="#i-send"/></svg></button>
-      <input type="file" id="fPick" accept="image/*" hidden>
+    <div class="hd glass">
+      <button class="ib" onclick="history.back()"><svg class="ic"><use href="#i-back"/></svg></button>
+      <div id="r-av"></div>
+      <div class="rt"><b id="r-t"></b><small id="r-s"></small></div>
+      <button class="ib" onclick="openInfo()"><svg class="ic"><use href="#i-info"/></svg></button>
     </div>
-  </div>
-
-  <div class="tabbar">
-    <button class="tab on" data-p="chats"><svg><use href="#i-chat"/></svg><span data-t="chats">Чаты</span></button>
-    <button class="tab" data-p="search"><svg><use href="#i-search"/></svg><span data-t="search">Поиск</span></button>
-    <button class="tab" data-p="profile"><svg><use href="#i-user"/></svg><span data-t="profile">Профиль</span></button>
-  </div>
+    <div class="bar glass" id="bar">
+      <div class="bar-n">
+        <label class="ib" id="attach"><svg class="ic"><use href="#i-clip"/></svg><input type="file" id="file" accept="image/*" hidden></label>
+        <input class="inp" id="msg" data-ph="msgPh" autocomplete="off">
+        <button class="ib" id="mic" onclick="startRec()"><svg class="ic"><use href="#i-mic"/></svg></button>
+        <button class="send" id="sendb" onclick="sendText()"><svg class="ic"><use href="#i-send"/></svg></button>
+      </div>
+      <div class="bar-r">
+        <button class="ib" onclick="stopRec(false)"><svg class="ic"><use href="#i-trash"/></svg></button>
+        <div class="rec-info">
+          <div class="rec-l1"><i class="rdot"></i><span data-t="recording"></span></div>
+          <div class="rec-l2"><b id="rec-t">0:00</b><div class="wave"><u></u><u></u><u></u><u></u><u></u><u></u><u></u><u></u><u></u><u></u><u></u><u></u><u></u><u></u><u></u><u></u><u></u><u></u><u></u><u></u></div></div>
+        </div>
+        <button class="send" onclick="stopRec(true)"><svg class="ic"><use href="#i-send"/></svg></button>
+      </div>
+    </div>
+  </section>
 </div>
 
-<!-- Sheets -->
-<div id="sheet" class="sheet"><div class="scard glass" id="sheetC"></div></div>
-<div id="img" onclick="this.classList.remove('on')"><img id="imgSrc"></div>
+<div class="ov" id="sheet"><div class="sh-box"><div class="grab"></div><div id="sheet-body"></div></div></div>
+<div class="ov" id="viewer"><img id="viewer-img"></div>
+<div id="toast" class="glass"></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut }
-  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, addDoc, collection, query, where, orderBy, limit, onSnapshot, getDocs, serverTimestamp, arrayUnion, arrayRemove, runTransaction }
-  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, collection, addDoc, query, where, onSnapshot, orderBy, limit, serverTimestamp, getDocs, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBFZH_-XzfXCVItFF0PXd2GBaI5_LRWCko",
-  authDomain: "buldog-5fef9.firebaseapp.com",
-  projectId: "buldog-5fef9"
-};
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+const app = initializeApp({ apiKey:"AIzaSyBFZH_-XzfXCVItFF0PXd2GBaI5_LRWCko", authDomain:"buldog-5fef9.firebaseapp.com", projectId:"buldog-5fef9" });
+const auth = getAuth(app), db = getFirestore(app);
 
-/* ===== Логотип ===== */
-document.querySelectorAll(".logo").forEach(el => el.innerHTML = document.getElementById("t-logo").innerHTML);
-
-/* ===== Переводы ===== */
-const L = {
-  ru: {hi:"ClaudeMAX",slogan:"Общайся быстро и красиво",login:"Вход",reg:"Регистрация",enter:"Войти",chats:"Чаты",search:"Поиск",profile:"Профиль",
-    nmPh:"Имя",unPh:"Ник (латиница, цифры)",pwPh:"Пароль (мин. 6 символов)",searchPh:"Ник друга",msgPh:"Сообщение",
-    tips:["Проведи пальцем, чтобы листать","ClaudBOT поможет создать бота","Файлы, голос, группы — всё внутри","Меняй обои в каждом чате отдельно","Нажми на цилиндр RU, чтобы сменить язык"],
-    online:"в сети",recent:"был(а) недавно",seen:"был(а) в",yest:"вчера",noChats:"Чатов пока нет. Открой «Поиск» и найди друга.",typeHint:"Введи ник (мин. 2 буквы)",none:"Никого не нашли",write:"Написать",close:"Закрыть",edit:"Редактировать профиль",out:"Выйти",changeUn:"Сменить ник",save:"Сохранить",cancel:"Отмена",newGroup:"Создать группу",newChat:"Новый чат",groupName:"Название группы",create:"Создать",wall:"Обои чата",admin:"Админ",addMember:"Добавить участника",members:"Участники",first:"Напиши первое сообщение",botHi:"Привет! Я ClaudBOT. Команды:\n/newbot — создать бота\n/mybots — мои боты\n/token <id> — показать токен",lang:"Язык",pickColor:"Цвет профиля",pickWall:"Обои",noBots:"У тебя пока нет ботов. Напиши /newbot",botCreated:"Бот создан! Токен:"},
-  en: {hi:"ClaudeMAX",slogan:"Chat fast and beautifully",login:"Log in",reg:"Sign up",enter:"Enter",chats:"Chats",search:"Search",profile:"Profile",
-    nmPh:"Name",unPh:"Username (letters, digits)",pwPh:"Password (min 6 chars)",searchPh:"Friend's username",msgPh:"Message",
-    tips:["Swipe to browse","ClaudBOT helps you build a bot","Files, voice, groups — all inside","Change wallpaper per chat","Tap RU pill to switch language"],
-    online:"online",recent:"recently online",seen:"last seen at",yest:"yesterday",noChats:"No chats yet. Open Search to find a friend.",typeHint:"Type a username (min 2 letters)",none:"Nothing found",write:"Message",close:"Close",edit:"Edit profile",out:"Log out",changeUn:"Change username",save:"Save",cancel:"Cancel",newGroup:"New group",newChat:"New chat",groupName:"Group name",create:"Create",wall:"Chat wallpaper",admin:"Admin",addMember:"Add member",members:"Members",first:"Say hi 👋",botHi:"Hi! I'm ClaudBOT. Commands:\n/newbot — create bot\n/mybots — my bots\n/token <id> — show token",lang:"Language",pickColor:"Profile color",pickWall:"Wallpaper",noBots:"No bots yet. Type /newbot",botCreated:"Bot created! Token:"}
-};
-let lang = localStorage.getItem("lang") || "ru";
-const t = k => (L[lang][k] || k);
-function applyLang() {
-  document.querySelectorAll("[data-t]").forEach(el => el.textContent = t(el.dataset.t));
-  document.querySelectorAll("[data-tp]").forEach(el => el.placeholder = t(el.dataset.tp));
-  document.documentElement.lang = lang;
-  const b = document.getElementById("langBtn"); if (b) b.textContent = lang.toUpperCase();
-}
-applyLang();
-
-/* ===== Splash ===== */
-const tips = L[lang].tips;
-let ti = 0;
-const tipEl = document.getElementById("tip");
-tipEl.textContent = tips[0];
-const tipInt = setInterval(() => { ti = (ti + 1) % tips.length; tipEl.style.opacity = 0; setTimeout(() => { tipEl.textContent = tips[ti]; tipEl.style.opacity = 1; }, 200); }, 1400);
-tipEl.style.transition = "opacity .25s";
-setTimeout(() => { clearInterval(tipInt); document.getElementById("splash").classList.add("hide"); setTimeout(() => document.getElementById("splash").remove(), 500); }, 2800);
-
-/* ===== Утилиты ===== */
 const $ = id => document.getElementById(id);
-const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const h = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
 const EMAIL = u => u + "@cldmax.app";
-const COLORS = ["#d97757","#7c8cff","#19d4c8","#f7971e","#43e97b","#fa709a","#a45cff","#4facfe"];
+const UNAME = /^[a-z0-9_]{3,20}$/;
+const COLORS = ['#d97757','#e0a03c','#4fb36a','#2bb5a6','#4a9eed','#7c6cf0','#d65db1','#e5534b'];
 const WALLS = [
-  "linear-gradient(135deg,#1a1a2e,#16213e)",
-  "linear-gradient(135deg,#2d1b3d,#3d2b4d)",
-  "linear-gradient(135deg,#1e3a1e,#2d5a2d)",
-  "linear-gradient(135deg,#3d2020,#5a3030)",
-  "linear-gradient(135deg,#1e2a3a,#2d4a5a)",
-  "radial-gradient(circle at 30% 30%,#2a1a4a,#0d0d15)",
-  "radial-gradient(circle at 70% 70%,#4a2a1a,#0d0d15)"
+  'radial-gradient(circle at 20% 15%,#ff8a6588,transparent 45%),radial-gradient(circle at 85% 80%,#7c4dff77,transparent 50%),#12121a',
+  'radial-gradient(circle at 80% 20%,#2bb5a688,transparent 50%),radial-gradient(circle at 15% 85%,#4a9eed66,transparent 50%),#0f1618',
+  'radial-gradient(circle at 25% 25%,#d65db177,transparent 50%),radial-gradient(circle at 80% 85%,#e0a03c66,transparent 50%),#18121a',
+  'linear-gradient(160deg,#1d2b64,#0f0f1d 70%)',
+  'linear-gradient(160deg,#41295a,#2f0743 60%,#12091a)',
+  'linear-gradient(160deg,#0f2027,#203a43 55%,#2c5364)',
+  'linear-gradient(160deg,#3a1c12,#1a0f0b 70%)'
 ];
 
-let me = null, cache = {}, unsubs = [], curChat = null, curChatData = null, seen = new Set(), mode = "login", reg = false;
+/* ---------------- ЯЗЫК ---------------- */
+const L = {
+ru:{tips:["Сообщения хранятся в вашем облаке Firebase","Голосовые до 30 секунд — просто нажмите 🎤","Создавайте группы и назначайте админов","Напишите /newbot у ClaudBOT","Меняйте фон чата и цвет профиля"],
+ gm:"Доброе утро!",ga:"Добрый день!",ge:"Добрый вечер!",gn:"Доброй ночи!",welcomeTo:"Добро пожаловать в ClaudeMAX",hi:"Привет, {n}!",
+ login:"Вход",register:"Регистрация",username:"Имя пользователя",password:"Пароль",btnLogin:"Войти",btnReg:"Создать аккаунт",
+ chats:"Чаты",bots:"Боты",profile:"Профиль",search:"Поиск",searchPh:"Найти @username",nothing:"Никого не найдено",
+ newGroup:"Новая группа",groupName:"Название группы",create:"Создать",cancel:"Отмена",noChats:"Пока нет чатов. Нажмите 🔍 и найдите друга по @username",
+ msgPh:"Сообщение",recording:"Идёт запись голосового…",noMic:"Нет доступа к микрофону",tooShort:"Слишком коротко",tooBig:"Голосовое слишком большое",
+ online:"в сети",recently:"был(а) недавно",seenAt:"был(а) в {t}",seenY:"был(а) вчера в {t}",seenD:"был(а) {d}",members:"участников",bot:"бот",
+ photo:"📷 Фото",voice:"🎤 Голосовое",you:"Вы",info:"Информация",wallpaper:"Фон чата",membersT:"Участники",addMember:"Добавить участника",
+ admin:"админ",makeAdmin:"Назначить админом",leave:"Покинуть группу",onlyAdmin:"Только админы могут менять фон",
+ name:"Имя",bio:"О себе",usernameT:"Имя пользователя (@)",color:"Цвет профиля",save:"Сохранить",saved:"Сохранено ✓",language:"Язык",logout:"Выйти",
+ fill:"Заполните все поля",badUser:"Логин: 3–20 символов, a–z, 0–9, _",shortPass:"Пароль — минимум 6 символов",badCreds:"Неверный логин или пароль",
+ taken:"Это имя уже занято",net:"Нет сети или ошибка соединения",authOff:"В Firebase не включён Email/Password",sendErr:"Не удалось отправить",
+ myBots:"Мои боты",createBot:"Создать бота",noBots:"У вас пока нет ботов",copied:"Токен скопирован",added:"Участник добавлен",
+ botHelp:"Привет! Я ClaudBOT 🤖\n\n/newbot — создать бота\n/mybots — список ваших ботов\n/token <id> — токен бота",
+ botAsk:"Как назвать бота? Отправьте имя.",botMade:"Готово! Бот «{n}» создан.\nID: {id}\nТокен: {tk}\n\nТокен хранится в вашем аккаунте. Внешнего Bot API пока нет — это внутренняя имитация.",
+ botNone:"Ботов пока нет. Создайте через /newbot",botList:"Ваши боты:",botNo:"Бот не найден. Формат: /token <id>",botUnk:"Не знаю такую команду. Напишите /help"},
+en:{tips:["Messages are stored in your Firebase cloud","Voice messages up to 30s — just tap 🎤","Create groups and assign admins","Send /newbot to ClaudBOT","Change chat wallpaper and profile color"],
+ gm:"Good morning!",ga:"Good afternoon!",ge:"Good evening!",gn:"Good night!",welcomeTo:"Welcome to ClaudeMAX",hi:"Hi, {n}!",
+ login:"Sign in",register:"Sign up",username:"Username",password:"Password",btnLogin:"Sign in",btnReg:"Create account",
+ chats:"Chats",bots:"Bots",profile:"Profile",search:"Search",searchPh:"Find @username",nothing:"Nobody found",
+ newGroup:"New group",groupName:"Group name",create:"Create",cancel:"Cancel",noChats:"No chats yet. Tap 🔍 and find a friend by @username",
+ msgPh:"Message",recording:"Recording voice message…",noMic:"Microphone access denied",tooShort:"Too short",tooBig:"Voice message too big",
+ online:"online",recently:"last seen recently",seenAt:"last seen at {t}",seenY:"last seen yesterday at {t}",seenD:"last seen {d}",members:"members",bot:"bot",
+ photo:"📷 Photo",voice:"🎤 Voice message",you:"You",info:"Info",wallpaper:"Chat wallpaper",membersT:"Members",addMember:"Add member",
+ admin:"admin",makeAdmin:"Make admin",leave:"Leave group",onlyAdmin:"Only admins can change wallpaper",
+ name:"Name",bio:"About",usernameT:"Username (@)",color:"Profile color",save:"Save",saved:"Saved ✓",language:"Language",logout:"Log out",
+ fill:"Fill in all fields",badUser:"Username: 3–20 chars, a–z, 0–9, _",shortPass:"Password: at least 6 characters",badCreds:"Wrong username or password",
+ taken:"This username is taken",net:"Network error",authOff:"Email/Password is not enabled in Firebase",sendErr:"Failed to send",
+ myBots:"My bots",createBot:"Create bot",noBots:"You have no bots yet",copied:"Token copied",added:"Member added",
+ botHelp:"Hi! I'm ClaudBOT 🤖\n\n/newbot — create a bot\n/mybots — your bots\n/token <id> — bot token",
+ botAsk:"What should the bot be called? Send a name.",botMade:"Done! Bot “{n}” created.\nID: {id}\nToken: {tk}\n\nThe token is stored in your account. There is no external Bot API yet — this is an internal imitation.",
+ botNone:"No bots yet. Create one with /newbot",botList:"Your bots:",botNo:"Bot not found. Usage: /token <id>",botUnk:"Unknown command. Try /help"}
+};
+let lang = localStorage.getItem('cm_lang') || 'ru';
+const t = (k, v) => { let s = (L[lang][k] ?? k); if (v) for (const x in v) s = s.replace('{' + x + '}', v[x]); return s; };
 
-function toast(txt) {
-  const d = document.createElement("div");
-  d.className = "toast"; d.textContent = txt;
-  document.body.appendChild(d);
-  setTimeout(() => d.remove(), 2800);
+/* ---------------- СОСТОЯНИЕ ---------------- */
+let me = null, meData = null, chats = {}, myBots = [], room = null, tmpColor = COLORS[0];
+let chatsUnsub, botsUnsub, msgsUnsub, statusUnsub, statusTimer, hbTimer;
+let authMode = 'login', registering = false, pendingWelcome = false;
+const userCache = {};
+const CLAUD = { name: 'ClaudBOT', username: 'claudbot', bot: true };
+
+/* ---------------- УТИЛИТЫ ---------------- */
+const pad = n => String(n).padStart(2, '0');
+const hm = d => pad(d.getHours()) + ':' + pad(d.getMinutes());
+const toDate = x => x && x.toDate ? x.toDate() : (x ? new Date(x) : new Date());
+const ms = x => x ? (x.toMillis ? x.toMillis() : +x) : 0;
+const fmtDur = s => Math.floor(s / 60) + ':' + pad(Math.round(s % 60));
+const colorOf = s => COLORS[[...String(s || '?')].reduce((a, c) => a + c.charCodeAt(0), 0) % COLORS.length];
+const rnd = (n, set) => Array.from({ length: n }, () => set[Math.floor(Math.random() * set.length)]).join('');
+let toastT;
+function toast(msg) { const e = $('toast'); e.textContent = msg; e.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(() => e.classList.remove('on'), 2600); }
+
+/* ---------------- ЛОГОТИП (искра Claude) ---------------- */
+function spark(size, anim) {
+  const lens = [42, 28, 38, 42, 27, 36, 41, 30, 40, 26, 39, 34];
+  let s = `<svg viewBox="0 0 100 100" width="${size}" height="${size}" fill="none" stroke="#d97757" stroke-width="7.5" stroke-linecap="round">`;
+  lens.forEach((l, i) => {
+    const a = (i * 30 - 90) * Math.PI / 180, c = Math.cos(a), n = Math.sin(a);
+    s += `<line ${anim ? `class="ray" pathLength="1" style="--i:${i}"` : ''} x1="${50 + c * 8}" y1="${50 + n * 8}" x2="${50 + c * l}" y2="${50 + n * l}"/>`;
+  });
+  return s + '</svg>';
 }
-function av(u, s = 48) {
-  const st = `width:${s}px;height:${s}px;font-size:${Math.round(s*.4)}px;`;
-  if (u.avatar) return `<div class="av" style="${st}background-image:url('${u.avatar}')"></div>`;
-  const c = COLORS[u.color || 0];
-  return `<div class="av" style="${st}background:${c}">${esc((u.name || u.username || "?")[0].toUpperCase())}</div>`;
+document.querySelectorAll('[data-spark]').forEach(e => e.innerHTML = spark(+e.dataset.spark));
+
+/* ---------------- ПЕРЕВОД ---------------- */
+function greetKey() { const x = new Date().getHours(); return x < 5 ? 'gn' : x < 12 ? 'gm' : x < 18 ? 'ga' : 'ge'; }
+function applyLang() {
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-t]').forEach(e => e.textContent = t(e.dataset.t));
+  document.querySelectorAll('[data-ph]').forEach(e => e.placeholder = t(e.dataset.ph));
+  document.querySelectorAll('.lang').forEach(p => { p.classList.toggle('en', lang === 'en'); p.querySelectorAll('b').forEach(b => b.classList.toggle('on', b.dataset.l === lang)); });
+  $('greet').textContent = t(greetKey());
+  $('a-btn').textContent = authMode === 'login' ? t('btnLogin') : t('btnReg');
+  if (me) { renderChats(); renderBots(); if (room) refreshHeader(); }
 }
-function avEl(u, s = 48) {
-  const d = document.createElement("div");
-  d.className = "av"; d.style.cssText = `width:${s}px;height:${s}px;font-size:${Math.round(s*.4)}px;`;
-  if (u.avatar) d.style.backgroundImage = `url('${u.avatar}')`;
-  else { d.style.background = COLORS[u.color || 0]; d.textContent = (u.name || u.username || "?")[0].toUpperCase(); }
+window.toggleLang = () => { lang = lang === 'ru' ? 'en' : 'ru'; localStorage.setItem('cm_lang', lang); applyLang(); };
+
+/* ---------------- НАВИГАЦИЯ ---------------- */
+const NAV = `<button data-tab="chats"><svg class="ic"><use href="#i-chat"/></svg><span data-t="chats"></span></button>
+<button data-tab="bots"><svg class="ic"><use href="#i-bot"/></svg><span data-t="bots"></span></button>
+<button data-tab="profile"><svg class="ic"><use href="#i-user"/></svg><span data-t="profile"></span></button>`;
+document.querySelectorAll('.nav').forEach(n => {
+  n.innerHTML = NAV; n.classList.add('glass');
+  n.querySelector(`[data-tab="${n.dataset.a}"]`).classList.add('on');
+  n.onclick = e => { const b = e.target.closest('button'); if (b) tab(b.dataset.tab); };
+});
+function show(n) { document.querySelectorAll('.view').forEach(v => v.classList.remove('on')); $('v-' + n).classList.add('on'); }
+function tab(n) { show(n); if (n === 'profile') fillProfile(); if (n === 'bots') renderBots(); if (n === 'chats') renderChats(); }
+
+/* ---------------- ПРИВЕТСТВИЕ ---------------- */
+let tipI = 0; const tipT = setInterval(() => { const e = $('sp-tip'); if (!e) return; tipI = (tipI + 1) % 5; e.style.animation = 'none'; void e.offsetWidth; e.style.animation = ''; e.textContent = t('tips')[tipI] ?? L[lang].tips[tipI]; }, 1100);
+$('sp-tip').textContent = L[lang].tips[0];
+const t0 = Date.now(); let splashDone = false;
+function hideSplash() {
+  if (splashDone) return; splashDone = true;
+  setTimeout(() => { const s = $('splash'); s.classList.add('off'); setTimeout(() => { s.remove(); clearInterval(tipT); }, 500); }, Math.max(0, 2200 - (Date.now() - t0)));
+}
+function welcome() {
+  $('wl-logo').innerHTML = spark(110, true);
+  $('wl-hi').textContent = t('hi', { n: meData.name || meData.username });
+  const w = $('welcome'); w.classList.remove('off'); w.classList.add('on');
+  setTimeout(() => { w.classList.add('off'); setTimeout(() => w.classList.remove('on'), 450); }, 2100);
+}
+
+/* ---------------- ПОЛЬЗОВАТЕЛИ ---------------- */
+async function getUser(uid) {
+  if (uid === 'claudbot') return CLAUD;
+  if (userCache[uid]) return userCache[uid];
+  try { const s = await getDoc(doc(db, 'users', uid)); userCache[uid] = s.exists() ? s.data() : { name: '?', username: '?' }; }
+  catch { return { name: '?', username: '?' }; }
+  return userCache[uid];
+}
+function avatar(u, size) {
+  const d = h('div', 'av'); d.style.cssText = `width:${size}px;height:${size}px;font-size:${size * .42}px;background-color:${u.color || colorOf(u.name)}`;
+  if (u.bot) { d.style.background = '#1d1d28'; d.innerHTML = spark(size * .68); }
+  else if (u.avatar) d.style.backgroundImage = `url("${u.avatar}")`;
+  else d.textContent = (u.name || '?')[0].toUpperCase();
   return d;
 }
-function statusText(u) {
-  if (!u.lastSeen) return "";
-  const ms = u.lastSeen.toMillis ? u.lastSeen.toMillis() : u.lastSeen;
-  const diff = Date.now() - ms;
-  if (diff < 60000) return t("online");
-  if (diff < 15*60000) return t("recent");
-  const d = new Date(ms), now = new Date();
-  const hm = d.toLocaleTimeString(lang, {hour:"2-digit",minute:"2-digit"});
-  if (d.toDateString() === now.toDateString()) return `${t("seen")} ${hm}`;
-  const y = new Date(now); y.setDate(y.getDate()-1);
-  if (d.toDateString() === y.toDateString()) return `${t("yest")} ${hm}`;
-  return d.toLocaleDateString(lang) + " " + hm;
+function userRow(u, btn) {
+  const r = h('div', 'row'); r.append(avatar(u, 42));
+  const m = h('div', 'rm'), n = h('b'), s = h('small'); n.textContent = u.name || u.username; s.textContent = '@' + u.username; m.append(n, s); r.append(m);
+  if (btn) r.append(btn); return r;
 }
-async function getUser(uid, fresh) {
-  if (uid === "claudbot") return {uid:"claudbot", name:"ClaudBOT", username:"claudbot", color:0, bio:"Создай своего бота"};
-  if (!fresh && cache[uid]) return cache[uid];
-  try {
-    const s = await getDoc(doc(db,"users",uid));
-    cache[uid] = s.exists() ? {uid, ...s.data()} : {uid, name:"?", username:"?"};
-  } catch { cache[uid] = {uid, name:"?", username:"?"}; }
-  return cache[uid];
+function statusOf(u) {
+  if (!u || !u.lastSeen) return { on: 0, txt: t('recently') };
+  const d = toDate(u.lastSeen), diff = Date.now() - d.getTime(), now = new Date();
+  if (diff < 100000) return { on: 1, txt: t('online') };
+  if (diff < 600000) return { on: 0, txt: t('recently') };
+  const yest = new Date(now); yest.setDate(now.getDate() - 1);
+  if (d.toDateString() === now.toDateString()) return { on: 0, txt: t('seenAt', { t: hm(d) }) };
+  if (d.toDateString() === yest.toDateString()) return { on: 0, txt: t('seenY', { t: hm(d) }) };
+  return { on: 0, txt: t('seenD', { d: d.toLocaleDateString(lang) }) };
 }
-function fmt(ms) { return new Date(ms).toLocaleTimeString(lang,{hour:"2-digit",minute:"2-digit"}); }
 
-/* ===== Язык ===== */
-$("langBtn").onclick = () => { lang = lang === "ru" ? "en" : "ru"; localStorage.setItem("lang", lang); applyLang(); if (me) { subChats(); renderProfile(); } };
-
-/* ===== Auth ===== */
-function setMode(m) {
-  mode = m; $("tLog").classList.toggle("on", m==="login"); $("tReg").classList.toggle("on", m==="reg");
-  $("nm").style.display = m==="reg" ? "block" : "none";
-  $("go").textContent = m === "reg" ? t("reg") : t("enter");
-  $("err").textContent = "";
+/* ---------------- АВТОРИЗАЦИЯ ---------------- */
+window.setMode = m => {
+  authMode = m; $('m-login').classList.toggle('on', m === 'login'); $('m-reg').classList.toggle('on', m === 'reg');
+  $('a-btn').textContent = m === 'login' ? t('btnLogin') : t('btnReg'); $('a-err').textContent = '';
+  $('a-pass').autocomplete = m === 'login' ? 'current-password' : 'new-password';
+};
+$('a-pass').addEventListener('keydown', e => { if (e.key === 'Enter') doAuth(); });
+async function emailFor(u) {
+  try { const s = await getDoc(doc(db, 'usernames', u)); if (s.exists() && s.data().email) return s.data().email; } catch {}
+  return EMAIL(u);
 }
-$("tLog").onclick = () => setMode("login");
-$("tReg").onclick = () => setMode("reg");
-
 function authErr(e) {
-  const c = e.code || "";
-  if (c.includes("email-already-in-use")) return lang==="ru"?"Ник занят":"Username taken";
-  if (c.includes("invalid-credential") || c.includes("wrong-password") || c.includes("user-not-found")) return lang==="ru"?"Неверный ник или пароль":"Wrong username or password";
-  if (c.includes("weak-password")) return lang==="ru"?"Пароль слишком короткий":"Password too short";
-  if (c.includes("operation-not-allowed")) return "Enable Email/Password in Firebase";
-  if (c.includes("unauthorized-domain")) return "Add domain to Firebase";
-  return c || "Error";
+  const c = e.code || '';
+  if (/invalid-credential|user-not-found|wrong-password|invalid-email/.test(c)) return t('badCreds');
+  if (c.includes('email-already-in-use')) return t('taken');
+  if (c.includes('weak-password')) return t('shortPass');
+  if (c.includes('network')) return t('net');
+  if (c.includes('operation-not-allowed')) return t('authOff');
+  return e.message;
 }
-
-$("go").onclick = async () => {
-  const un = $("un").value.trim().toLowerCase(), pw = $("pw").value, nm = $("nm").value.trim();
-  $("err").textContent = "";
-  if (!/^[a-z0-9_]{3,20}$/.test(un)) { $("err").textContent = lang==="ru"?"Ник: 3-20 символов, латиница":"Username: 3-20 chars, latin"; return; }
-  if (pw.length < 6) { $("err").textContent = lang==="ru"?"Пароль мин. 6 символов":"Password min 6"; return; }
-  if (mode === "reg" && !nm) { $("err").textContent = lang==="ru"?"Введи имя":"Enter name"; return; }
-  $("go").disabled = true;
+window.doAuth = async () => {
+  const u = $('a-user').value.trim().toLowerCase().replace(/^@/, ''), p = $('a-pass').value, err = $('a-err'), btn = $('a-btn');
+  err.textContent = '';
+  if (!u || !p) return err.textContent = t('fill');
+  if (!UNAME.test(u)) return err.textContent = t('badUser');
+  if (p.length < 6) return err.textContent = t('shortPass');
+  btn.disabled = true;
   try {
-    if (mode === "reg") {
-      reg = true;
-      const c = await createUserWithEmailAndPassword(auth, EMAIL(un), pw);
-      await setDoc(doc(db,"usernames",un), {uid: c.user.uid});
-      await setDoc(doc(db,"users",c.user.uid), {
-        username: un, name: nm.slice(0,30), bio:"", avatar:"", banner:"",
-        color: Math.floor(Math.random()*COLORS.length), lastSeen: serverTimestamp()
-      });
-      reg = false;
-      await enter(c.user);
+    if (authMode === 'login') {
+      pendingWelcome = true;
+      await signInWithEmailAndPassword(auth, await emailFor(u), p);
     } else {
-      await signInWithEmailAndPassword(auth, EMAIL(un), pw);
+      registering = true;
+      const res = await createUserWithEmailAndPassword(auth, EMAIL(u), p);
+      const data = { username: u, name: u, bio: '', avatar: '', color: COLORS[0], lastSeen: serverTimestamp() };
+      await setDoc(doc(db, 'users', res.user.uid), data);
+      try { await setDoc(doc(db, 'usernames', u), { uid: res.user.uid, email: EMAIL(u) }); } catch {}
+      registering = false; pendingWelcome = true;
+      await enter(res.user);
     }
-  } catch (e) { reg = false; $("err").textContent = authErr(e); }
-  $("go").disabled = false;
+  } catch (e) { registering = false; pendingWelcome = false; err.textContent = authErr(e); }
+  btn.disabled = false;
 };
-$("pw").addEventListener("keydown", e => { if (e.key === "Enter") $("go").click(); });
 
-onAuthStateChanged(auth, async u => {
-  if (reg) return;
-  if (!u) { cleanup(); $("app").style.display = "none"; $("auth").classList.add("on"); return; }
-  await enter(u);
+onAuthStateChanged(auth, async user => {
+  if (registering) return;
+  try {
+    if (user) await enter(user); else { cleanup(); show('auth'); }
+  } catch (e) { toast(e.message); show('auth'); }
+  hideSplash();
 });
+setTimeout(() => { if (!splashDone) { show('auth'); hideSplash(); } }, 9000);
 
-async function enter(u) {
-  let s = await getDoc(doc(db,"users",u.uid));
-  if (!s.exists()) {
-    const un = (u.email||"user").split("@")[0];
-    await setDoc(doc(db,"users",u.uid), {username:un, name:un, bio:"", avatar:"", banner:"", color:1, lastSeen:serverTimestamp()});
-    s = await getDoc(doc(db,"users",u.uid));
+async function enter(user) {
+  me = user;
+  let snap = await getDoc(doc(db, 'users', user.uid));
+  if (!snap.exists()) {
+    const un = (user.email || 'user').split('@')[0];
+    await setDoc(doc(db, 'users', user.uid), { username: un, name: un, bio: '', avatar: '', color: COLORS[0], lastSeen: serverTimestamp() });
+    snap = await getDoc(doc(db, 'users', user.uid));
   }
-  me = {uid:u.uid, ...s.data()};
-  cache[u.uid] = me;
-  $("auth").classList.remove("on");
-  $("app").style.display = "block";
-  $("un").value = ""; $("pw").value = "";
-  setTab("chats"); subChats(); renderProfile();
-  updateDoc(doc(db,"users",u.uid), {lastSeen: serverTimestamp()}).catch(()=>{});
-  setInterval(() => updateDoc(doc(db,"users",u.uid), {lastSeen: serverTimestamp()}).catch(()=>{}), 60000);
+  meData = snap.data(); userCache[user.uid] = meData; tmpColor = meData.color || COLORS[0];
+  beat(); clearInterval(hbTimer); hbTimer = setInterval(beat, 60000);
+  listenChats(); listenBots(); loadBotLog();
+  show('chats');
+  if (pendingWelcome) { pendingWelcome = false; welcome(); }
 }
-function cleanup() { unsubs.forEach(f => f && f()); unsubs = []; cache = {}; me = null; document.body.classList.remove("inchat"); }
-
-/* ===== Табы ===== */
-function setTab(p) {
-  ["chats","search","profile"].forEach(n => $("p"+n[0].toUpperCase()+n.slice(1)).classList.toggle("on", n===p));
-  document.querySelectorAll(".tab").forEach(b => b.classList.toggle("on", b.dataset.p===p));
+function cleanup() {
+  chatsUnsub && chatsUnsub(); botsUnsub && botsUnsub(); msgsUnsub && msgsUnsub(); statusUnsub && statusUnsub();
+  clearInterval(hbTimer); clearInterval(statusTimer);
+  me = null; meData = null; chats = {}; myBots = []; room = null;
 }
-document.querySelectorAll(".tab").forEach(b => b.onclick = () => setTab(b.dataset.p));
+window.logout = () => { signOut(auth); };
+const beat = () => { if (me) updateDoc(doc(db, 'users', me.uid), { lastSeen: serverTimestamp() }).catch(() => {}); };
+document.addEventListener('visibilitychange', () => { if (!document.hidden) beat(); });
 
-/* ===== Чаты ===== */
-function subChats() {
-  unsubs.forEach(f => f && f()); unsubs = [];
-  const q1 = query(collection(db,"chats"), where("members","array-contains", me.uid));
-  const u = onSnapshot(q1, async snap => {
-    let items = snap.docs.map(d => ({id:d.id, ...d.data({serverTimestamps:"estimate"})}));
-    items.sort((a,b) => (b.lastAt?.toMillis?.()||0) - (a.lastAt?.toMillis?.()||0));
-    const list = $("chatList"); list.innerHTML = "";
-    // ClaudBOT всегда наверху
-    const bot = document.createElement("div");
-    bot.className = "row glass";
-    bot.innerHTML = `${av({name:"🤖",color:0})}<div class="info"><b>ClaudBOT</b><div class="last">${esc(lang==="ru"?"Создай своего бота":"Build your own bot")}</div></div>`;
-    bot.onclick = () => openChat({uid:"claudbot", name:"ClaudBOT", username:"claudbot", bot:true});
-    list.appendChild(bot);
-
-    if (!items.length) {
-      const e = document.createElement("div"); e.className = "empty"; e.innerHTML = `<svg><use href="#i-chat"/></svg><div>${t("noChats")}</div>`;
-      list.appendChild(e); return;
-    }
-    for (const c of items) {
-      let title, sub, avHtml;
-      if (c.group) {
-        title = c.title || "Group";
-        sub = c.lastText || "";
-        avHtml = `<div class="av" style="width:48px;height:48px;font-size:19px;background:${COLORS[c.color||2]}">${esc(title[0].toUpperCase())}</div>`;
-      } else {
-        const other = c.members.find(x => x !== me.uid);
-        const u2 = await getUser(other);
-        title = u2.name; sub = c.lastText || statusText(u2);
-        avHtml = av(u2);
-      }
-      const el = document.createElement("div");
-      el.className = "row glass";
-      el.innerHTML = `${avHtml}<div class="info"><b>${esc(title)}</b><div class="last">${c.lastUid===me.uid?"➜ ":""}${esc(sub)}</div></div><div class="meta">${c.lastAt?fmt(c.lastAt.toMillis()):""}</div>`;
-      el.onclick = () => c.group ? openGroup(c) : openChat(cache[c.members.find(x=>x!==me.uid)]);
-      list.appendChild(el);
+/* ---------------- СПИСОК ЧАТОВ ---------------- */
+function listenChats() {
+  chatsUnsub && chatsUnsub();
+  chatsUnsub = onSnapshot(query(collection(db, 'chats'), where('members', 'array-contains', me.uid)), snap => {
+    chats = {}; snap.forEach(d => chats[d.id] = d.data({ serverTimestamps: 'estimate' }));
+    renderChats();
+    if (room && room.type !== 'bot' && chats[room.id]) { room.chat = chats[room.id]; refreshHeader(); applyWall(); }
+  }, e => toast(e.message));
+}
+function otherOf(c) { return (c.members || []).find(x => x !== me.uid); }
+function dayLabel(x) { const d = toDate(x), n = new Date(); return d.toDateString() === n.toDateString() ? hm(d) : d.toLocaleDateString(lang, { day: 'numeric', month: 'short' }); }
+function renderChats() {
+  const box = $('chat-list'); if (!box || !me) return; box.innerHTML = '';
+  const last = botLog[botLog.length - 1];
+  box.append(chatItem({ name: 'ClaudBOT', bot: true }, 'ClaudBOT', last ? last.text.split('\n')[0] : '/help', last ? last.ts : 0, () => openRoom('claudbot')));
+  const arr = Object.entries(chats).map(([id, c]) => ({ id, ...c })).sort((a, b) => ms(b.lastAt) - ms(a.lastAt));
+  arr.forEach(c => {
+    const prev = c.lastText ? (c.lastUid === me.uid ? t('you') + ': ' : '') + c.lastText : '';
+    if (c.group) box.append(chatItem({ name: c.title, color: colorOf(c.title) }, c.title, prev, c.lastAt ? ms(c.lastAt) : 0, () => openRoom(c.id)));
+    else {
+      const it = chatItem({ name: '…' }, '…', prev, c.lastAt ? ms(c.lastAt) : 0, () => openRoom(c.id));
+      box.append(it);
+      getUser(otherOf(c)).then(u => { it.querySelector('.nm').textContent = u.name; it.querySelector('.av').replaceWith(avatar(u, 52)); });
     }
   });
-  unsubs.push(u);
+  if (!arr.length) box.append(h('div', 'hint', t('noChats')));
+}
+function chatItem(u, name, prev, time, click) {
+  const it = h('div', 'ci'); it.append(avatar(u, 52));
+  const mid = h('div', 'mid'), n = h('div', 'nm'), l = h('div', 'ls'); n.textContent = name; l.textContent = prev || ' '; mid.append(n, l); it.append(mid);
+  if (time) { const tm = h('div', 'tm'); tm.textContent = dayLabel(time); it.append(tm); }
+  it.onclick = click; return it;
 }
 
-/* ===== Новый чат / группа ===== */
-$("newChatBtn").onclick = () => {
-  openSheet(`<h3>${t("newChat")}</h3>
-    <button class="btn g" style="width:100%;margin-bottom:8px" id="ngGroup">👥 ${t("newGroup")}</button>
-    <button class="btn g" style="width:100%" id="ngSearch">🔍 ${t("search")}</button>`);
-  $("ngGroup").onclick = () => { closeSheet(); newGroupSheet(); };
-  $("ngSearch").onclick = () => { closeSheet(); setTab("search"); };
-};
-
-function newGroupSheet() {
-  openSheet(`<h3>${t("newGroup")}</h3>
-    <input class="in" id="gName" placeholder="${t("groupName")}" maxlength="40">
-    <div class="mut sm" style="margin:8px 4px">${t("addMember")} (${lang==="ru"?"ники через запятую":"usernames, comma separated"})</div>
-    <input class="in" id="gMem" placeholder="ivan, maria" autocapitalize="off">
-    <div class="r2"><button class="btn g" onclick="document.getElementById('sheet').classList.remove('on')">${t("cancel")}</button><button class="btn" id="gCreate">${t("create")}</button></div>`);
-  $("gCreate").onclick = async () => {
-    const name = $("gName").value.trim();
-    if (!name) return;
-    const uns = $("gMem").value.split(",").map(s=>s.trim().toLowerCase()).filter(Boolean);
-    const members = [me.uid]; const admins = [me.uid];
-    for (const u of uns) {
-      const s = await getDoc(doc(db,"usernames",u));
-      if (s.exists() && !members.includes(s.data().uid)) members.push(s.data().uid);
-    }
-    const ref = await addDoc(collection(db,"chats"), {group:true, title:name, members, admins, color:Math.floor(Math.random()*COLORS.length), wall:0, createdAt:serverTimestamp()});
-    closeSheet(); toast(lang==="ru"?"Группа создана":"Group created");
-  };
+/* ---------------- КОМНАТА ---------------- */
+function applyWall() { $('room-bg').style.background = WALLS[(room && room.chat && room.chat.wall) || 0]; }
+function refreshHeader() {
+  if (!room) return; const c = room.chat || {}; let av, title, st = '', on = 0;
+  if (room.type === 'bot') { av = avatar(CLAUD, 40); title = 'ClaudBOT'; st = t('bot'); }
+  else if (room.type === 'group') { title = c.title; av = avatar({ name: title, color: colorOf(title) }, 40); st = (c.members || []).length + ' ' + t('members'); }
+  else { const u = room.od || userCache[otherOf(c)] || { name: '…' }; title = u.name; av = avatar(u, 40); const s = statusOf(room.od); st = s.txt; on = s.on; }
+  $('r-av').replaceChildren(av); $('r-t').textContent = title; const s = $('r-s'); s.textContent = st; s.classList.toggle('on', !!on);
 }
-
-/* ===== Поиск ===== */
-$("results").innerHTML = `<div class="empty"><svg><use href="#i-search"/></svg><div>${t("typeHint")}</div></div>`;
-let st;
-$("q").oninput = () => { clearTimeout(st); st = setTimeout(doSearch, 300); };
-async function doSearch() {
-  const qv = $("q").value.trim().toLowerCase().replace(/^@/,"");
-  const box = $("results");
-  if (qv.length < 2) { box.innerHTML = `<div class="empty"><svg><use href="#i-search"/></svg><div>${t("typeHint")}</div></div>`; return; }
-  try {
-    const snap = await getDocs(query(collection(db,"users"), where("username",">=",qv), where("username","<=",qv+"\uf8ff"), limit(15)));
-    const us = snap.docs.map(d=>({uid:d.id,...d.data()})).filter(u=>u.uid!==me.uid);
-    us.forEach(u => cache[u.uid]=u);
-    if (!us.length) { box.innerHTML = `<div class="empty"><div>${t("none")}</div></div>`; return; }
-    box.innerHTML = "";
-    us.forEach(u => {
-      const el = document.createElement("div"); el.className = "row glass";
-      el.innerHTML = `${av(u)}<div class="info"><b>${esc(u.name)}</b><div class="last">@${esc(u.username)} · ${esc(statusText(u))}</div></div>`;
-      el.onclick = () => showProfileSheet(u);
-      box.appendChild(el);
+window.openRoom = async id => {
+  const c = chats[id];
+  if (id !== 'claudbot' && !c) return;
+  room = { id, type: id === 'claudbot' ? 'bot' : (c.group ? 'group' : 'dm'), chat: c, stick: true, od: null };
+  history.pushState({ room: 1 }, '');
+  $('bar').classList.toggle('bot', room.type === 'bot'); $('bar').classList.remove('rec', 'txt'); $('msg').value = '';
+  const box = $('msgs'); box.innerHTML = '';
+  box.onscroll = () => { room.stick = box.scrollHeight - box.scrollTop - box.clientHeight < 140; };
+  applyWall(); refreshHeader(); show('room');
+  statusUnsub && statusUnsub(); clearInterval(statusTimer); msgsUnsub && msgsUnsub();
+  if (room.type === 'bot') { botLog.forEach((m, i) => box.append(msgEl(m, 'b' + i))); stick(true); return; }
+  if (room.type === 'dm') {
+    const o = otherOf(c);
+    statusUnsub = onSnapshot(doc(db, 'users', o), s => { if (s.exists() && room) { room.od = s.data({ serverTimestamps: 'estimate' }); userCache[o] = room.od; refreshHeader(); } });
+    statusTimer = setInterval(refreshHeader, 30000);
+  }
+  let first = true;
+  const myRoom = room;
+  msgsUnsub = onSnapshot(query(collection(db, `chats/${id}/messages`), orderBy('createdAt', 'desc'), limit(60)), snap => {
+    if (room !== myRoom) return;
+    const ch = snap.docChanges(), adds = ch.filter(x => x.type === 'added');
+    if (first) { adds.reverse(); first = false; }
+    adds.forEach(x => box.append(msgEl(x.doc.data({ serverTimestamps: 'estimate' }), x.doc.id)));
+    ch.filter(x => x.type === 'modified').forEach(x => {
+      const el = box.querySelector(`[data-id="${x.doc.id}"] .tm`);
+      if (el) el.textContent = hm(toDate(x.doc.data({ serverTimestamps: 'estimate' }).createdAt));
     });
-  } catch(e) { toast(e.code); }
+    stick();
+  }, e => toast(e.message));
+};
+function leaveRoom() {
+  if (!room) return;
+  stopRec(false); if (curAudio) curAudio.pause();
+  msgsUnsub && msgsUnsub(); statusUnsub && statusUnsub(); clearInterval(statusTimer);
+  room = null; closeSheet(); show('chats'); renderChats();
 }
-
-/* ===== Профиль ===== */
-function renderProfile() {
-  const p = $("prof");
-  p.innerHTML = "";
-  const card = document.createElement("div"); card.className = "pcard glass";
-  const banner = document.createElement("div"); banner.className = "pbanner";
-  banner.style.background = me.banner || `linear-gradient(135deg, ${COLORS[me.color||0]}, ${COLORS[(me.color+2)%COLORS.length||2]})`;
-  card.appendChild(banner);
-  const avc = avEl(me, 80); avc.style.border = "3px solid var(--bg)"; avc.style.marginTop = "-40px"; avc.style.marginLeft = "4px";
-  card.appendChild(avc);
-  const nm = document.createElement("div"); nm.className = "pname"; nm.textContent = me.name; card.appendChild(nm);
-  const un = document.createElement("div"); un.className = "pun"; un.textContent = "@" + me.username; card.appendChild(un);
-  if (me.bio) { const b = document.createElement("div"); b.className = "pbio"; b.textContent = me.bio; card.appendChild(b); }
-  p.appendChild(card);
-
-  const r = document.createElement("div"); r.className = "r2";
-  r.innerHTML = `<button class="btn" id="eProf"><svg style="width:16px;height:16px;fill:none;stroke:#fff;stroke-width:2;vertical-align:-3px"><use href="#i-edit"/></svg> ${t("edit")}</button>
-                 <button class="btn r" id="eOut">${t("out")}</button>`;
-  p.appendChild(r);
-  $("eProf").onclick = editProfileSheet;
-  $("eOut").onclick = () => signOut(auth);
+window.addEventListener('popstate', leaveRoom);
+function stick(force) { const b = $('msgs'); if (force || (room && room.stick)) requestAnimationFrame(() => b.scrollTop = b.scrollHeight); }
+function msgEl(m, id) {
+  const isMe = m.uid === me.uid, el = h('div', 'm ' + (isMe ? 'out' : 'in')); el.dataset.id = id;
+  if (!isMe && room.type === 'group') { const w = h('div', 'who'); el.append(w); getUser(m.uid).then(u => w.textContent = u.name); }
+  if (m.img) { const im = new Image(); im.src = m.img; im.onclick = () => { $('viewer-img').src = m.img; $('viewer').classList.add('on'); }; im.onload = () => stick(); el.append(im); }
+  if (m.audio) el.append(voiceEl(m.audio, m.dur || 0));
+  if (m.text) { const x = h('div'); x.textContent = m.text; el.append(x); }
+  const tm = h('div', 'tm'); tm.textContent = hm(toDate(m.createdAt || m.ts)); el.append(tm);
+  return el;
 }
+$('viewer').onclick = () => $('viewer').classList.remove('on');
 
-function editProfileSheet() {
-  let ed = {name: me.name, bio: me.bio||"", color: me.color||0, avatar: me.avatar||"", banner: me.banner||"", username: me.username};
-  const render = () => {
-    const prev = `<div class="pcard" style="background:rgba(255,255,255,.04);border:1px solid var(--gb);margin-bottom:12px">
-      <div class="pbanner" style="background:${ed.banner||`linear-gradient(135deg,${COLORS[ed.color]},${COLORS[(ed.color+2)%COLORS.length]})`}"></div>
-      <div class="av" style="width:72px;height:72px;font-size:28px;margin-top:-36px;margin-left:4px;border:3px solid var(--bg);${ed.avatar?`background-image:url('${ed.avatar}')`:`background:${COLORS[ed.color]}`}">${ed.avatar?"":esc(ed.name[0].toUpperCase())}</div>
-      <div class="pname">${esc(ed.name)}</div><div class="pun">@${esc(ed.username)}</div></div>`;
-    openSheet(`<h3>${t("edit")}</h3>${prev}
-      <div class="r2"><button class="btn g" id="pAv">📷 ${lang==="ru"?"Аватар":"Avatar"}</button><button class="btn g" id="pBn">🖼 ${lang==="ru"?"Баннер":"Banner"}</button></div>
-      <div class="mut sm">${t("pickColor")}</div>
-      <div class="gpick" id="gp">${COLORS.map((c,i)=>`<i data-i="${i}" class="${i===ed.color?'sel':''}" style="background:${c}"></i>`).join("")}</div>
-      <input class="in" id="eN" value="${esc(ed.name)}" maxlength="30">
-      <input class="in" id="eU" value="${esc(ed.username)}" maxlength="20" autocapitalize="off" placeholder="${t("changeUn")}">
-      <textarea class="in" id="eB" maxlength="150" placeholder="${lang==="ru"?"О себе":"Bio"}">${esc(ed.bio)}</textarea>
-      <div class="r2"><button class="btn g" id="eC">${t("cancel")}</button><button class="btn" id="eS">${t("save")}</button></div>
-      <input type="file" id="fA" accept="image/*" hidden><input type="file" id="fB" accept="image/*" hidden>`);
-    $("gp").onclick = e => { const i = e.target.dataset.i; if (i!==undefined) { ed.color = +i; render(); } };
-    $("pAv").onclick = () => $("fA").click();
-    $("pBn").onclick = () => $("fB").click();
-    $("fA").onchange = async e => { if (e.target.files[0]) { ed.avatar = await resize(e.target.files[0], 256, 256, .8); render(); } };
-    $("fB").onchange = async e => { if (e.target.files[0]) { ed.banner = `url('${await resize(e.target.files[0], 600, 240, .7)}') center/cover`; render(); } };
-    $("eN").oninput = () => { ed.name = $("eN").value; };
-    $("eU").oninput = () => { ed.username = $("eU").value.trim().toLowerCase(); };
-    $("eB").oninput = () => { ed.bio = $("eB").value; };
-    $("eC").onclick = closeSheet;
-    $("eS").onclick = async () => {
-      const name = ed.name.trim(); const un = ed.username.trim().toLowerCase();
-      if (!name) return toast(lang==="ru"?"Имя?":"Name?");
-      if (!/^[a-z0-9_]{3,20}$/.test(un)) return toast(lang==="ru"?"Ник: 3-20, латиница":"Username: 3-20, latin");
-      try {
-        if (un !== me.username) {
-          await runTransaction(db, async tx => {
-            const taken = await tx.get(doc(db,"usernames",un));
-            if (taken.exists()) throw new Error("taken");
-            tx.set(doc(db,"usernames",un), {uid: me.uid});
-            tx.delete(doc(db,"usernames",me.username));
-            tx.update(doc(db,"users",me.uid), {username: un});
-          });
-        }
-        await updateDoc(doc(db,"users",me.uid), {name:name.slice(0,30), bio:ed.bio.slice(0,150), color:ed.color, avatar:ed.avatar, banner:ed.banner});
-        Object.assign(me, {name, bio:ed.bio, color:ed.color, avatar:ed.avatar, banner:ed.banner, username:un});
-        cache[me.uid] = me; renderProfile(); closeSheet(); toast("✓");
-      } catch(e) { toast(e.message==="taken"?(lang==="ru"?"Ник занят":"Taken"):e.code||e.message); }
-    };
-  };
-  render();
+/* ---------------- ОТПРАВКА ---------------- */
+const barState = () => $('bar').classList.toggle('txt', !!$('msg').value.trim());
+$('msg').addEventListener('input', barState);
+$('msg').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); sendText(); } });
+async function send(p, prev) {
+  try {
+    room.stick = true;
+    await addDoc(collection(db, `chats/${room.id}/messages`), { uid: me.uid, ...p, createdAt: serverTimestamp() });
+    await updateDoc(doc(db, 'chats', room.id), { lastText: prev, lastAt: serverTimestamp(), lastUid: me.uid });
+  } catch (e) { toast(t('sendErr') + ': ' + (e.code || e.message)); }
 }
-
-function showProfileSheet(u) {
-  openSheet(`<div class="pbanner" style="background:${u.banner||`linear-gradient(135deg,${COLORS[u.color||0]},${COLORS[(u.color+2)%COLORS.length||2]})`};margin:-16px -14px 10px;border-radius:14px 14px 0 0;height:100px"></div>
-    <div style="display:flex;align-items:flex-end;gap:12px;margin-top:-50px">${av(u,70)}<div style="padding-bottom:6px"><b style="font-size:20px">${esc(u.name)}</b><div class="mut sm">@${esc(u.username)} · ${esc(statusText(u))}</div></div></div>
-    <div class="pbio" style="padding:12px 4px">${esc(u.bio||"")}</div>
-    <div class="r2"><button class="btn g" onclick="document.getElementById('sheet').classList.remove('on')">${t("close")}</button><button class="btn" id="pW">💬 ${t("write")}</button></div>`);
-  $("pW").onclick = () => { closeSheet(); openChat(u); };
-}
-
-/* ===== Resize ===== */
-function resize(file, w, h, q) {
+window.sendText = async () => {
+  const inp = $('msg'), tx = inp.value.trim(); if (!tx || !room) return;
+  inp.value = ''; barState(); inp.focus();
+  if (room.type === 'bot') return botHandle(tx);
+  await send({ text: tx }, tx);
+};
+function resizeImg(file, max, q) {
   return new Promise((res, rej) => {
-    const r = new FileReader();
-    r.onload = () => {
-      const img = new Image();
-      img.onload = () => {
-        const c = document.createElement("canvas"); c.width = w; c.height = h;
-        const s = Math.max(w/img.width, h/img.height), dw = img.width*s, dh = img.height*s;
-        c.getContext("2d").drawImage(img, (w-dw)/2, (h-dh)/2, dw, dh);
-        res(c.toDataURL("image/jpeg", q));
-      };
-      img.onerror = rej; img.src = r.result;
+    const img = new Image(), url = URL.createObjectURL(file);
+    img.onload = () => {
+      const k = Math.min(1, max / Math.max(img.width, img.height)), w = Math.round(img.width * k), hh = Math.round(img.height * k);
+      const c = document.createElement('canvas'); c.width = w; c.height = hh; c.getContext('2d').drawImage(img, 0, 0, w, hh);
+      URL.revokeObjectURL(url);
+      let out = c.toDataURL('image/jpeg', q); if (out.length > 900000) out = c.toDataURL('image/jpeg', .45);
+      res(out);
     };
-    r.onerror = rej; r.readAsDataURL(file);
+    img.onerror = rej; img.src = url;
   });
 }
+$('file').onchange = async e => {
+  const f = e.target.files[0]; e.target.value = ''; if (!f || !room) return;
+  try { await send({ img: await resizeImg(f, 800, .7) }, t('photo')); } catch { toast(t('sendErr')); }
+};
 
-/* ===== Чат ===== */
-async function openChat(u) {
-  if (!u) return;
-  curChatData = {isGroup:false, user:u};
-  curChat = u.uid === "claudbot" ? "bot_" + me.uid : [me.uid, u.uid].sort().join("_");
-  $("chName").textContent = u.name;
-  $("chSub").textContent = u.uid === "claudbot" ? "ClaudBOT" : statusText(u);
-  $("chAv").innerHTML = ""; $("chAv").appendChild(avEl(u, 38));
-  $("pChat").style.setProperty("--wall", WALLS[0]);
-  $("pChat").classList.add("wall","on");
-  document.body.classList.add("inchat");
-  $("msgs").innerHTML = ""; seen = new Set();
-  if (u.uid === "claudbot") { openBotChat(); return; }
-  try { await setDoc(doc(db,"chats",curChat), {members:[me.uid,u.uid], group:false}, {merge:true}); } catch(e) { toast(e.code); return; }
-  subMessages(curChat);
+/* ---------------- ГОЛОСОВЫЕ ---------------- */
+let rec = null, curAudio = null;
+window.startRec = async () => {
+  if (rec || !room) return;
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaRecorder) return toast(t('noMic'));
+  let stream; try { stream = await navigator.mediaDevices.getUserMedia({ audio: true }); } catch { return toast(t('noMic')); }
+  const mime = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4'].find(m => MediaRecorder.isTypeSupported(m)) || '';
+  const mr = new MediaRecorder(stream, mime ? { mimeType: mime, audioBitsPerSecond: 24000 } : { audioBitsPerSecond: 24000 });
+  const r = { mr, stream, chunks: [], t0: Date.now(), send: false, rid: room.id };
+  mr.ondataavailable = e => e.data.size && r.chunks.push(e.data);
+  mr.onstop = async () => {
+    stream.getTracks().forEach(x => x.stop());
+    if (!r.send || !room || room.id !== r.rid) return;
+    const dur = (Date.now() - r.t0) / 1000;
+    if (dur < .7) return toast(t('tooShort'));
+    const blob = new Blob(r.chunks, { type: mr.mimeType || 'audio/webm' });
+    if (blob.size > 700000) return toast(t('tooBig'));
+    const fr = new FileReader();
+    fr.onloadend = () => send({ audio: fr.result, dur: Math.round(dur) }, t('voice'));
+    fr.readAsDataURL(blob);
+  };
+  mr.start(250); rec = r; $('bar').classList.add('rec'); $('rec-t').textContent = '0:00';
+  if (navigator.vibrate) navigator.vibrate(30);
+  r.timer = setInterval(() => {
+    const s = (Date.now() - r.t0) / 1000; $('rec-t').textContent = fmtDur(s);
+    if (s >= 30) stopRec(true);
+  }, 200);
+};
+window.stopRec = send => {
+  const r = rec; if (!r) return; rec = null; r.send = send; clearInterval(r.timer);
+  $('bar').classList.remove('rec');
+  if (r.mr.state !== 'inactive') r.mr.stop();
+};
+function voiceEl(src, dur) {
+  const w = h('div', 'voice');
+  w.innerHTML = `<button class="vp"><svg class="ic fill"><use href="#i-play"/></svg></button><div class="vmid"><div class="vbar"><i></i></div><span class="vt">${fmtDur(dur)}</span></div>`;
+  const a = new Audio(src), btn = w.querySelector('.vp'), use = w.querySelector('use'), bar = w.querySelector('.vbar i'), vt = w.querySelector('.vt');
+  btn.onclick = () => { if (curAudio && curAudio !== a) curAudio.pause(); a.paused ? a.play() : a.pause(); };
+  a.onplay = () => { curAudio = a; use.setAttribute('href', '#i-pause'); };
+  a.onpause = () => use.setAttribute('href', '#i-play');
+  a.onended = () => { bar.style.width = '0'; vt.textContent = fmtDur(dur); };
+  a.ontimeupdate = () => { const d = dur || a.duration || 1; bar.style.width = Math.min(100, a.currentTime / d * 100) + '%'; vt.textContent = fmtDur(a.currentTime); };
+  return w;
 }
 
-async function openGroup(c) {
-  curChatData = {isGroup:true, chat:c};
-  curChat = c.id;
-  $("chName").textContent = c.title;
-  $("chSub").textContent = `${c.members.length} ${t("members").toLowerCase()}`;
-  $("chAv").innerHTML = `<div class="av" style="width:38px;height:38px;font-size:15px;background:${COLORS[c.color||2]}">${esc(c.title[0].toUpperCase())}</div>`;
-  $("pChat").style.setProperty("--wall", WALLS[c.wall||0]);
-  $("pChat").classList.add("wall","on");
-  document.body.classList.add("inchat");
-  $("msgs").innerHTML = ""; seen = new Set();
-  subMessages(c.id);
+/* ---------------- ШИТЫ: поиск, группы, инфо ---------------- */
+function sheet(node) { const b = $('sheet-body'); b.replaceChildren(node); $('sheet').classList.add('on'); }
+function closeSheet() { $('sheet').classList.remove('on'); }
+$('sheet').addEventListener('click', e => { if (e.target.id === 'sheet') closeSheet(); });
+async function findUsers(term) {
+  term = term.trim().toLowerCase().replace(/^@/, ''); if (!term) return [];
+  const s = await getDocs(query(collection(db, 'users'), where('username', '>=', term), where('username', '<=', term + '\uf8ff'), limit(10)));
+  return s.docs.filter(d => d.id !== me.uid).map(d => ({ id: d.id, ...d.data() }));
 }
-
-function subMessages(id) {
-  if (unsubs[1]) unsubs[1]();
-  unsubs[1] = onSnapshot(query(collection(db,"chats",id,"messages"), orderBy("createdAt","desc"), limit(100)), async snap => {
-    const box = $("msgs"); box.innerHTML = "";
-    if (snap.empty) { box.innerHTML = `<div class="empty" style="margin:auto">${t("first")}</div>`; return; }
-    const msgs = snap.docs.slice().reverse();
-    for (const d of msgs) {
-      const m = d.data({serverTimestamps:"estimate"});
-      const mine = m.uid === me.uid;
-      const el = document.createElement("div");
-      el.className = "m " + (mine?"me":"ot");
-      if (curChatData.isGroup && !mine) {
-        const u = await getUser(m.uid);
-        const a = document.createElement("div"); a.className = "author"; a.textContent = u.name;
-        el.appendChild(a);
+function searchBox(w, onPick) {
+  const inp = h('input', 'fld'); inp.placeholder = t('searchPh'); inp.autocapitalize = 'off'; inp.spellcheck = false;
+  const res = h('div'); let tm;
+  inp.oninput = () => { clearTimeout(tm); tm = setTimeout(async () => {
+    try {
+      const us = await findUsers(inp.value); res.innerHTML = '';
+      if (!us.length && inp.value.trim()) res.append(h('div', 'hint', t('nothing')));
+      us.forEach(u => { userCache[u.id] = u; const r = userRow(u); r.onclick = () => onPick(u); res.append(r); });
+    } catch (e) { toast(e.message); }
+  }, 300); };
+  w.append(inp, res); return inp;
+}
+window.openSearch = () => {
+  const w = h('div', '', `<h3>${t('search')}</h3>`);
+  searchBox(w, async u => {
+    const id = [me.uid, u.id].sort().join('_');
+    try { await setDoc(doc(db, 'chats', id), { members: [me.uid, u.id], group: false }, { merge: true }); } catch (e) { return toast(e.message); }
+    chats[id] = chats[id] || { members: [me.uid, u.id], group: false };
+    closeSheet(); openRoom(id);
+  });
+  sheet(w); setTimeout(() => w.querySelector('input').focus(), 250);
+};
+window.openNewGroup = () => {
+  const w = h('div', '', `<h3>${t('newGroup')}</h3>`), inp = h('input', 'fld'); inp.placeholder = t('groupName'); inp.maxLength = 40;
+  const ok = h('button', 'btn', t('create')), no = h('button', 'btn ghost', t('cancel'));
+  ok.onclick = async () => {
+    const name = inp.value.trim(); if (!name) return;
+    const data = { members: [me.uid], group: true, title: name, admins: [me.uid], wall: 0, lastText: '', lastUid: '' };
+    try { const r = await addDoc(collection(db, 'chats'), { ...data, lastAt: serverTimestamp() }); chats[r.id] = data; closeSheet(); openRoom(r.id); } catch (e) { toast(e.message); }
+  };
+  no.onclick = closeSheet; w.append(inp, ok, no); sheet(w); setTimeout(() => inp.focus(), 250);
+};
+window.openInfo = async () => {
+  if (!room) return;
+  const c = room.chat || {}, isG = room.type === 'group', adm = !isG || (c.admins || []).includes(me.uid), w = h('div');
+  if (room.type === 'bot') return;
+  w.append(h('h3', '', t('wallpaper')));
+  const walls = h('div', 'walls');
+  WALLS.forEach((bg, i) => {
+    const d = h('i'); d.style.background = bg; if ((c.wall || 0) === i) d.classList.add('on');
+    d.onclick = async () => {
+      if (!adm) return toast(t('onlyAdmin'));
+      try { await updateDoc(doc(db, 'chats', room.id), { wall: i }); c.wall = i; applyWall(); walls.querySelectorAll('i').forEach(x => x.classList.remove('on')); d.classList.add('on'); } catch (e) { toast(e.message); }
+    };
+    walls.append(d);
+  });
+  w.append(walls);
+  if (isG) {
+    w.append(h('h3', '', `${t('membersT')} (${c.members.length})`));
+    const list = h('div'); w.append(list);
+    for (const uid of c.members) {
+      const u = await getUser(uid); let btn = null;
+      const isA = (c.admins || []).includes(uid);
+      if (isA) btn = h('span', 'badge', t('admin'));
+      else if (adm) {
+        btn = h('button', 'badge', t('makeAdmin'));
+        btn.onclick = async e => { e.stopPropagation(); try { await updateDoc(doc(db, 'chats', room.id), { admins: arrayUnion(uid) }); c.admins = [...(c.admins || []), uid]; openInfo(); } catch (x) { toast(x.message); } };
       }
-      const b = document.createElement("div"); b.className = "b";
-      if (m.img) { const im = document.createElement("img"); im.src = m.img; im.onclick = () => { $("imgSrc").src = m.img; $("img").classList.add("on"); }; b.appendChild(im); if (m.text) { const tx = document.createElement("div"); tx.textContent = m.text; tx.style.marginTop="6px"; b.appendChild(tx); } }
-      else if (m.audio) { const a = document.createElement("audio"); a.controls = true; a.src = m.audio; b.appendChild(a); }
-      else b.textContent = m.text;
-      const tm = document.createElement("small"); tm.textContent = m.createdAt ? fmt(m.createdAt.toMillis()) : "";
-      el.append(b, tm);
-      box.appendChild(el);
+      list.append(userRow(u, btn));
     }
-    box.scrollTop = box.scrollHeight;
-  }, e => toast(e.code));
+    w.append(h('h3', '', t('addMember')).constructor === HTMLElement ? '' : '');
+    const ah = h('h3', '', t('addMember')); ah.style.marginTop = '16px'; w.append(ah);
+    searchBox(w, async u => {
+      if (c.members.includes(u.id)) return;
+      try { await updateDoc(doc(db, 'chats', room.id), { members: arrayUnion(u.id) }); c.members = [...c.members, u.id]; toast(t('added')); openInfo(); } catch (x) { toast(x.message); }
+    });
+    const lv = h('button', 'btn ghost', t('leave')); lv.style.cssText = 'margin-top:16px;color:#ff8a80';
+    lv.onclick = async () => {
+      try {
+        const rest = c.members.filter(x => x !== me.uid), upd = { members: arrayRemove(me.uid), admins: arrayRemove(me.uid) };
+        await updateDoc(doc(db, 'chats', room.id), upd);
+        if (rest.length && !(c.admins || []).some(a => a !== me.uid)) await updateDoc(doc(db, 'chats', room.id), { admins: [rest[0]] }).catch(() => {});
+        delete chats[room.id]; history.back();
+      } catch (x) { toast(x.message); }
+    };
+    w.append(lv);
+  }
+  sheet(w);
+};
+
+/* ---------------- ПРОФИЛЬ ---------------- */
+function fillProfile() {
+  if (!meData) return;
+  $('p-ban').style.background = `linear-gradient(135deg,${tmpColor},#1b1b26)`;
+  $('p-av').replaceChildren(avatar({ ...meData, color: tmpColor }, 88));
+  $('p-nm').textContent = meData.name || meData.username; $('p-un').textContent = '@' + meData.username;
+  $('p-name').value = meData.name || ''; $('p-bio').value = meData.bio || ''; $('p-user').value = meData.username;
+  const sw = $('p-sw'); sw.innerHTML = '';
+  COLORS.forEach(c => { const i = h('i', c === tmpColor ? 'on' : ''); i.style.background = c; i.onclick = () => { tmpColor = c; fillProfile(); }; sw.append(i); });
 }
-
-$("back").onclick = () => {
-  if (unsubs[1]) { unsubs[1](); unsubs[1] = null; }
-  curChat = null; curChatData = null;
-  document.body.classList.remove("inchat");
-  $("pChat").classList.remove("on","wall");
-};
-
-$("chMenu").onclick = () => {
-  if (!curChatData) return;
-  if (curChatData.isGroup) openGroupMenu();
-  else if (curChatData.user.uid !== "claudbot") showProfileSheet(curChatData.user);
-};
-
-function openGroupMenu() {
-  const c = curChatData.chat; const isAdmin = c.admins?.includes(me.uid);
-  openSheet(`<h3>${esc(c.title)}</h3>
-    <div class="mut sm">${c.members.length} ${t("members")}</div>
-    <div id="mList" style="margin:10px 0"></div>
-    ${isAdmin?`<button class="btn g" id="wallBtn" style="width:100%;margin-bottom:8px">🖼 ${t("wall")}</button>
-    <button class="btn g" id="addBtn" style="width:100%;margin-bottom:8px">➕ ${t("addMember")}</button>`:""}
-    <button class="btn g" style="width:100%" onclick="document.getElementById('sheet').classList.remove('on')">${t("close")}</button>`);
-  const ml = $("mList");
-  c.members.forEach(async uid => {
-    const u = await getUser(uid);
-    const el = document.createElement("div"); el.className="row";
-    el.innerHTML = `${av(u,36)}<div class="info"><b style="font-size:14px">${esc(u.name)}</b><div class="last">@${esc(u.username)}${c.admins?.includes(uid)?` · ${t("admin")}`:""}</div></div>`;
-    if (isAdmin && uid !== me.uid) {
-      const b = document.createElement("button"); b.className = "pill"; b.style.marginLeft="auto";
-      b.textContent = c.admins?.includes(uid) ? "−" : "+" + t("admin");
-      b.onclick = async e => { e.stopPropagation(); await updateDoc(doc(db,"chats",c.id), {admins: c.admins?.includes(uid) ? arrayRemove(uid) : arrayUnion(uid)}); closeSheet(); toast("✓"); };
-      el.appendChild(b);
+window.saveProfile = async () => {
+  const name = $('p-name').value.trim().slice(0, 32) || meData.username, bio = $('p-bio').value.trim().slice(0, 120);
+  const un = $('p-user').value.trim().toLowerCase().replace(/^@/, '');
+  try {
+    if (un !== meData.username) {
+      if (!UNAME.test(un)) return toast(t('badUser'));
+      const ex = await getDoc(doc(db, 'usernames', un).withConverter ? doc(db, 'usernames', un) : doc(db, 'usernames', un));
+      if (ex.exists() && ex.data().uid !== me.uid) return toast(t('taken'));
+      await setDoc(doc(db, 'usernames', un), { uid: me.uid, email: me.email });
+      try { await deleteDoc(doc(db, 'usernames', meData.username)); } catch {}
     }
-    ml.appendChild(el);
+    await updateDoc(doc(db, 'users', me.uid), { name, bio, username: un, color: tmpColor });
+    Object.assign(meData, { name, bio, username: un, color: tmpColor }); userCache[me.uid] = meData;
+    toast(t('saved')); fillProfile();
+  } catch (e) { toast(e.message); }
+};
+$('p-file').onchange = async e => {
+  const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  try { const url = await resizeImg(f, 256, .8); await updateDoc(doc(db, 'users', me.uid), { avatar: url }); meData.avatar = url; fillProfile(); toast(t('saved')); } catch (x) { toast(x.message); }
+};
+
+/* ---------------- БОТЫ ---------------- */
+function listenBots() {
+  botsUnsub && botsUnsub();
+  botsUnsub = onSnapshot(query(collection(db, 'bots'), where('owner', '==', me.uid)), s => { myBots = s.docs.map(d => ({ id: d.id, ...d.data() })); renderBots(); }, () => {});
+}
+function renderBots() {
+  const box = $('bots-list'); if (!box || !me) return; box.innerHTML = '';
+  box.append(chatItem({ name: 'ClaudBOT', bot: true }, 'ClaudBOT', t('botHelp').split('\n')[0], 0, () => openRoom('claudbot')));
+  const hd = h('div', 'lbl', t('myBots')); hd.style.margin = '14px 4px 8px'; box.append(hd);
+  if (!myBots.length) box.append(h('div', 'hint', t('noBots')));
+  myBots.forEach(b => {
+    const it = chatItem({ name: b.name, bot: true }, b.name, 'ID: ' + b.id, 0, async () => { try { await navigator.clipboard.writeText(b.token); toast(t('copied')); } catch { toast(b.token); } });
+    box.append(it);
   });
-  if (isAdmin) {
-    $("wallBtn").onclick = () => {
-      openSheet(`<h3>${t("wall")}</h3><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">${WALLS.map((w,i)=>`<div data-w="${i}" style="height:80px;border-radius:12px;background:${w};cursor:pointer"></div>`).join("")}</div>`);
-      $("sheetC").onclick = async e => { const i = e.target.dataset.w; if (i!==undefined) { await updateDoc(doc(db,"chats",c.id), {wall:+i}); $("pChat").style.setProperty("--wall", WALLS[+i]); closeSheet(); } };
-    };
-    $("addBtn").onclick = () => {
-      openSheet(`<h3>${t("addMember")}</h3><input class="in" id="aU" placeholder="username" autocapitalize="off"><div class="r2"><button class="btn g" onclick="document.getElementById('sheet').classList.remove('on')">${t("cancel")}</button><button class="btn" id="aA">${lang==="ru"?"Добавить":"Add"}</button></div>`);
-      $("aA").onclick = async () => {
-        const un = $("aU").value.trim().toLowerCase();
-        const s = await getDoc(doc(db,"usernames",un));
-        if (!s.exists()) return toast(t("none"));
-        await updateDoc(doc(db,"chats",c.id), {members: arrayUnion(s.data().uid)});
-        closeSheet(); toast("✓");
-      };
-    };
+  const nb = h('button', 'btn', t('createBot')); nb.style.marginTop = '12px'; nb.onclick = newBot; box.append(nb);
+}
+window.newBot = () => { openRoom('claudbot').then(() => botHandle('/newbot')); };
+let botLog = [], botFlow = null;
+const botKey = () => 'cm_bot_' + me.uid;
+function loadBotLog() {
+  try { botLog = JSON.parse(localStorage.getItem(botKey()) || '[]'); } catch { botLog = []; }
+  if (!botLog.length) botLog.push({ uid: 'claudbot', text: t('botHelp'), ts: Date.now() });
+}
+function pushBot(m) {
+  m.ts = Date.now(); botLog.push(m); localStorage.setItem(botKey(), JSON.stringify(botLog.slice(-100)));
+  if (room && room.type === 'bot') { $('msgs').append(msgEl(m, 'b' + botLog.length)); stick(true); }
+}
+const botSay = text => pushBot({ uid: 'claudbot', text });
+async function botHandle(text) {
+  pushBot({ uid: me.uid, text });
+  const [cmd, ...args] = text.split(/\s+/);
+  if (botFlow === 'name' && !text.startsWith('/')) {
+    botFlow = null; const name = text.slice(0, 32), id = rnd(6, 'abcdefghijklmnopqrstuvwxyz0123456789'), tk = id + ':' + rnd(28, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789');
+    try { await setDoc(doc(db, 'bots', id), { owner: me.uid, token: tk, name, createdAt: serverTimestamp() }); botSay(t('botMade', { n: name, id, tk })); }
+    catch (e) { botSay(e.message); }
+    return;
   }
+  botFlow = null;
+  if (cmd === '/newbot') { botFlow = 'name'; botSay(t('botAsk')); }
+  else if (cmd === '/mybots') botSay(myBots.length ? t('botList') + '\n' + myBots.map(b => `• ${b.name} — ${b.id}`).join('\n') : t('botNone'));
+  else if (cmd === '/token') { const b = myBots.find(x => x.id === (args[0] || '').trim()); botSay(b ? b.token : t('botNo')); }
+  else if (cmd === '/start' || cmd === '/help') botSay(t('botHelp'));
+  else botSay(t('botUnk'));
 }
 
-/* ===== Отправка ===== */
-async function send(extra = {}) {
-  const txt = $("mi").value.trim();
-  if (!txt && !extra.img && !extra.audio) return;
-  $("mi").value = "";
-  if (curChatData.user?.uid === "claudbot") { botHandle(txt); return; }
-  try {
-    const data = {uid: me.uid, createdAt: serverTimestamp()};
-    if (txt) data.text = txt.slice(0, 2000);
-    if (extra.img) data.img = extra.img;
-    if (extra.audio) data.audio = extra.audio;
-    await addDoc(collection(db,"chats",curChat,"messages"), data);
-    const last = extra.img?"📷 Фото":extra.audio?"🎤 Голосовое":txt.slice(0,60);
-    const upd = {lastText:last, lastAt:serverTimestamp(), lastUid:me.uid};
-    if (!curChatData.isGroup) upd.members = [me.uid, curChatData.user.uid];
-    await setDoc(doc(db,"chats",curChat), upd, {merge:true});
-  } catch(e) { toast(e.code); }
-}
-$("send").onclick = () => send();
-$("mi").addEventListener("keydown", e => { if (e.key === "Enter") send(); });
-
-/* Фото */
-$("attach").onclick = () => $("fPick").click();
-$("fPick").onchange = async e => {
-  const f = e.target.files[0]; if (!f) return;
-  try { const img = await resize(f, 800, 800, .7); send({img}); } catch { toast("image error"); }
-  e.target.value = "";
-};
-
-/* Голос */
-let rec = null, chunks = [];
-$("micBtn").onclick = async () => {
-  if (rec && rec.state === "recording") { rec.stop(); return; }
-  try {
-    const str = await navigator.mediaDevices.getUserMedia({audio:true});
-    rec = new MediaRecorder(str, {mimeType: MediaRecorder.isTypeSupported("audio/webm;codecs=opus")?"audio/webm;codecs=opus":"audio/webm"});
-    chunks = [];
-    rec.ondataavailable = e => chunks.push(e.data);
-    rec.onstop = async () => {
-      str.getTracks().forEach(t => t.stop());
-      $("micBtn").classList.remove("rec");
-      const blob = new Blob(chunks, {type:"audio/webm"});
-      if (blob.size > 700000) { toast(lang==="ru"?"Слишком длинно":"Too long"); return; }
-      const r = new FileReader();
-      r.onload = () => send({audio: r.result});
-      r.readAsDataURL(blob);
-    };
-    rec.start();
-    $("micBtn").classList.add("rec");
-    setTimeout(() => { if (rec.state === "recording") rec.stop(); }, 30000);
-  } catch { toast(lang==="ru"?"Нет доступа к микрофону":"No mic access"); }
-};
-
-/* ===== ClaudBOT ===== */
-function openBotChat() {
-  const box = $("msgs"); box.innerHTML = "";
-  const greet = document.createElement("div"); greet.className = "m ot";
-  const b = document.createElement("div"); b.className = "b"; b.textContent = t("botHi");
-  greet.appendChild(b); box.appendChild(greet);
-}
-async function botHandle(cmd) {
-  const box = $("msgs");
-  const mine = document.createElement("div"); mine.className="m me";
-  const mb = document.createElement("div"); mb.className="b"; mb.textContent = cmd; mine.appendChild(mb); box.appendChild(mine);
-  const reply = document.createElement("div"); reply.className="m ot";
-  const rb = document.createElement("div"); rb.className="b"; reply.appendChild(rb); box.appendChild(reply);
-  box.scrollTop = box.scrollHeight;
-
-  if (cmd === "/newbot") {
-    const id = "bot_" + Math.random().toString(36).slice(2,10);
-    const token = id + ":" + Math.random().toString(36).slice(2,20) + Math.random().toString(36).slice(2,20);
-    await setDoc(doc(db,"bots",id), {owner:me.uid, token, name:"Bot "+id.slice(4,8), createdAt:serverTimestamp()});
-    rb.textContent = `${t("botCreated")}\n\n${token}\n\n${lang==="ru"?"Используй /mybots для списка":"Use /mybots to list"}`;
-  } else if (cmd === "/mybots") {
-    const snap = await getDocs(query(collection(db,"bots"), where("owner","==",me.uid)));
-    if (snap.empty) rb.textContent = t("noBots");
-    else rb.textContent = snap.docs.map(d => `• ${d.data().name} (${d.id})`).join("\n");
-  } else if (cmd.startsWith("/token ")) {
-    const id = cmd.slice(7).trim();
-    const s = await getDoc(doc(db,"bots",id));
-    if (!s.exists() || s.data().owner !== me.uid) rb.textContent = lang==="ru"?"Не найден":"Not found";
-    else rb.textContent = s.data().token;
-  } else {
-    rb.textContent = t("botHi");
-  }
-  box.scrollTop = box.scrollHeight;
-}
-
-/* ===== Sheet ===== */
-function openSheet(html) { $("sheetC").innerHTML = html; $("sheet").classList.add("on"); }
-function closeSheet() { $("sheet").classList.remove("on"); }
-$("sheet").onclick = e => { if (e.target === $("sheet")) closeSheet(); };
-window.closeSheet = closeSheet;
+/* ---------------- СТАРТ ---------------- */
+applyLang();
 </script>
 </body>
 </html>
