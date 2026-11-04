@@ -4,57 +4,58 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
 <title>ClaudeMAX</title>
-<meta name="theme-color" content="#0d0d12">
+<meta name="theme-color" content="#101015">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-html,body{height:100%;overflow:hidden;background:#0d0d12;color:#f2f2f5}
+html,body{height:100%;overflow:hidden;background:#101015;color:#f2f2f5}
 body{position:fixed;inset:0;-webkit-user-select:none;user-select:none}
-input{-webkit-user-select:text;user-select:text;font-size:16px;color:#fff}
-button{border:0;background:none;color:inherit;cursor:pointer}
-:root{--acc:#d97757;--hh:calc(58px + env(safe-area-inset-top));--nh:calc(60px + env(safe-area-inset-bottom));--mut:#a6a6b3}
+input,textarea,select{-webkit-user-select:text;user-select:text;font-size:16px;color:#fff}
+button{border:0;background:none;color:inherit;cursor:pointer;font-size:inherit}
+:root{--acc:#d97757;--hh:calc(64px + env(safe-area-inset-top));--nh:calc(64px + env(safe-area-inset-bottom));--mut:#9c9cab}
 
-/* ---------- BACKGROUND (яркие фигуры под стеклом, чтобы блюр был виден) ---------- */
-.bg{position:fixed;inset:0;z-index:0;overflow:hidden;background:#0d0d12}
+/* фон */
+.bg{position:fixed;inset:0;z-index:0;overflow:hidden;background:#101015}
 .bg i{position:absolute;border-radius:50%;will-change:transform}
 .s1{width:320px;height:320px;top:-70px;left:-80px;background:radial-gradient(circle at 30% 30%,#ffa27d,#d97757 55%,#9c3f25);animation:d1 18s ease-in-out infinite alternate}
 .s2{width:360px;height:360px;bottom:-110px;right:-110px;background:radial-gradient(circle at 30% 30%,#9a9bff,#5a5ad8 60%,#2b2b8c);animation:d2 22s ease-in-out infinite alternate}
 .s3{width:210px;height:210px;top:42%;left:52%;background:radial-gradient(circle at 30% 30%,#6ff2dc,#0fb0a4 60%,#05605b);animation:d1 26s ease-in-out infinite alternate-reverse}
-.bg::after{content:"";position:absolute;inset:0;background:rgba(10,10,15,.28)}
+.bg::after{content:"";position:absolute;inset:0;background:rgba(12,12,17,.42)}
 @keyframes d1{to{transform:translate(50px,70px)}}
 @keyframes d2{to{transform:translate(-60px,-50px)}}
 
-/* ---------- GLASS ---------- */
-.glass{background:rgba(24,24,34,.5);-webkit-backdrop-filter:blur(22px) saturate(170%);backdrop-filter:blur(22px) saturate(170%);border:1px solid rgba(255,255,255,.12)}
+.glass{background:rgba(22,22,30,.55);-webkit-backdrop-filter:blur(22px) saturate(170%);backdrop-filter:blur(22px) saturate(170%);border:1px solid rgba(255,255,255,.12)}
 .ic{width:24px;height:24px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
-.ic.fill{fill:#fff}
-.ib{width:42px;height:42px;display:grid;place-items:center;flex-shrink:0;border-radius:50%;cursor:pointer}
+.ic.fill{fill:#fff}.ic.mut{stroke:var(--mut);width:20px;height:20px}.ic.acc{stroke:var(--acc)}
+.hang{transform:rotate(135deg)}
+.ib{width:40px;height:40px;display:grid;place-items:center;flex-shrink:0;border-radius:50%;cursor:pointer}
 .ib:active{background:rgba(255,255,255,.14)}
+.hb{width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.1);display:grid;place-items:center;flex-shrink:0}
+.hb.acc{background:var(--acc)}
+.hb:active{opacity:.7}
 
-/* ---------- VIEWS ---------- */
 #app{position:fixed;inset:0;z-index:1}
 .view{position:absolute;inset:0;display:none;flex-direction:column}
-.view.on{display:flex;animation:vin .22s ease-out}
-@keyframes vin{from{transform:translateY(14px)}to{transform:none}}
-.hd{position:absolute;top:0;left:0;right:0;height:var(--hh);padding:env(safe-area-inset-top) 10px 0 14px;display:flex;align-items:center;gap:8px;z-index:5;border-width:0 0 1px 0}
-.hd h1{font-size:21px;font-weight:800;flex:1;letter-spacing:.2px}
+.view.on{display:flex;animation:vin .2s ease-out}
+@keyframes vin{from{opacity:.4;transform:translateY(10px)}to{opacity:1;transform:none}}
+.hd{position:absolute;top:0;left:0;right:0;height:var(--hh);padding:env(safe-area-inset-top) 12px 0 16px;display:flex;align-items:center;gap:8px;z-index:5;border-width:0 0 1px 0}
+.hd h1{font-size:28px;font-weight:800;flex:1}
 .nav{position:absolute;bottom:0;left:0;right:0;height:var(--nh);padding-bottom:env(safe-area-inset-bottom);display:flex;z-index:5;border-width:1px 0 0 0}
-.nav button{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;color:var(--mut)}
-.nav button.on{color:#fff}
+.nav button{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11.5px;color:var(--mut)}
+.nav button.on{color:var(--acc)}
 .nav button.on .ic{stroke:var(--acc)}
-.scroll{position:absolute;inset:0;overflow-y:auto;overscroll-behavior:contain;padding:calc(var(--hh) + 12px) 14px calc(var(--nh) + 14px)}
+.scroll{position:absolute;inset:0;overflow-y:auto;overscroll-behavior:contain;padding:calc(var(--hh) + 10px) 14px calc(var(--nh) + 16px)}
 
-/* ---------- SPLASH / WELCOME ---------- */
+/* splash */
 #splash,#welcome{position:fixed;inset:0;z-index:900;background:#0b0b10;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;transition:opacity .45s}
 #splash.off,#welcome.off{opacity:0;pointer-events:none}
-#welcome{display:none;z-index:800}
-#welcome.on{display:flex}
+#welcome{display:none;z-index:800}#welcome.on{display:flex}
 .spin{animation:spin 9s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.sp-title{font-size:30px;font-weight:800;margin-top:18px;letter-spacing:.5px}
+.sp-title{font-size:30px;font-weight:800;margin-top:18px}
 .sp-tip{height:44px;margin-top:26px;display:flex;align-items:center;text-align:center;color:var(--mut);font-size:14px;max-width:290px}
 .sp-tip span{animation:fi .4s}
 .sp-bar{width:150px;height:4px;border-radius:4px;background:rgba(255,255,255,.12);margin-top:14px;overflow:hidden}
-.sp-bar i{display:block;height:100%;background:var(--acc);border-radius:4px;animation:ld 2.2s ease-out forwards}
+.sp-bar i{display:block;height:100%;background:var(--acc);animation:ld 2.2s ease-out forwards}
 @keyframes ld{from{width:0}to{width:100%}}
 @keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .ray{stroke-dasharray:1;stroke-dashoffset:1;animation:ray .45s ease-out forwards;animation-delay:calc(var(--i)*70ms)}
@@ -62,14 +63,14 @@ button{border:0;background:none;color:inherit;cursor:pointer}
 .wl-hi{font-size:30px;font-weight:800;margin-top:22px;animation:fi .5s .9s both;text-align:center}
 .wl-sub{color:var(--mut);margin-top:6px;animation:fi .5s 1.1s both}
 
-/* ---------- LANG PILL (белая капсула) ---------- */
+/* язык */
 .lang{position:relative;display:inline-flex;background:#fff;border-radius:999px;padding:3px;cursor:pointer;flex-shrink:0}
 .lang i{position:absolute;top:3px;bottom:3px;left:3px;width:calc(50% - 3px);background:#111;border-radius:999px;transition:transform .25s}
 .lang.en i{transform:translateX(100%)}
 .lang b{position:relative;z-index:1;min-width:42px;text-align:center;padding:5px 0;font-size:12px;font-weight:800;color:#666;transition:color .25s}
 .lang b.on{color:#fff}
 
-/* ---------- AUTH ---------- */
+/* auth */
 #v-auth{align-items:center;justify-content:center;padding:20px;overflow-y:auto}
 .au-top{position:absolute;top:calc(14px + env(safe-area-inset-top));right:14px}
 .au-head{text-align:center;margin-bottom:22px}
@@ -79,52 +80,97 @@ button{border:0;background:none;color:inherit;cursor:pointer}
 .seg{display:flex;background:rgba(0,0,0,.3);border-radius:14px;padding:3px;margin-bottom:14px}
 .seg button{flex:1;padding:10px;border-radius:11px;font-weight:700;font-size:14px;color:var(--mut);transition:.2s}
 .seg button.on{background:rgba(255,255,255,.16);color:#fff}
-.fld{width:100%;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:14px 16px;outline:none;margin-bottom:10px;transition:border .2s}
+.fld{width:100%;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:13px 16px;outline:none;margin-bottom:10px;transition:border .2s;display:block}
 .fld:focus{border-color:var(--acc)}
 .err{color:#ff8a80;font-size:13px;min-height:18px;margin:2px 2px 8px}
-.btn{width:100%;background:linear-gradient(135deg,#e2825f,#d06a48);color:#fff;border-radius:14px;padding:14px;font-weight:700;font-size:15px;box-shadow:0 6px 18px rgba(217,119,87,.3)}
-.btn:active{transform:scale(.98)}
-.btn:disabled{opacity:.6}
+.btn{width:100%;background:linear-gradient(135deg,#e2825f,#d06a48);color:#fff;border-radius:14px;padding:14px;font-weight:700;font-size:15px;box-shadow:0 6px 18px rgba(217,119,87,.3);display:block;text-align:center}
+.btn:active{transform:scale(.98)}.btn:disabled{opacity:.6}
 .btn.ghost{background:rgba(255,255,255,.1);box-shadow:none;margin-top:8px}
-.btn.sm{width:auto;padding:9px 16px;font-size:13px}
+.btn.sm{width:auto;padding:9px 16px;font-size:13px;display:inline-block}
+.lbl{font-size:11px;color:var(--mut);font-weight:700;letter-spacing:.6px;margin:10px 2px 6px;text-transform:uppercase}
 
-/* ---------- CHAT LIST ---------- */
-.ci{display:flex;align-items:center;gap:12px;padding:11px 12px;margin-bottom:8px;border-radius:18px;background:rgba(28,28,40,.5);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.09);cursor:pointer}
-.ci:active{background:rgba(255,255,255,.12)}
+/* список чатов */
+.tabs{display:flex;gap:26px;padding:2px 6px 0;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:6px}
+.tabs button{padding:8px 2px 10px;font-size:17px;font-weight:600;color:var(--mut);border-bottom:3px solid transparent}
+.tabs button.on{color:var(--acc);border-color:var(--acc)}
+.ci{display:flex;align-items:center;gap:13px;padding:10px 6px;border-radius:16px;cursor:pointer}
+.ci:active{background:rgba(255,255,255,.08)}
 .ci .mid{flex:1;min-width:0}
-.ci .nm{font-weight:700;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ci .ls{color:var(--mut);font-size:13.5px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ci .tm{font-size:11px;color:var(--mut);align-self:flex-start;margin-top:4px}
+.ci .nm{font-weight:700;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ci .ls{color:var(--mut);font-size:14px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rc{display:flex;flex-direction:column;align-items:flex-end;gap:6px;align-self:flex-start;margin-top:4px}
+.tm{font-size:12px;color:var(--mut)}
+.udot{width:12px;height:12px;border-radius:50%;background:var(--acc);display:block}
 .av{border-radius:50%;display:grid;place-items:center;font-weight:800;color:#fff;background-size:cover;background-position:center;flex-shrink:0}
-.hint{text-align:center;color:var(--mut);padding:30px 20px;font-size:14px}
+.hint{text-align:center;color:var(--mut);padding:26px 20px;font-size:14px}
+.row{display:flex;align-items:center;gap:12px;padding:8px 4px;cursor:pointer;border-radius:12px}
+.row:active{background:rgba(255,255,255,.08)}
+.row .rm{flex:1;min-width:0}
+.row .rm b{display:block;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .rm small{color:var(--mut);font-size:12.5px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.scroll .row{padding:9px 6px}
+.badge{font-size:11px;font-weight:700;background:rgba(217,119,87,.25);color:#ffb596;padding:3px 8px;border-radius:10px;white-space:nowrap}
 
-/* ---------- ROOM ---------- */
+/* звонки */
+.cta{display:flex;align-items:center;gap:14px;padding:14px 6px;color:var(--acc);font-size:17px;font-weight:600;cursor:pointer}
+.cta .ic{stroke:var(--acc)}
+.cinfo{font-size:13.5px;margin-top:3px}
+.cinfo.red{color:#ff6b6b}
+.cinfo.mut{color:var(--mut)}
+
+/* приложения */
+.acts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px}
+.act{padding:16px 14px;border-radius:18px;background:linear-gradient(135deg,rgba(217,119,87,.38),rgba(124,108,240,.28));border:1px solid rgba(255,255,255,.14);text-align:left;display:flex;flex-direction:column;gap:4px}
+.act small{color:#d9d9e3;font-size:12px;line-height:1.3}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.tile{display:flex;flex-direction:column;align-items:center;gap:7px;padding:14px 6px;border-radius:18px;background:rgba(32,32,44,.6);border:1px solid rgba(255,255,255,.08);cursor:pointer;min-width:0}
+.tile:active{background:rgba(255,255,255,.12)}
+.tile .ico{font-size:30px;width:56px;height:56px;display:grid;place-items:center;border-radius:16px;background:rgba(255,255,255,.08)}
+.tile b{font-size:13px;text-align:center;width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* настройки */
+.pcard{border-radius:24px;overflow:hidden;margin-bottom:14px;background:rgba(32,32,44,.6);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.1)}
+.pban{height:100px}
+.pav{margin:-44px auto 0;width:88px;height:88px;border-radius:50%;border:3px solid #20202c}
+.pbody{padding:12px 18px 18px}
+.gc{border-radius:20px;background:rgba(32,32,44,.6);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.08);margin-bottom:14px;overflow:hidden}
+.srow{display:flex;align-items:center;gap:14px;padding:15px 16px;cursor:pointer;font-size:16px}
+.srow+.srow{border-top:1px solid rgba(255,255,255,.06)}
+.srow:active{background:rgba(255,255,255,.06)}
+.sw{display:flex;gap:10px;flex-wrap:wrap;margin:4px 0 14px}
+.sw i{width:32px;height:32px;border-radius:50%;border:3px solid transparent;cursor:pointer}
+.sw i.on{border-color:#fff}
+
+/* комната */
 #room-bg{position:absolute;inset:0}
 #msgs{position:absolute;inset:0;overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column;padding:calc(var(--hh) + 10px) 12px calc(78px + env(safe-area-inset-bottom))}
+#msgs.bt{padding-bottom:calc(128px + env(safe-area-inset-bottom))}
 .hd .rt{flex:1;min-width:0;line-height:1.2}
 .hd .rt b{font-size:16px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .hd .rt small{font-size:12px;color:var(--mut)}
 .hd .rt small.on{color:#7ee2a8}
 .m{max-width:82%;width:fit-content;padding:8px 12px 5px;border-radius:18px;font-size:15px;line-height:1.35;margin-bottom:6px;white-space:pre-wrap;word-break:break-word;-webkit-user-select:text;user-select:text;animation:pop .18s ease-out}
 @keyframes pop{from{opacity:0;transform:translateY(8px) scale(.96)}to{opacity:1;transform:none}}
-.m.in{align-self:flex-start;background:rgba(30,30,42,.6);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.1);border-bottom-left-radius:5px}
+.m.in{align-self:flex-start;background:rgba(30,30,42,.62);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.1);border-bottom-left-radius:5px}
 .m.out{align-self:flex-end;background:linear-gradient(135deg,#e2825f,#d06a48);border-bottom-right-radius:5px}
 .m .who{font-size:12px;font-weight:700;color:#ffb596;margin-bottom:2px}
-.m .tm{font-size:10.5px;opacity:.65;text-align:right;margin-top:2px}
+.m .tm{font-size:10.5px;opacity:.65;text-align:right;margin-top:2px;color:inherit}
 .m img{max-width:100%;max-height:300px;border-radius:12px;display:block;margin:2px 0;cursor:pointer}
+.m video{width:260px;max-width:100%;max-height:320px;border-radius:12px;display:block;margin:2px 0;background:#000}
+.appbtn{display:block;margin:8px 0 2px;padding:10px 14px;border-radius:12px;background:rgba(255,255,255,.14);font-weight:700;font-size:14px;width:100%}
 .voice{display:flex;align-items:center;gap:10px;min-width:210px;padding:2px 0}
 .vp{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.22);display:grid;place-items:center;flex-shrink:0}
 .vmid{flex:1}
 .vbar{height:4px;border-radius:3px;background:rgba(255,255,255,.28);overflow:hidden}
 .vbar i{display:block;height:100%;width:0;background:#fff}
 .vt{font-size:11px;opacity:.85;margin-top:5px;display:block}
-
+#chips{position:absolute;left:0;right:0;bottom:calc(76px + env(safe-area-inset-bottom));display:none;gap:8px;padding:0 12px;overflow-x:auto;z-index:4}
+.chip{padding:9px 15px;border-radius:18px;background:rgba(40,40,56,.78);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.16);font-size:14px;white-space:nowrap;flex-shrink:0}
 .bar{position:absolute;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));min-height:56px;border-radius:28px;z-index:5;padding:6px;transition:border-color .2s}
 .bar-n,.bar-r{display:flex;align-items:center;gap:6px}
 .bar-r{display:none}
 .bar.rec{border-color:rgba(255,90,90,.6)}
-.bar.rec .bar-n{display:none}
-.bar.rec .bar-r{display:flex}
+.bar.rec .bar-n{display:none}.bar.rec .bar-r{display:flex}
 .bar .inp{flex:1;min-width:0;background:rgba(255,255,255,.08);border:0;border-radius:22px;padding:11px 16px;outline:none}
 .send{width:42px;height:42px;border-radius:50%;background:var(--acc);display:grid;place-items:center;flex-shrink:0}
 .send:active{transform:scale(.92)}
@@ -143,41 +189,55 @@ button{border:0;background:none;color:inherit;cursor:pointer}
 .wave u:nth-child(3n){animation-delay:-.3s}.wave u:nth-child(3n+1){animation-delay:-.6s}.wave u:nth-child(5n){animation-delay:-.15s}
 @keyframes wv{0%,100%{transform:scaleY(.2)}50%{transform:scaleY(1)}}
 
-/* ---------- PROFILE ---------- */
-.pcard{border-radius:24px;overflow:hidden;margin-bottom:14px;background:rgba(28,28,40,.5);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.1)}
-.pban{height:110px}
-.pav{margin:-44px auto 0;width:88px;height:88px;position:relative}
-.pav .cam{position:absolute;right:-2px;bottom:-2px;width:30px;height:30px;border-radius:50%;background:var(--acc);display:grid;place-items:center;border:2px solid #1b1b26}
-.pav .cam .ic{width:16px;height:16px}
-.pbody{padding:14px 18px 18px}
-.lbl{font-size:11px;color:var(--mut);font-weight:700;letter-spacing:.6px;margin:6px 2px;text-transform:uppercase}
-.sw{display:flex;gap:10px;flex-wrap:wrap;margin:4px 0 14px}
-.sw i{width:32px;height:32px;border-radius:50%;border:3px solid transparent;cursor:pointer}
-.sw i.on{border-color:#fff}
-.rowb{display:flex;align-items:center;justify-content:space-between;margin:10px 0 14px}
-
-/* ---------- SHEET / OVERLAYS ---------- */
+/* sheet */
 .ov{position:fixed;inset:0;z-index:700;display:none;background:rgba(0,0,0,.5);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 .ov.on{display:flex}
 #sheet{align-items:flex-end}
-.sh-box{width:100%;max-height:86vh;overflow-y:auto;border-radius:26px 26px 0 0;padding:10px 18px calc(20px + env(safe-area-inset-bottom));animation:up .25s ease-out;background:rgba(26,26,36,.7);-webkit-backdrop-filter:blur(26px);backdrop-filter:blur(26px);border:1px solid rgba(255,255,255,.12)}
+.sh-box{width:100%;max-height:88vh;overflow-y:auto;border-radius:26px 26px 0 0;padding:10px 18px calc(20px + env(safe-area-inset-bottom));animation:up .25s ease-out;background:rgba(26,26,36,.78);-webkit-backdrop-filter:blur(26px);backdrop-filter:blur(26px);border:1px solid rgba(255,255,255,.12)}
 @keyframes up{from{transform:translateY(100%)}to{transform:none}}
 .grab{width:42px;height:4px;border-radius:3px;background:rgba(255,255,255,.3);margin:0 auto 14px}
 .sh-box h3{font-size:18px;margin-bottom:12px}
-.row{display:flex;align-items:center;gap:12px;padding:8px 4px;cursor:pointer;border-radius:12px}
-.row:active{background:rgba(255,255,255,.08)}
-.row .rm{flex:1;min-width:0}
-.row .rm b{display:block;font-size:15px}
-.row .rm small{color:var(--mut);font-size:12.5px}
-.badge{font-size:11px;font-weight:700;background:rgba(217,119,87,.25);color:#ffb596;padding:3px 8px;border-radius:10px}
 .walls{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
 .walls i{height:64px;border-radius:14px;border:3px solid transparent;cursor:pointer}
 .walls i.on{border-color:#fff}
+.crow{display:flex;gap:6px;margin-bottom:8px}
+.crow input{margin:0}
 #viewer{align-items:center;justify-content:center;background:rgba(0,0,0,.88)}
 #viewer img{max-width:100%;max-height:100%}
-#toast{position:fixed;top:calc(14px + env(safe-area-inset-top));left:50%;transform:translate(-50%,-90px);z-index:999;padding:11px 18px;border-radius:20px;font-size:14px;max-width:88%;text-align:center;transition:transform .3s}
+#toast{position:fixed;top:calc(14px + env(safe-area-inset-top));left:50%;transform:translate(-50%,-110px);z-index:999;padding:11px 18px;border-radius:20px;font-size:14px;max-width:88%;text-align:center;transition:transform .3s}
 #toast.on{transform:translate(-50%,0)}
-@keyframes none{}
+
+/* мини-приложение */
+#appv{position:fixed;inset:0;z-index:720;background:#0f0f14;display:none;flex-direction:column}
+#appv.on{display:flex}
+.ahd{height:calc(54px + env(safe-area-inset-top));padding:env(safe-area-inset-top) 10px 0;display:flex;align-items:center;gap:8px;border-width:0 0 1px 0}
+.ahd b{font-size:16px;flex:1}
+#app-frame{flex:1;border:0;width:100%;background:#fff}
+
+/* звонок */
+#call{position:fixed;inset:0;z-index:850;background:#0c0c11;display:none;flex-direction:column;align-items:center}
+#call.on{display:flex}
+#r-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000;display:none}
+#call.v #r-vid{display:block}
+#l-vid{position:absolute;right:14px;top:calc(76px + env(safe-area-inset-top));width:96px;height:136px;object-fit:cover;border-radius:16px;background:#222;border:2px solid rgba(255,255,255,.3);transform:scaleX(-1);display:none;z-index:2}
+#call.v #l-vid{display:block}
+.c-top{position:absolute;top:calc(10px + env(safe-area-inset-top));left:10px;z-index:3}
+.c-mid{position:absolute;top:22%;left:0;right:0;text-align:center;z-index:2;display:flex;flex-direction:column;align-items:center;gap:10px;text-shadow:0 1px 8px rgba(0,0,0,.6)}
+#call.v .c-mid{top:calc(18px + env(safe-area-inset-top))}
+#call.v .c-mid .av{display:none}
+.c-mid b{font-size:26px}
+.c-mid span{color:#d0d0da;font-size:15px}
+.c-btns{position:absolute;bottom:calc(36px + env(safe-area-inset-bottom));left:0;right:0;display:flex;justify-content:center;gap:22px;z-index:3}
+.cb{width:62px;height:62px;border-radius:50%;background:rgba(255,255,255,.18);display:grid;place-items:center;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.cb.off{background:#fff}.cb.off .ic{stroke:#111}
+.cb.end{background:#e5484d}.cb.ok{background:#2fb86b}
+#call:not(.v) #b-cam{display:none}
+#incoming{position:fixed;inset:0;z-index:880;display:none;background:rgba(10,10,15,.84);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px)}
+#incoming.on{display:block}
+#callbar{position:fixed;top:0;left:0;right:0;height:calc(50px + env(safe-area-inset-top));padding:env(safe-area-inset-top) 12px 0 18px;z-index:840;display:none;align-items:center;justify-content:space-between;background:linear-gradient(90deg,#1c8f54,#26b36a);cursor:pointer;font-weight:600}
+#callbar.on{display:flex}
+#callbar .cb{width:38px;height:38px}
+body.incall #app{top:calc(50px + env(safe-area-inset-top))}
 </style>
 </head>
 <body>
@@ -193,25 +253,31 @@ button{border:0;background:none;color:inherit;cursor:pointer}
 <symbol id="i-send" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></symbol>
 <symbol id="i-clip" viewBox="0 0 24 24"><path d="M21.4 11l-9.2 9.2a6 6 0 0 1-8.5-8.5l9.2-9.2a4 4 0 0 1 5.7 5.7l-9.2 9.2a2 2 0 0 1-2.8-2.8l8.5-8.5"/></symbol>
 <symbol id="i-mic" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></symbol>
+<symbol id="i-micoff" viewBox="0 0 24 24"><line x1="1" y1="1" x2="23" y2="23"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"/><path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2a7 7 0 0 1-.11 1.23"/><line x1="12" y1="19" x2="12" y2="23"/></symbol>
 <symbol id="i-trash" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></symbol>
-<symbol id="i-bot" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><path d="M8 16h.01M16 16h.01"/></symbol>
 <symbol id="i-play" viewBox="0 0 24 24"><polygon points="7 4 20 12 7 20 7 4"/></symbol>
 <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></symbol>
 <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></symbol>
 <symbol id="i-out" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></symbol>
-<symbol id="i-cam" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></symbol>
-<symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+<symbol id="i-video" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></symbol>
+<symbol id="i-videooff" viewBox="0 0 24 24"><path d="M16 16v1a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2m5.66 0H14a2 2 0 0 1 2 2v3.34l1 1L23 7v10"/><line x1="1" y1="1" x2="23" y2="23"/></symbol>
+<symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+<symbol id="i-set" viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></symbol>
+<symbol id="i-down" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+<symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></symbol>
+<symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></symbol>
+<symbol id="i-box" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></symbol>
 </svg>
 
-<!-- SPLASH -->
 <div id="splash">
   <div class="spin" data-spark="96"></div>
   <div class="sp-title">ClaudeMAX</div>
   <div class="sp-tip"><span id="sp-tip"></span></div>
   <div class="sp-bar"><i></i></div>
 </div>
-
-<!-- WELCOME после входа -->
 <div id="welcome">
   <div id="wl-logo"></div>
   <div class="wl-hi" id="wl-hi"></div>
@@ -219,8 +285,6 @@ button{border:0;background:none;color:inherit;cursor:pointer}
 </div>
 
 <div id="app">
-
-  <!-- AUTH -->
   <section class="view" id="v-auth">
     <div class="au-top"><div class="lang" onclick="toggleLang()"><i></i><b data-l="ru">RU</b><b data-l="en">EN</b></div></div>
     <div class="au-head">
@@ -237,60 +301,49 @@ button{border:0;background:none;color:inherit;cursor:pointer}
     </div>
   </section>
 
-  <!-- CHATS -->
   <section class="view" id="v-chats">
     <div class="scroll" id="chat-list"></div>
-    <div class="hd glass"><h1>ClaudeMAX</h1>
-      <button class="ib" onclick="openSearch()"><svg class="ic"><use href="#i-search"/></svg></button>
-      <button class="ib" onclick="openNewGroup()"><svg class="ic"><use href="#i-users"/></svg></button>
+    <div class="hd glass"><h1 data-t="chats"></h1>
+      <button class="hb" onclick="openSearch()"><svg class="ic"><use href="#i-search"/></svg></button>
+      <button class="hb acc" onclick="openNewGroup()"><svg class="ic"><use href="#i-plus"/></svg></button>
     </div>
     <div class="nav" data-a="chats"></div>
   </section>
 
-  <!-- BOTS -->
-  <section class="view" id="v-bots">
-    <div class="scroll" id="bots-list"></div>
-    <div class="hd glass"><h1 data-t="bots"></h1><button class="ib" onclick="newBot()"><svg class="ic"><use href="#i-plus"/></svg></button></div>
-    <div class="nav" data-a="bots"></div>
+  <section class="view" id="v-calls">
+    <div class="scroll" id="calls-list"></div>
+    <div class="hd glass"><h1 data-t="calls"></h1></div>
+    <div class="nav" data-a="calls"></div>
   </section>
 
-  <!-- PROFILE -->
-  <section class="view" id="v-profile">
-    <div class="scroll">
-      <div class="pcard">
-        <div class="pban" id="p-ban"></div>
-        <div class="pav"><div id="p-av"></div><label class="cam"><svg class="ic"><use href="#i-cam"/></svg><input type="file" id="p-file" accept="image/*" hidden></label></div>
-        <div class="pbody">
-          <div style="text-align:center;margin-bottom:14px"><b id="p-nm" style="font-size:20px"></b><div id="p-un" style="color:var(--mut);font-size:14px"></div></div>
-          <div class="lbl" data-t="name"></div><input class="fld" id="p-name" maxlength="32">
-          <div class="lbl" data-t="bio"></div><input class="fld" id="p-bio" maxlength="120">
-          <div class="lbl" data-t="usernameT"></div><input class="fld" id="p-user" maxlength="20" autocapitalize="off" spellcheck="false">
-          <div class="lbl" data-t="color"></div><div class="sw" id="p-sw"></div>
-          <button class="btn" onclick="saveProfile()" data-t="save"></button>
-        </div>
-      </div>
-      <div class="pcard"><div class="pbody">
-        <div class="rowb"><b data-t="language"></b><div class="lang" onclick="toggleLang()"><i></i><b data-l="ru">RU</b><b data-l="en">EN</b></div></div>
-        <button class="btn ghost" style="margin:0;display:flex;align-items:center;justify-content:center;gap:8px" onclick="logout()"><svg class="ic" style="stroke:#ff8a80"><use href="#i-out"/></svg><span data-t="logout" style="color:#ff8a80"></span></button>
-      </div></div>
-    </div>
-    <div class="hd glass"><h1 data-t="profile"></h1></div>
-    <div class="nav" data-a="profile"></div>
+  <section class="view" id="v-apps">
+    <div class="scroll" id="apps-body"></div>
+    <div class="hd glass"><h1 data-t="apps"></h1></div>
+    <div class="nav" data-a="apps"></div>
   </section>
 
-  <!-- ROOM -->
+  <section class="view" id="v-settings">
+    <div class="scroll" id="set-body"></div>
+    <div class="hd glass"><h1 data-t="settings"></h1></div>
+    <div class="nav" data-a="settings"></div>
+  </section>
+
   <section class="view" id="v-room">
     <div id="room-bg"></div>
     <div id="msgs"></div>
+    <div id="chips"></div>
     <div class="hd glass">
       <button class="ib" onclick="history.back()"><svg class="ic"><use href="#i-back"/></svg></button>
       <div id="r-av"></div>
       <div class="rt"><b id="r-t"></b><small id="r-s"></small></div>
-      <button class="ib" onclick="openInfo()"><svg class="ic"><use href="#i-info"/></svg></button>
+      <button class="ib" id="r-app" onclick="openRoomApp()"><svg class="ic"><use href="#i-grid"/></svg></button>
+      <button class="ib" id="r-call" onclick="roomCall('audio')"><svg class="ic"><use href="#i-phone"/></svg></button>
+      <button class="ib" id="r-vcall" onclick="roomCall('video')"><svg class="ic"><use href="#i-video"/></svg></button>
+      <button class="ib" id="r-info" onclick="openInfo()"><svg class="ic"><use href="#i-info"/></svg></button>
     </div>
     <div class="bar glass" id="bar">
       <div class="bar-n">
-        <label class="ib" id="attach"><svg class="ic"><use href="#i-clip"/></svg><input type="file" id="file" accept="image/*" hidden></label>
+        <button class="ib" id="attach" onclick="openAttach()"><svg class="ic"><use href="#i-clip"/></svg></button>
         <input class="inp" id="msg" data-ph="msgPh" autocomplete="off">
         <button class="ib" id="mic" onclick="startRec()"><svg class="ic"><use href="#i-mic"/></svg></button>
         <button class="send" id="sendb" onclick="sendText()"><svg class="ic"><use href="#i-send"/></svg></button>
@@ -307,22 +360,55 @@ button{border:0;background:none;color:inherit;cursor:pointer}
   </section>
 </div>
 
+<input type="file" id="f-img" accept="image/*" hidden>
+<input type="file" id="f-vid" accept="video/*" hidden>
+<input type="file" id="f-cam" accept="video/*" capture="user" hidden>
+
 <div class="ov" id="sheet"><div class="sh-box"><div class="grab"></div><div id="sheet-body"></div></div></div>
 <div class="ov" id="viewer"><img id="viewer-img"></div>
+
+<div id="appv">
+  <div class="ahd glass"><button class="ib" onclick="history.back()"><svg class="ic"><use href="#i-x"/></svg></button><b id="app-title"></b></div>
+  <iframe id="app-frame" sandbox="allow-scripts allow-forms allow-modals"></iframe>
+</div>
+
+<div id="call">
+  <video id="r-vid" autoplay playsinline muted></video>
+  <video id="l-vid" autoplay playsinline muted></video>
+  <audio id="r-aud" autoplay></audio>
+  <div class="c-top"><button class="cb" style="width:44px;height:44px" onclick="minCall()"><svg class="ic"><use href="#i-down"/></svg></button></div>
+  <div class="c-mid"><div id="c-av"></div><b id="c-nm"></b><span id="c-st"></span></div>
+  <div class="c-btns">
+    <button class="cb" id="b-mic" onclick="togMic()"><svg class="ic"><use href="#i-mic"/></svg></button>
+    <button class="cb" id="b-cam" onclick="togCam()"><svg class="ic"><use href="#i-video"/></svg></button>
+    <button class="cb end" onclick="hangUp()"><svg class="ic hang"><use href="#i-phone"/></svg></button>
+  </div>
+</div>
+<div id="incoming">
+  <div class="c-mid"><div id="i-av"></div><b id="i-nm"></b><span id="i-st"></span></div>
+  <div class="c-btns" style="gap:70px">
+    <button class="cb end" onclick="declineCall()"><svg class="ic hang"><use href="#i-phone"/></svg></button>
+    <button class="cb ok" onclick="acceptCall()"><svg class="ic"><use href="#i-phone"/></svg></button>
+  </div>
+</div>
+<div id="callbar" onclick="restoreCall()"><span id="cb-t"></span><button class="cb end" onclick="event.stopPropagation();hangUp()"><svg class="ic hang"><use href="#i-phone"/></svg></button></div>
 <div id="toast" class="glass"></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, collection, addDoc, query, where, onSnapshot, orderBy, limit, serverTimestamp, getDocs, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, addDoc, query, where, onSnapshot, orderBy, limit, serverTimestamp, getDocs, arrayUnion, arrayRemove, writeBatch } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const app = initializeApp({ apiKey:"AIzaSyBFZH_-XzfXCVItFF0PXd2GBaI5_LRWCko", authDomain:"buldog-5fef9.firebaseapp.com", projectId:"buldog-5fef9" });
 const auth = getAuth(app), db = getFirestore(app);
 
 const $ = id => document.getElementById(id);
 const h = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
+const ic = (id, c = '') => `<svg class="ic ${c}"><use href="#${id}"/></svg>`;
 const EMAIL = u => u + "@cldmax.app";
 const UNAME = /^[a-z0-9_]{3,20}$/;
+const RESERVED = ['claudbot','claudemax','claude','admin','support','root','telegram'];
+const MAXV = 15;
 const COLORS = ['#d97757','#e0a03c','#4fb36a','#2bb5a6','#4a9eed','#7c6cf0','#d65db1','#e5534b'];
 const WALLS = [
   'radial-gradient(circle at 20% 15%,#ff8a6588,transparent 45%),radial-gradient(circle at 85% 80%,#7c4dff77,transparent 50%),#12121a',
@@ -333,64 +419,110 @@ const WALLS = [
   'linear-gradient(160deg,#0f2027,#203a43 55%,#2c5364)',
   'linear-gradient(160deg,#3a1c12,#1a0f0b 70%)'
 ];
+const ICE = { iceServers: [
+  { urls: ['stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302'] },
+  { urls: ['turn:openrelay.metered.ca:80', 'turn:openrelay.metered.ca:443', 'turns:openrelay.metered.ca:443?transport=tcp'], username: 'openrelayproject', credential: 'openrelayproject' }
+] };
+
+const EXAMPLE = `<!DOCTYPE html>
+<html><head><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+body{margin:0;min-height:100vh;display:grid;place-items:center;background:#15151d;color:#fff;font-family:sans-serif;text-align:center}
+button{font-size:30px;padding:22px 36px;border:0;border-radius:24px;background:#d97757;color:#fff}
+h1{margin:0 0 6px}
+</style></head><body><div>
+<h1 id="hi">Привет!</h1><p>Нажми на кнопку</p>
+<button id="b">0</button></div>
+<script>
+var n = 0;
+ClaudeMAX.storage.get('n').then(function(v){ n = +v || 0; b.textContent = n; });
+hi.textContent = 'Привет, ' + ClaudeMAX.user.name + '!';
+b.onclick = function(){ n++; b.textContent = n; ClaudeMAX.vibrate(); ClaudeMAX.storage.set('n', n); };
+<\/script></body></html>`;
 
 /* ---------------- ЯЗЫК ---------------- */
 const L = {
-ru:{tips:["Сообщения хранятся в вашем облаке Firebase","Голосовые до 30 секунд — просто нажмите 🎤","Создавайте группы и назначайте админов","Напишите /newbot у ClaudBOT","Меняйте фон чата и цвет профиля"],
+ru:{tips:["Сообщения хранятся в вашем облаке Firebase","Звонки и видео — иконки в шапке чата","Создайте мини-приложение: просто вставьте код","Боты отвечают на ваши команды без сервера","Ваш @username принадлежит только вам"],
  gm:"Доброе утро!",ga:"Добрый день!",ge:"Добрый вечер!",gn:"Доброй ночи!",welcomeTo:"Добро пожаловать в ClaudeMAX",hi:"Привет, {n}!",
  login:"Вход",register:"Регистрация",username:"Имя пользователя",password:"Пароль",btnLogin:"Войти",btnReg:"Создать аккаунт",
- chats:"Чаты",bots:"Боты",profile:"Профиль",search:"Поиск",searchPh:"Найти @username",nothing:"Никого не найдено",
+ chats:"Чаты",calls:"Звонки",apps:"Приложения",settings:"Настройки",search:"Поиск",searchPh:"Найти @username",nothing:"Ничего не найдено",
  newGroup:"Новая группа",groupName:"Название группы",create:"Создать",cancel:"Отмена",noChats:"Пока нет чатов. Нажмите 🔍 и найдите друга по @username",
- msgPh:"Сообщение",recording:"Идёт запись голосового…",noMic:"Нет доступа к микрофону",tooShort:"Слишком коротко",tooBig:"Голосовое слишком большое",
- online:"в сети",recently:"был(а) недавно",seenAt:"был(а) в {t}",seenY:"был(а) вчера в {t}",seenD:"был(а) {d}",members:"участников",bot:"бот",
- photo:"📷 Фото",voice:"🎤 Голосовое",you:"Вы",info:"Информация",wallpaper:"Фон чата",membersT:"Участники",addMember:"Добавить участника",
- admin:"админ",makeAdmin:"Назначить админом",leave:"Покинуть группу",onlyAdmin:"Только админы могут менять фон",
- name:"Имя",bio:"О себе",usernameT:"Имя пользователя (@)",color:"Цвет профиля",save:"Сохранить",saved:"Сохранено ✓",language:"Язык",logout:"Выйти",
+ fAll:"Все",fDm:"Личные",fGroups:"Группы",msgPh:"Сообщение",recording:"Идёт запись голосового…",noMic:"Нет доступа к микрофону",noCam:"Нет доступа к микрофону/камере",
+ tooShort:"Слишком коротко",tooBig:"Голосовое слишком большое",online:"в сети",recently:"был(а) недавно",seenAt:"был(а) в {t}",seenY:"был(а) вчера в {t}",seenD:"был(а) {d}",
+ members:"участников",bot:"бот",photo:"📷 Фото",voice:"🎤 Голосовое",video:"🎬 Видео",you:"Вы",wallpaper:"Фон чата",membersT:"Участники",addMember:"Добавить участника",
+ admin:"админ",makeAdmin:"Назначить админом",leave:"Покинуть группу",onlyAdmin:"Только админы могут менять фон",added:"Участник добавлен",
+ name:"Имя",bio:"О себе",usernameT:"Имя пользователя (@)",color:"Цвет профиля",save:"Сохранить",saved:"Сохранено ✓",language:"Язык приложения",logout:"Выйти",
  fill:"Заполните все поля",badUser:"Логин: 3–20 символов, a–z, 0–9, _",shortPass:"Пароль — минимум 6 символов",badCreds:"Неверный логин или пароль",
  taken:"Это имя уже занято",net:"Нет сети или ошибка соединения",authOff:"В Firebase не включён Email/Password",sendErr:"Не удалось отправить",
- myBots:"Мои боты",createBot:"Создать бота",noBots:"У вас пока нет ботов",copied:"Токен скопирован",added:"Участник добавлен",
- botHelp:"Привет! Я ClaudBOT 🤖\n\n/newbot — создать бота\n/mybots — список ваших ботов\n/token <id> — токен бота",
- botAsk:"Как назвать бота? Отправьте имя.",botMade:"Готово! Бот «{n}» создан.\nID: {id}\nТокен: {tk}\n\nТокен хранится в вашем аккаунте. Внешнего Bot API пока нет — это внутренняя имитация.",
- botNone:"Ботов пока нет. Создайте через /newbot",botList:"Ваши боты:",botNo:"Бот не найден. Формат: /token <id>",botUnk:"Не знаю такую команду. Напишите /help"},
-en:{tips:["Messages are stored in your Firebase cloud","Voice messages up to 30s — just tap 🎤","Create groups and assign admins","Send /newbot to ClaudBOT","Change chat wallpaper and profile color"],
+ attPhoto:"Фото",attVideo:"Видео из галереи",attCam:"Снять видео",vidLong:"Видео длиннее 15 секунд",vidBig:"Видео слишком тяжёлое, выберите покороче",vidWork:"Подготовка видео…",
+ callTo:"Позвонить",callAudio:"Аудиозвонок",callVideo:"Видеозвонок",callContact:"Позвонить контакту",incomingA:"Входящий звонок",incomingV:"Входящий видеозвонок",
+ calling:"Вызов…",connecting:"Соединение…",busy:"Вы уже в звонке",callEnded:"Звонок завершён",callFail:"Не удалось соединиться",
+ noAnswer:"Без ответа",missed:"Пропущенный",incoming:"Входящий",outgoing:"Исходящий",noCalls:"Звонков пока нет",fMissed:"Пропущенные",inCall:"Идёт звонок",
+ editProfile:"Редактировать профиль",changePhoto:"Сменить фото",about:"О приложении",aboutTxt:"ClaudeMAX — мессенджер на Firebase.\nЗвонки работают, когда у собеседника открыто приложение.",
+ createApp:"Создать мини-приложение",createAppSub:"Вставьте код сайта — и оно готово",createBot:"Создать бота",createBotSub:"Команды, ответы, кнопки",
+ mine:"Мои",catalog:"Каталог приложений",botsCat:"Боты",noMine:"Вы пока ничего не создали",open:"Открыть",
+ newAppT:"Новое мини-приложение",editAppT:"Редактировать приложение",appTitle:"Название",appIcon:"Иконка (эмодзи)",appDesc:"Описание",appCode:"Код (HTML + CSS + JS)",appCodePh:"Вставьте сюда код вашей страницы…",
+ example:"Вставить пример",test:"Проверить",publish:"Опубликовать",del:"Удалить",delQ:"Удалить? Это нельзя отменить.",noApp:"Приложение не найдено",appBig:"Код слишком большой (макс. 800 КБ)",appNeedCode:"Вставьте код приложения",
+ newBotT:"Новый бот",editBotT:"Редактировать бота",botName:"Название бота",botUser:"Юзернейм (должен оканчиваться на bot)",botAbout:"Приветствие (ответ на /start)",botCmds:"Команды и ответы",
+ botCmdPh:"/команда",botReplyPh:"Ответ бота ({name} — имя пользователя)",botDflt:"Ответ на непонятную команду",botApp:"Мини-приложение бота",botNoApp:"— без приложения —",addCmd:"+ Добавить команду",
+ botUserBad:"Юзернейм бота: латиница, цифры, _ и оканчивается на bot (например shop_bot)",botNone:"Бот не найден",botUnk:"Не понимаю эту команду. Нажмите кнопку ниже или /help",hello:"Привет! Я бот.",helpTitle:"Команды:",openApp:"🚀 Открыть приложение",
+ claudAbout:"Привет, {name}! Я ClaudBOT 🤖\nЯ помогу создать своего бота или мини-приложение.",
+ cNewbot:"Откроется конструктор бота. Задайте имя, команды и ответы — и бот сразу появится в поиске у всех.",cNewapp:"Откроется редактор мини-приложения. Вставьте готовый HTML-код — и оно появится в каталоге.",cMy:"Ваши боты и приложения — во вкладке «Приложения».",
+ loading:"Загрузка…"},
+en:{tips:["Messages are stored in your Firebase cloud","Calls and video — icons in the chat header","Make a mini app: just paste the code","Bots answer your commands without a server","Your @username belongs only to you"],
  gm:"Good morning!",ga:"Good afternoon!",ge:"Good evening!",gn:"Good night!",welcomeTo:"Welcome to ClaudeMAX",hi:"Hi, {n}!",
  login:"Sign in",register:"Sign up",username:"Username",password:"Password",btnLogin:"Sign in",btnReg:"Create account",
- chats:"Chats",bots:"Bots",profile:"Profile",search:"Search",searchPh:"Find @username",nothing:"Nobody found",
+ chats:"Chats",calls:"Calls",apps:"Apps",settings:"Settings",search:"Search",searchPh:"Find @username",nothing:"Nothing found",
  newGroup:"New group",groupName:"Group name",create:"Create",cancel:"Cancel",noChats:"No chats yet. Tap 🔍 and find a friend by @username",
- msgPh:"Message",recording:"Recording voice message…",noMic:"Microphone access denied",tooShort:"Too short",tooBig:"Voice message too big",
- online:"online",recently:"last seen recently",seenAt:"last seen at {t}",seenY:"last seen yesterday at {t}",seenD:"last seen {d}",members:"members",bot:"bot",
- photo:"📷 Photo",voice:"🎤 Voice message",you:"You",info:"Info",wallpaper:"Chat wallpaper",membersT:"Members",addMember:"Add member",
- admin:"admin",makeAdmin:"Make admin",leave:"Leave group",onlyAdmin:"Only admins can change wallpaper",
- name:"Name",bio:"About",usernameT:"Username (@)",color:"Profile color",save:"Save",saved:"Saved ✓",language:"Language",logout:"Log out",
+ fAll:"All",fDm:"Direct",fGroups:"Groups",msgPh:"Message",recording:"Recording voice message…",noMic:"Microphone access denied",noCam:"Microphone/camera access denied",
+ tooShort:"Too short",tooBig:"Voice message too big",online:"online",recently:"last seen recently",seenAt:"last seen at {t}",seenY:"last seen yesterday at {t}",seenD:"last seen {d}",
+ members:"members",bot:"bot",photo:"📷 Photo",voice:"🎤 Voice message",video:"🎬 Video",you:"You",wallpaper:"Chat wallpaper",membersT:"Members",addMember:"Add member",
+ admin:"admin",makeAdmin:"Make admin",leave:"Leave group",onlyAdmin:"Only admins can change wallpaper",added:"Member added",
+ name:"Name",bio:"About",usernameT:"Username (@)",color:"Profile color",save:"Save",saved:"Saved ✓",language:"App language",logout:"Log out",
  fill:"Fill in all fields",badUser:"Username: 3–20 chars, a–z, 0–9, _",shortPass:"Password: at least 6 characters",badCreds:"Wrong username or password",
  taken:"This username is taken",net:"Network error",authOff:"Email/Password is not enabled in Firebase",sendErr:"Failed to send",
- myBots:"My bots",createBot:"Create bot",noBots:"You have no bots yet",copied:"Token copied",added:"Member added",
- botHelp:"Hi! I'm ClaudBOT 🤖\n\n/newbot — create a bot\n/mybots — your bots\n/token <id> — bot token",
- botAsk:"What should the bot be called? Send a name.",botMade:"Done! Bot “{n}” created.\nID: {id}\nToken: {tk}\n\nThe token is stored in your account. There is no external Bot API yet — this is an internal imitation.",
- botNone:"No bots yet. Create one with /newbot",botList:"Your bots:",botNo:"Bot not found. Usage: /token <id>",botUnk:"Unknown command. Try /help"}
+ attPhoto:"Photo",attVideo:"Video from gallery",attCam:"Record video",vidLong:"Video is longer than 15 seconds",vidBig:"Video is too heavy, pick a shorter one",vidWork:"Preparing video…",
+ callTo:"Call",callAudio:"Audio call",callVideo:"Video call",callContact:"Call a contact",incomingA:"Incoming call",incomingV:"Incoming video call",
+ calling:"Calling…",connecting:"Connecting…",busy:"You are already in a call",callEnded:"Call ended",callFail:"Could not connect",
+ noAnswer:"No answer",missed:"Missed",incoming:"Incoming",outgoing:"Outgoing",noCalls:"No calls yet",fMissed:"Missed",inCall:"Call in progress",
+ editProfile:"Edit profile",changePhoto:"Change photo",about:"About",aboutTxt:"ClaudeMAX is a messenger on Firebase.\nCalls work while the other person has the app open.",
+ createApp:"Create mini app",createAppSub:"Paste website code — it's ready",createBot:"Create bot",createBotSub:"Commands, replies, buttons",
+ mine:"Mine",catalog:"App catalog",botsCat:"Bots",noMine:"You haven't created anything yet",open:"Open",
+ newAppT:"New mini app",editAppT:"Edit app",appTitle:"Title",appIcon:"Icon (emoji)",appDesc:"Description",appCode:"Code (HTML + CSS + JS)",appCodePh:"Paste your page code here…",
+ example:"Insert example",test:"Test",publish:"Publish",del:"Delete",delQ:"Delete? This cannot be undone.",noApp:"App not found",appBig:"Code is too big (max 800 KB)",appNeedCode:"Paste the app code",
+ newBotT:"New bot",editBotT:"Edit bot",botName:"Bot name",botUser:"Username (must end with bot)",botAbout:"Greeting (reply to /start)",botCmds:"Commands and replies",
+ botCmdPh:"/command",botReplyPh:"Bot reply ({name} = user name)",botDflt:"Reply to unknown command",botApp:"Bot mini app",botNoApp:"— no app —",addCmd:"+ Add command",
+ botUserBad:"Bot username: letters, digits, _ and must end with bot (e.g. shop_bot)",botNone:"Bot not found",botUnk:"I don't understand. Tap a button below or /help",hello:"Hi! I'm a bot.",helpTitle:"Commands:",openApp:"🚀 Open app",
+ claudAbout:"Hi, {name}! I'm ClaudBOT 🤖\nI'll help you create your own bot or mini app.",
+ cNewbot:"The bot builder will open. Set a name, commands and replies — the bot appears in everyone's search.",cNewapp:"The mini app editor will open. Paste ready HTML code — it appears in the catalog.",cMy:"Your bots and apps are in the Apps tab.",
+ loading:"Loading…"}
 };
 let lang = localStorage.getItem('cm_lang') || 'ru';
-const t = (k, v) => { let s = (L[lang][k] ?? k); if (v) for (const x in v) s = s.replace('{' + x + '}', v[x]); return s; };
+const t = (k, v) => { let s = L[lang][k] ?? L.ru[k] ?? k; if (v && typeof s === 'string') for (const x in v) s = s.replace('{' + x + '}', v[x]); return s; };
 
 /* ---------------- СОСТОЯНИЕ ---------------- */
-let me = null, meData = null, chats = {}, myBots = [], room = null, tmpColor = COLORS[0];
-let chatsUnsub, botsUnsub, msgsUnsub, statusUnsub, statusTimer, hbTimer;
+let me = null, meData = null, chats = {}, myBots = [], myApps = [], callMap = {}, room = null, tmpColor = COLORS[0];
+let chatFilter = 'all', callFilter = 'all', curTab = 'chats', reads = {}, catApps = [], catBots = [], catAt = 0, curApp = '';
+let chatsUnsub, botsUnsub, appsUnsub, callsUnsub, msgsUnsub, statusUnsub, statusTimer, hbTimer;
 let authMode = 'login', registering = false, pendingWelcome = false;
 const userCache = {};
-const CLAUD = { name: 'ClaudBOT', username: 'claudbot', bot: true };
+const CLAUD = { name: 'ClaudBOT', username: 'claudbot', bot: true, builtin: true, appId: '',
+  cmds: [{ c: '/newbot', r: 'cNewbot', act: 'newbot' }, { c: '/newapp', r: 'cNewapp', act: 'newapp' }, { c: '/mybots', r: 'cMy', act: 'mine' }] };
 
 /* ---------------- УТИЛИТЫ ---------------- */
 const pad = n => String(n).padStart(2, '0');
 const hm = d => pad(d.getHours()) + ':' + pad(d.getMinutes());
 const toDate = x => x && x.toDate ? x.toDate() : (x ? new Date(x) : new Date());
 const ms = x => x ? (x.toMillis ? x.toMillis() : +x) : 0;
-const fmtDur = s => Math.floor(s / 60) + ':' + pad(Math.round(s % 60));
+const fmtDur = s => Math.floor(s / 60) + ':' + pad(Math.floor(s % 60));
 const colorOf = s => COLORS[[...String(s || '?')].reduce((a, c) => a + c.charCodeAt(0), 0) % COLORS.length];
 const rnd = (n, set) => Array.from({ length: n }, () => set[Math.floor(Math.random() * set.length)]).join('');
 let toastT;
-function toast(msg) { const e = $('toast'); e.textContent = msg; e.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(() => e.classList.remove('on'), 2600); }
+function toast(msg, keep) { const e = $('toast'); e.textContent = msg; e.classList.add('on'); clearTimeout(toastT); if (!keep) toastT = setTimeout(() => e.classList.remove('on'), 2600); }
+const hideToast = () => $('toast').classList.remove('on');
+function dayLabel(x) { const d = toDate(x), n = new Date(); return d.toDateString() === n.toDateString() ? hm(d) : d.toLocaleDateString(lang, { day: 'numeric', month: 'short' }); }
 
-/* ---------------- ЛОГОТИП (искра Claude) ---------------- */
+/* ---------------- ЛОГОТИП ---------------- */
 function spark(size, anim) {
   const lens = [42, 28, 38, 42, 27, 36, 41, 30, 40, 26, 39, 34];
   let s = `<svg viewBox="0 0 100 100" width="${size}" height="${size}" fill="none" stroke="#d97757" stroke-width="7.5" stroke-linecap="round">`;
@@ -411,25 +543,32 @@ function applyLang() {
   document.querySelectorAll('.lang').forEach(p => { p.classList.toggle('en', lang === 'en'); p.querySelectorAll('b').forEach(b => b.classList.toggle('on', b.dataset.l === lang)); });
   $('greet').textContent = t(greetKey());
   $('a-btn').textContent = authMode === 'login' ? t('btnLogin') : t('btnReg');
-  if (me) { renderChats(); renderBots(); if (room) refreshHeader(); }
+  if (me) { renderChats(); renderCalls(); renderApps(); renderSettings(); if (room) refreshHeader(); }
 }
 window.toggleLang = () => { lang = lang === 'ru' ? 'en' : 'ru'; localStorage.setItem('cm_lang', lang); applyLang(); };
 
 /* ---------------- НАВИГАЦИЯ ---------------- */
-const NAV = `<button data-tab="chats"><svg class="ic"><use href="#i-chat"/></svg><span data-t="chats"></span></button>
-<button data-tab="bots"><svg class="ic"><use href="#i-bot"/></svg><span data-t="bots"></span></button>
-<button data-tab="profile"><svg class="ic"><use href="#i-user"/></svg><span data-t="profile"></span></button>`;
+const NAV = `<button data-tab="apps">${ic('i-grid')}<span data-t="apps"></span></button>
+<button data-tab="calls">${ic('i-phone')}<span data-t="calls"></span></button>
+<button data-tab="chats">${ic('i-chat')}<span data-t="chats"></span></button>
+<button data-tab="settings">${ic('i-set')}<span data-t="settings"></span></button>`;
 document.querySelectorAll('.nav').forEach(n => {
   n.innerHTML = NAV; n.classList.add('glass');
-  n.querySelector(`[data-tab="${n.dataset.a}"]`).classList.add('on');
   n.onclick = e => { const b = e.target.closest('button'); if (b) tab(b.dataset.tab); };
 });
 function show(n) { document.querySelectorAll('.view').forEach(v => v.classList.remove('on')); $('v-' + n).classList.add('on'); }
-function tab(n) { show(n); if (n === 'profile') fillProfile(); if (n === 'bots') renderBots(); if (n === 'chats') renderChats(); }
+function tab(n) {
+  curTab = n; show(n);
+  document.querySelectorAll('.nav').forEach(nv => nv.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.tab === n)));
+  document.querySelectorAll('.nav [data-t]').forEach(e => e.textContent = t(e.dataset.t));
+  if (n === 'chats') renderChats(); if (n === 'calls') renderCalls(); if (n === 'settings') renderSettings();
+  if (n === 'apps') { renderApps(); loadCatalog(); }
+}
 
-/* ---------------- ПРИВЕТСТВИЕ ---------------- */
-let tipI = 0; const tipT = setInterval(() => { const e = $('sp-tip'); if (!e) return; tipI = (tipI + 1) % 5; e.style.animation = 'none'; void e.offsetWidth; e.style.animation = ''; e.textContent = t('tips')[tipI] ?? L[lang].tips[tipI]; }, 1100);
-$('sp-tip').textContent = L[lang].tips[0];
+/* ---------------- SPLASH / WELCOME ---------------- */
+let tipI = 0;
+const tipT = setInterval(() => { const e = $('sp-tip'); if (!e) return; tipI = (tipI + 1) % 5; e.style.animation = 'none'; void e.offsetWidth; e.style.animation = ''; e.textContent = t('tips')[tipI]; }, 1100);
+$('sp-tip').textContent = t('tips')[0];
 const t0 = Date.now(); let splashDone = false;
 function hideSplash() {
   if (splashDone) return; splashDone = true;
@@ -457,11 +596,13 @@ function avatar(u, size) {
   else d.textContent = (u.name || '?')[0].toUpperCase();
   return d;
 }
-function userRow(u, btn) {
-  const r = h('div', 'row'); r.append(avatar(u, 42));
-  const m = h('div', 'rm'), n = h('b'), s = h('small'); n.textContent = u.name || u.username; s.textContent = '@' + u.username; m.append(n, s); r.append(m);
-  if (btn) r.append(btn); return r;
+function emoAv(e, size) { const d = h('div', 'av'); d.style.cssText = `width:${size}px;height:${size}px;font-size:${size * .5}px;background:rgba(255,255,255,.1)`; d.textContent = e; return d; }
+function lrow(av, title, sub, click, right) {
+  const r = h('div', 'row'); r.append(av);
+  const m = h('div', 'rm'), b = h('b'), s = h('small'); b.textContent = title; s.textContent = sub || ''; m.append(b, s); r.append(m);
+  if (right) r.append(right); if (click) r.onclick = click; return r;
 }
+const userRow = (u, btn) => lrow(avatar(u, 42), u.name || u.username, '@' + u.username, null, btn);
 function statusOf(u) {
   if (!u || !u.lastSeen) return { on: 0, txt: t('recently') };
   const d = toDate(u.lastSeen), diff = Date.now() - d.getTime(), now = new Date();
@@ -505,23 +646,26 @@ window.doAuth = async () => {
       pendingWelcome = true;
       await signInWithEmailAndPassword(auth, await emailFor(u), p);
     } else {
+      if (RESERVED.includes(u)) throw { code: 'auth/email-already-in-use' };
+      const ex = await getDoc(doc(db, 'usernames', u));
+      if (ex.exists()) throw { code: 'auth/email-already-in-use' };
       registering = true;
       const res = await createUserWithEmailAndPassword(auth, EMAIL(u), p);
-      const data = { username: u, name: u, bio: '', avatar: '', color: COLORS[0], lastSeen: serverTimestamp() };
-      await setDoc(doc(db, 'users', res.user.uid), data);
-      try { await setDoc(doc(db, 'usernames', u), { uid: res.user.uid, email: EMAIL(u) }); } catch {}
+      const b = writeBatch(db);
+      b.set(doc(db, 'usernames', u), { uid: res.user.uid, email: EMAIL(u) });
+      b.set(doc(db, 'users', res.user.uid), { username: u, name: u, bio: '', avatar: '', color: COLORS[0], lastSeen: serverTimestamp() });
+      try { await b.commit(); }
+      catch (e) { try { await res.user.delete(); } catch {} throw { code: 'auth/email-already-in-use' }; }
       registering = false; pendingWelcome = true;
       await enter(res.user);
     }
   } catch (e) { registering = false; pendingWelcome = false; err.textContent = authErr(e); }
   btn.disabled = false;
 };
-
 onAuthStateChanged(auth, async user => {
   if (registering) return;
-  try {
-    if (user) await enter(user); else { cleanup(); show('auth'); }
-  } catch (e) { toast(e.message); show('auth'); }
+  try { if (user) await enter(user); else { cleanup(); show('auth'); } }
+  catch (e) { toast(e.message); show('auth'); }
   hideSplash();
 });
 setTimeout(() => { if (!splashDone) { show('auth'); hideSplash(); } }, 9000);
@@ -530,88 +674,123 @@ async function enter(user) {
   me = user;
   let snap = await getDoc(doc(db, 'users', user.uid));
   if (!snap.exists()) {
-    const un = (user.email || 'user').split('@')[0];
-    await setDoc(doc(db, 'users', user.uid), { username: un, name: un, bio: '', avatar: '', color: COLORS[0], lastSeen: serverTimestamp() });
-    snap = await getDoc(doc(db, 'users', user.uid));
+    const un = (user.email || 'user').split('@')[0], b = writeBatch(db);
+    const cl = await getDoc(doc(db, 'usernames', un));
+    if (!cl.exists()) b.set(doc(db, 'usernames', un), { uid: user.uid, email: user.email });
+    b.set(doc(db, 'users', user.uid), { username: un, name: un, bio: '', avatar: '', color: COLORS[0], lastSeen: serverTimestamp() });
+    await b.commit(); snap = await getDoc(doc(db, 'users', user.uid));
+  } else {
+    try { const un = snap.data().username, cl = await getDoc(doc(db, 'usernames', un)); if (!cl.exists()) await setDoc(doc(db, 'usernames', un), { uid: user.uid, email: user.email }); } catch {}
   }
   meData = snap.data(); userCache[user.uid] = meData; tmpColor = meData.color || COLORS[0];
+  try { reads = JSON.parse(localStorage.getItem('cm_read_' + user.uid) || '{}'); } catch { reads = {}; }
   beat(); clearInterval(hbTimer); hbTimer = setInterval(beat, 60000);
-  listenChats(); listenBots(); loadBotLog();
-  show('chats');
+  listenChats(); listenMine(); listenCalls();
+  tab('chats');
   if (pendingWelcome) { pendingWelcome = false; welcome(); }
 }
 function cleanup() {
-  chatsUnsub && chatsUnsub(); botsUnsub && botsUnsub(); msgsUnsub && msgsUnsub(); statusUnsub && statusUnsub();
+  chatsUnsub && chatsUnsub(); botsUnsub && botsUnsub(); appsUnsub && appsUnsub(); callsUnsub && callsUnsub(); msgsUnsub && msgsUnsub(); statusUnsub && statusUnsub();
   clearInterval(hbTimer); clearInterval(statusTimer);
-  me = null; meData = null; chats = {}; myBots = []; room = null;
+  if (cs) endCall(false); hideIncoming();
+  me = null; meData = null; chats = {}; myBots = []; myApps = []; callMap = {}; room = null;
 }
 window.logout = () => { signOut(auth); };
 const beat = () => { if (me) updateDoc(doc(db, 'users', me.uid), { lastSeen: serverTimestamp() }).catch(() => {}); };
 document.addEventListener('visibilitychange', () => { if (!document.hidden) beat(); });
+function markRead(id) { reads[id] = Date.now(); try { localStorage.setItem('cm_read_' + me.uid, JSON.stringify(reads)); } catch {} }
 
-/* ---------------- СПИСОК ЧАТОВ ---------------- */
+/* ---------------- ЧАТЫ ---------------- */
 function listenChats() {
   chatsUnsub && chatsUnsub();
   chatsUnsub = onSnapshot(query(collection(db, 'chats'), where('members', 'array-contains', me.uid)), snap => {
     chats = {}; snap.forEach(d => chats[d.id] = d.data({ serverTimestamps: 'estimate' }));
-    renderChats();
-    if (room && room.type !== 'bot' && chats[room.id]) { room.chat = chats[room.id]; refreshHeader(); applyWall(); }
+    if (room && room.type !== 'bot' && chats[room.id]) { room.chat = chats[room.id]; refreshHeader(); applyWall(); markRead(room.id); }
+    if (curTab === 'chats') renderChats();
   }, e => toast(e.message));
 }
-function otherOf(c) { return (c.members || []).find(x => x !== me.uid); }
-function dayLabel(x) { const d = toDate(x), n = new Date(); return d.toDateString() === n.toDateString() ? hm(d) : d.toLocaleDateString(lang, { day: 'numeric', month: 'short' }); }
+function listenMine() {
+  botsUnsub && botsUnsub(); appsUnsub && appsUnsub();
+  botsUnsub = onSnapshot(query(collection(db, 'bots'), where('owner', '==', me.uid)), s => { myBots = s.docs.map(d => ({ id: d.id, ...d.data() })).filter(b => b.username); if (curTab === 'apps') renderApps(); }, () => {});
+  appsUnsub = onSnapshot(query(collection(db, 'apps'), where('owner', '==', me.uid)), s => { myApps = s.docs.map(d => ({ id: d.id, ...d.data() })); if (curTab === 'apps') renderApps(); }, () => {});
+}
+const otherOf = c => (c.members || []).find(x => x !== me.uid);
+const logKey = un => `cm_bl_${me.uid}_${un}`;
+const bcKey = () => 'cm_bc_' + me.uid;
+function botChats() { try { return JSON.parse(localStorage.getItem(bcKey()) || '[]'); } catch { return []; } }
+function rememberBot(b) { if (b.builtin) return; const l = botChats().filter(x => x.u !== b.username); l.unshift({ u: b.username, n: b.name }); localStorage.setItem(bcKey(), JSON.stringify(l.slice(0, 30))); }
+function botLast(un) { try { const l = JSON.parse(localStorage.getItem(logKey(un)) || '[]'); return l[l.length - 1] || null; } catch { return null; } }
+function chatItem(u, name, prev, time, click, unr) {
+  const it = h('div', 'ci'); it.append(avatar(u, 54));
+  const mid = h('div', 'mid'), n = h('div', 'nm'), l = h('div', 'ls'); n.textContent = name; l.textContent = prev || ' '; mid.append(n, l);
+  const rc = h('div', 'rc'); if (time) { const tm = h('div', 'tm'); tm.textContent = dayLabel(time); rc.append(tm); } if (unr) rc.append(h('i', 'udot'));
+  it.append(mid, rc); it.onclick = click; return it;
+}
 function renderChats() {
   const box = $('chat-list'); if (!box || !me) return; box.innerHTML = '';
-  const last = botLog[botLog.length - 1];
-  box.append(chatItem({ name: 'ClaudBOT', bot: true }, 'ClaudBOT', last ? last.text.split('\n')[0] : '/help', last ? last.ts : 0, () => openRoom('claudbot')));
-  const arr = Object.entries(chats).map(([id, c]) => ({ id, ...c })).sort((a, b) => ms(b.lastAt) - ms(a.lastAt));
-  arr.forEach(c => {
+  const tabs = h('div', 'tabs');
+  [['all', 'fAll'], ['dm', 'fDm'], ['group', 'fGroups']].forEach(([k, l]) => { const b = h('button', chatFilter === k ? 'on' : '', t(l)); b.onclick = () => { chatFilter = k; renderChats(); }; tabs.append(b); });
+  box.append(tabs);
+  if (chatFilter === 'all') {
+    const lg = botLast('claudbot');
+    box.append(chatItem(CLAUD, 'ClaudBOT', lg ? lg.text.split('\n')[0] : '', lg ? lg.ts : 0, () => openBot('claudbot')));
+  }
+  const items = [];
+  Object.entries(chats).forEach(([id, c]) => {
+    if (chatFilter === 'dm' && c.group) return; if (chatFilter === 'group' && !c.group) return;
+    items.push({ tm: ms(c.lastAt), id, c });
+  });
+  if (chatFilter === 'all') botChats().forEach(b => { const lg = botLast(b.u); items.push({ tm: lg ? lg.ts : 0, bot: b, lg }); });
+  items.sort((a, b) => b.tm - a.tm);
+  items.forEach(x => {
+    if (x.bot) { box.append(chatItem({ bot: true }, x.bot.n, x.lg ? x.lg.text.split('\n')[0] : '', x.tm, () => openBot(x.bot.u))); return; }
+    const c = x.c, id = x.id, unr = c.lastUid && c.lastUid !== me.uid && ms(c.lastAt) > (reads[id] || 0);
     const prev = c.lastText ? (c.lastUid === me.uid ? t('you') + ': ' : '') + c.lastText : '';
-    if (c.group) box.append(chatItem({ name: c.title, color: colorOf(c.title) }, c.title, prev, c.lastAt ? ms(c.lastAt) : 0, () => openRoom(c.id)));
+    if (c.group) box.append(chatItem({ name: c.title, color: colorOf(c.title) }, c.title, prev, x.tm, () => openRoom(id), unr));
     else {
-      const it = chatItem({ name: '…' }, '…', prev, c.lastAt ? ms(c.lastAt) : 0, () => openRoom(c.id));
-      box.append(it);
-      getUser(otherOf(c)).then(u => { it.querySelector('.nm').textContent = u.name; it.querySelector('.av').replaceWith(avatar(u, 52)); });
+      const it = chatItem({ name: '…' }, '…', prev, x.tm, () => openRoom(id), unr); box.append(it);
+      getUser(otherOf(c)).then(u => { it.querySelector('.nm').textContent = u.name; it.querySelector('.av').replaceWith(avatar(u, 54)); });
     }
   });
-  if (!arr.length) box.append(h('div', 'hint', t('noChats')));
-}
-function chatItem(u, name, prev, time, click) {
-  const it = h('div', 'ci'); it.append(avatar(u, 52));
-  const mid = h('div', 'mid'), n = h('div', 'nm'), l = h('div', 'ls'); n.textContent = name; l.textContent = prev || ' '; mid.append(n, l); it.append(mid);
-  if (time) { const tm = h('div', 'tm'); tm.textContent = dayLabel(time); it.append(tm); }
-  it.onclick = click; return it;
+  if (!items.length && chatFilter !== 'all') box.append(h('div', 'hint', t('noChats')));
+  else if (!Object.keys(chats).length && chatFilter === 'all') box.append(h('div', 'hint', t('noChats')));
 }
 
 /* ---------------- КОМНАТА ---------------- */
 function applyWall() { $('room-bg').style.background = WALLS[(room && room.chat && room.chat.wall) || 0]; }
 function refreshHeader() {
   if (!room) return; const c = room.chat || {}; let av, title, st = '', on = 0;
-  if (room.type === 'bot') { av = avatar(CLAUD, 40); title = 'ClaudBOT'; st = t('bot'); }
+  if (room.type === 'bot') { av = avatar({ bot: true }, 40); title = room.bot.name; st = t('bot'); }
   else if (room.type === 'group') { title = c.title; av = avatar({ name: title, color: colorOf(title) }, 40); st = (c.members || []).length + ' ' + t('members'); }
   else { const u = room.od || userCache[otherOf(c)] || { name: '…' }; title = u.name; av = avatar(u, 40); const s = statusOf(room.od); st = s.txt; on = s.on; }
   $('r-av').replaceChildren(av); $('r-t').textContent = title; const s = $('r-s'); s.textContent = st; s.classList.toggle('on', !!on);
 }
-window.openRoom = async id => {
-  const c = chats[id];
-  if (id !== 'claudbot' && !c) return;
-  room = { id, type: id === 'claudbot' ? 'bot' : (c.group ? 'group' : 'dm'), chat: c, stick: true, od: null };
-  history.pushState({ room: 1 }, '');
-  $('bar').classList.toggle('bot', room.type === 'bot'); $('bar').classList.remove('rec', 'txt'); $('msg').value = '';
-  const box = $('msgs'); box.innerHTML = '';
-  box.onscroll = () => { room.stick = box.scrollHeight - box.scrollTop - box.clientHeight < 140; };
+function enterRoom(r) {
+  room = r; history.pushState({ room: 1 }, '');
+  const box = $('msgs');
+  $('bar').className = 'bar glass' + (r.type === 'bot' ? ' bot' : ''); $('msg').value = '';
+  box.className = r.type === 'bot' ? 'bt' : ''; box.innerHTML = '';
+  box.onscroll = () => { if (room === r) r.stick = box.scrollHeight - box.scrollTop - box.clientHeight < 140; };
+  $('chips').style.display = r.type === 'bot' ? 'flex' : 'none';
+  $('r-call').style.display = $('r-vcall').style.display = r.type === 'dm' ? '' : 'none';
+  $('r-app').style.display = (r.type === 'bot' && r.bot.appId) ? '' : 'none';
+  $('r-info').style.display = r.type === 'bot' ? 'none' : '';
+  msgsUnsub && msgsUnsub(); statusUnsub && statusUnsub(); clearInterval(statusTimer);
   applyWall(); refreshHeader(); show('room');
-  statusUnsub && statusUnsub(); clearInterval(statusTimer); msgsUnsub && msgsUnsub();
-  if (room.type === 'bot') { botLog.forEach((m, i) => box.append(msgEl(m, 'b' + i))); stick(true); return; }
-  if (room.type === 'dm') {
+}
+window.openRoom = async id => {
+  const c = chats[id]; if (!c) return;
+  const r = { id, type: c.group ? 'group' : 'dm', chat: c, stick: true, od: null };
+  enterRoom(r); markRead(id);
+  const box = $('msgs');
+  if (r.type === 'dm') {
     const o = otherOf(c);
-    statusUnsub = onSnapshot(doc(db, 'users', o), s => { if (s.exists() && room) { room.od = s.data({ serverTimestamps: 'estimate' }); userCache[o] = room.od; refreshHeader(); } });
+    statusUnsub = onSnapshot(doc(db, 'users', o), s => { if (s.exists() && room === r) { r.od = s.data({ serverTimestamps: 'estimate' }); userCache[o] = r.od; refreshHeader(); } });
     statusTimer = setInterval(refreshHeader, 30000);
   }
   let first = true;
-  const myRoom = room;
   msgsUnsub = onSnapshot(query(collection(db, `chats/${id}/messages`), orderBy('createdAt', 'desc'), limit(60)), snap => {
-    if (room !== myRoom) return;
+    if (room !== r) return;
     const ch = snap.docChanges(), adds = ch.filter(x => x.type === 'added');
     if (first) { adds.reverse(); first = false; }
     adds.forEach(x => box.append(msgEl(x.doc.data({ serverTimestamps: 'estimate' }), x.doc.id)));
@@ -624,22 +803,27 @@ window.openRoom = async id => {
 };
 function leaveRoom() {
   if (!room) return;
+  if (room.type !== 'bot') markRead(room.id);
   stopRec(false); if (curAudio) curAudio.pause();
   msgsUnsub && msgsUnsub(); statusUnsub && statusUnsub(); clearInterval(statusTimer);
-  room = null; closeSheet(); show('chats'); renderChats();
+  room = null; closeSheet(); tab(curTab === 'room' ? 'chats' : curTab);
 }
-window.addEventListener('popstate', leaveRoom);
+window.addEventListener('popstate', () => { if ($('appv').classList.contains('on')) realCloseApp(); else leaveRoom(); });
 function stick(force) { const b = $('msgs'); if (force || (room && room.stick)) requestAnimationFrame(() => b.scrollTop = b.scrollHeight); }
 function msgEl(m, id) {
   const isMe = m.uid === me.uid, el = h('div', 'm ' + (isMe ? 'out' : 'in')); el.dataset.id = id;
   if (!isMe && room.type === 'group') { const w = h('div', 'who'); el.append(w); getUser(m.uid).then(u => w.textContent = u.name); }
   if (m.img) { const im = new Image(); im.src = m.img; im.onclick = () => { $('viewer-img').src = m.img; $('viewer').classList.add('on'); }; im.onload = () => stick(); el.append(im); }
+  if (m.vid) { const v = document.createElement('video'); v.src = m.vid; v.controls = true; v.playsInline = true; v.preload = 'metadata'; el.append(v); }
   if (m.audio) el.append(voiceEl(m.audio, m.dur || 0));
   if (m.text) { const x = h('div'); x.textContent = m.text; el.append(x); }
+  if (m.appId) { const b = h('button', 'appbtn', t('openApp')); b.onclick = () => openApp(m.appId); el.append(b); }
   const tm = h('div', 'tm'); tm.textContent = hm(toDate(m.createdAt || m.ts)); el.append(tm);
   return el;
 }
 $('viewer').onclick = () => $('viewer').classList.remove('on');
+window.roomCall = kind => { if (room && room.type === 'dm') startCall(otherOf(room.chat), kind); };
+window.openRoomApp = () => { if (room && room.bot && room.bot.appId) openApp(room.bot.appId); };
 
 /* ---------------- ОТПРАВКА ---------------- */
 const barState = () => $('bar').classList.toggle('txt', !!$('msg').value.trim());
@@ -655,7 +839,7 @@ async function send(p, prev) {
 window.sendText = async () => {
   const inp = $('msg'), tx = inp.value.trim(); if (!tx || !room) return;
   inp.value = ''; barState(); inp.focus();
-  if (room.type === 'bot') return botHandle(tx);
+  if (room.type === 'bot') return botRun(tx);
   await send({ text: tx }, tx);
 };
 function resizeImg(file, max, q) {
@@ -671,10 +855,58 @@ function resizeImg(file, max, q) {
     img.onerror = rej; img.src = url;
   });
 }
-$('file').onchange = async e => {
+window.openAttach = () => {
+  if (!room || room.type === 'bot') return;
+  const w = h('div', '', `<h3>${t('attPhoto')} / ${t('video')}</h3>`);
+  [['🖼', 'attPhoto', 'f-img'], ['🎞', 'attVideo', 'f-vid'], ['🎥', 'attCam', 'f-cam']].forEach(([e, k, inp]) => {
+    w.append(lrow(emoAv(e, 42), t(k), '', () => { closeSheet(); $(inp).click(); }));
+  });
+  sheet(w);
+};
+$('f-img').onchange = async e => {
   const f = e.target.files[0]; e.target.value = ''; if (!f || !room) return;
   try { await send({ img: await resizeImg(f, 800, .7) }, t('photo')); } catch { toast(t('sendErr')); }
 };
+async function handleVideo(e) {
+  const f = e.target.files[0]; e.target.value = ''; if (!f || !room || room.type === 'bot') return;
+  toast(t('vidWork'), true);
+  try { const r = await compressVideo(f, p => toast(t('vidWork') + ' ' + p + '%', true)); hideToast(); await send({ vid: r.data, dur: r.dur }, t('video')); }
+  catch (x) { toast(x === 'long' ? t('vidLong') : x === 'big' ? t('vidBig') : t('sendErr')); }
+}
+$('f-vid').onchange = handleVideo; $('f-cam').onchange = handleVideo;
+function compressVideo(file, prog) {
+  return new Promise((res, rej) => {
+    const v = document.createElement('video'); v.playsInline = true; v.preload = 'auto'; v.src = URL.createObjectURL(file);
+    const fail = e => { try { URL.revokeObjectURL(v.src); } catch {} rej(e); };
+    v.onerror = () => fail('err');
+    v.onloadedmetadata = async () => {
+      const dur = v.duration;
+      if (!isFinite(dur) || dur > MAXV + .5) return fail('long');
+      const k = Math.min(1, 360 / (Math.max(v.videoWidth, v.videoHeight) || 360));
+      const w = Math.max(2, Math.round(v.videoWidth * k / 2) * 2), hh = Math.max(2, Math.round(v.videoHeight * k / 2) * 2);
+      const c = document.createElement('canvas'); c.width = w; c.height = hh; const cx = c.getContext('2d');
+      const tracks = c.captureStream(24).getVideoTracks();
+      try {
+        const ac = new (window.AudioContext || window.webkitAudioContext)(); if (ac.resume) ac.resume();
+        const src = ac.createMediaElementSource(v), dst = ac.createMediaStreamDestination(); src.connect(dst);
+        tracks.push(...dst.stream.getAudioTracks());
+      } catch {}
+      const mime = ['video/webm;codecs=vp8,opus', 'video/webm;codecs=vp9,opus', 'video/webm'].find(m => MediaRecorder.isTypeSupported(m)) || '';
+      const mr = new MediaRecorder(new MediaStream(tracks), mime ? { mimeType: mime, videoBitsPerSecond: 230000, audioBitsPerSecond: 24000 } : {});
+      const ch = []; mr.ondataavailable = e => e.data.size && ch.push(e.data);
+      const timer = setInterval(() => { cx.drawImage(v, 0, 0, w, hh); prog && prog(Math.min(99, Math.round(v.currentTime / dur * 100))); }, 42);
+      mr.onstop = () => {
+        clearInterval(timer); URL.revokeObjectURL(v.src);
+        const blob = new Blob(ch, { type: 'video/webm' }); if (blob.size > 700000) return rej('big');
+        const fr = new FileReader(); fr.onloadend = () => res({ data: fr.result, dur: Math.round(dur) }); fr.readAsDataURL(blob);
+      };
+      v.onended = () => { if (mr.state !== 'inactive') mr.stop(); };
+      mr.start(500);
+      setTimeout(() => { if (mr.state !== 'inactive') mr.stop(); }, (dur + 3) * 1000);
+      try { await v.play(); } catch { v.muted = true; try { await v.play(); } catch { clearInterval(timer); if (mr.state !== 'inactive') mr.stop(); fail('err'); } }
+    };
+  });
+}
 
 /* ---------------- ГОЛОСОВЫЕ ---------------- */
 let rec = null, curAudio = null;
@@ -684,28 +916,22 @@ window.startRec = async () => {
   let stream; try { stream = await navigator.mediaDevices.getUserMedia({ audio: true }); } catch { return toast(t('noMic')); }
   const mime = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4'].find(m => MediaRecorder.isTypeSupported(m)) || '';
   const mr = new MediaRecorder(stream, mime ? { mimeType: mime, audioBitsPerSecond: 24000 } : { audioBitsPerSecond: 24000 });
-  const r = { mr, stream, chunks: [], t0: Date.now(), send: false, rid: room.id };
+  const r = { mr, stream, chunks: [], t0: Date.now(), ok: false, rid: room.id };
   mr.ondataavailable = e => e.data.size && r.chunks.push(e.data);
-  mr.onstop = async () => {
+  mr.onstop = () => {
     stream.getTracks().forEach(x => x.stop());
-    if (!r.send || !room || room.id !== r.rid) return;
+    if (!r.ok || !room || room.id !== r.rid) return;
     const dur = (Date.now() - r.t0) / 1000;
     if (dur < .7) return toast(t('tooShort'));
     const blob = new Blob(r.chunks, { type: mr.mimeType || 'audio/webm' });
     if (blob.size > 700000) return toast(t('tooBig'));
-    const fr = new FileReader();
-    fr.onloadend = () => send({ audio: fr.result, dur: Math.round(dur) }, t('voice'));
-    fr.readAsDataURL(blob);
+    const fr = new FileReader(); fr.onloadend = () => send({ audio: fr.result, dur: Math.round(dur) }, t('voice')); fr.readAsDataURL(blob);
   };
   mr.start(250); rec = r; $('bar').classList.add('rec'); $('rec-t').textContent = '0:00';
-  if (navigator.vibrate) navigator.vibrate(30);
-  r.timer = setInterval(() => {
-    const s = (Date.now() - r.t0) / 1000; $('rec-t').textContent = fmtDur(s);
-    if (s >= 30) stopRec(true);
-  }, 200);
+  r.timer = setInterval(() => { const s = (Date.now() - r.t0) / 1000; $('rec-t').textContent = fmtDur(s); if (s >= 30) stopRec(true); }, 200);
 };
-window.stopRec = send => {
-  const r = rec; if (!r) return; rec = null; r.send = send; clearInterval(r.timer);
+window.stopRec = ok => {
+  const r = rec; if (!r) return; rec = null; r.ok = ok; clearInterval(r.timer);
   $('bar').classList.remove('rec');
   if (r.mr.state !== 'inactive') r.mr.stop();
 };
@@ -721,23 +947,29 @@ function voiceEl(src, dur) {
   return w;
 }
 
-/* ---------------- ШИТЫ: поиск, группы, инфо ---------------- */
-function sheet(node) { const b = $('sheet-body'); b.replaceChildren(node); $('sheet').classList.add('on'); }
+/* ---------------- SHEET / ПОИСК / ГРУППЫ ---------------- */
+function sheet(node) { $('sheet-body').replaceChildren(node); $('sheet').classList.add('on'); }
 function closeSheet() { $('sheet').classList.remove('on'); }
 $('sheet').addEventListener('click', e => { if (e.target.id === 'sheet') closeSheet(); });
+const lab = txt => h('div', 'lbl', txt);
+function fld(ph, val, max) { const i = h('input', 'fld'); i.placeholder = ph; i.value = val || ''; if (max) i.maxLength = max; i.autocapitalize = 'off'; i.spellcheck = false; return i; }
 async function findUsers(term) {
-  term = term.trim().toLowerCase().replace(/^@/, ''); if (!term) return [];
   const s = await getDocs(query(collection(db, 'users'), where('username', '>=', term), where('username', '<=', term + '\uf8ff'), limit(10)));
   return s.docs.filter(d => d.id !== me.uid).map(d => ({ id: d.id, ...d.data() }));
 }
-function searchBox(w, onPick) {
-  const inp = h('input', 'fld'); inp.placeholder = t('searchPh'); inp.autocapitalize = 'off'; inp.spellcheck = false;
-  const res = h('div'); let tm;
+async function findBots(term) {
+  const s = await getDocs(query(collection(db, 'bots'), where('username', '>=', term), where('username', '<=', term + '\uf8ff'), limit(10)));
+  return s.docs.map(d => d.data());
+}
+function searchBox(w, onPick, withBots) {
+  const inp = fld(t('searchPh')), res = h('div'); let tm;
   inp.oninput = () => { clearTimeout(tm); tm = setTimeout(async () => {
+    const v = inp.value.trim().toLowerCase().replace(/^@/, ''); res.innerHTML = ''; if (!v) return;
     try {
-      const us = await findUsers(inp.value); res.innerHTML = '';
-      if (!us.length && inp.value.trim()) res.append(h('div', 'hint', t('nothing')));
+      const us = await findUsers(v), bs = withBots ? await findBots(v) : [];
+      if (!us.length && !bs.length) res.append(h('div', 'hint', t('nothing')));
       us.forEach(u => { userCache[u.id] = u; const r = userRow(u); r.onclick = () => onPick(u); res.append(r); });
+      bs.forEach(b => res.append(lrow(avatar({ bot: true }, 42), b.name, '@' + b.username, () => { closeSheet(); openBot(b.username); }, h('span', 'badge', t('bot')))));
     } catch (e) { toast(e.message); }
   }, 300); };
   w.append(inp, res); return inp;
@@ -749,11 +981,11 @@ window.openSearch = () => {
     try { await setDoc(doc(db, 'chats', id), { members: [me.uid, u.id], group: false }, { merge: true }); } catch (e) { return toast(e.message); }
     chats[id] = chats[id] || { members: [me.uid, u.id], group: false };
     closeSheet(); openRoom(id);
-  });
+  }, true);
   sheet(w); setTimeout(() => w.querySelector('input').focus(), 250);
 };
 window.openNewGroup = () => {
-  const w = h('div', '', `<h3>${t('newGroup')}</h3>`), inp = h('input', 'fld'); inp.placeholder = t('groupName'); inp.maxLength = 40;
+  const w = h('div', '', `<h3>${t('newGroup')}</h3>`), inp = fld(t('groupName'), '', 40);
   const ok = h('button', 'btn', t('create')), no = h('button', 'btn ghost', t('cancel'));
   ok.onclick = async () => {
     const name = inp.value.trim(); if (!name) return;
@@ -763,9 +995,8 @@ window.openNewGroup = () => {
   no.onclick = closeSheet; w.append(inp, ok, no); sheet(w); setTimeout(() => inp.focus(), 250);
 };
 window.openInfo = async () => {
-  if (!room) return;
+  if (!room || room.type === 'bot') return;
   const c = room.chat || {}, isG = room.type === 'group', adm = !isG || (c.admins || []).includes(me.uid), w = h('div');
-  if (room.type === 'bot') return;
   w.append(h('h3', '', t('wallpaper')));
   const walls = h('div', 'walls');
   WALLS.forEach((bg, i) => {
@@ -781,8 +1012,7 @@ window.openInfo = async () => {
     w.append(h('h3', '', `${t('membersT')} (${c.members.length})`));
     const list = h('div'); w.append(list);
     for (const uid of c.members) {
-      const u = await getUser(uid); let btn = null;
-      const isA = (c.admins || []).includes(uid);
+      const u = await getUser(uid); let btn = null; const isA = (c.admins || []).includes(uid);
       if (isA) btn = h('span', 'badge', t('admin'));
       else if (adm) {
         btn = h('button', 'badge', t('makeAdmin'));
@@ -790,17 +1020,16 @@ window.openInfo = async () => {
       }
       list.append(userRow(u, btn));
     }
-    w.append(h('h3', '', t('addMember')).constructor === HTMLElement ? '' : '');
     const ah = h('h3', '', t('addMember')); ah.style.marginTop = '16px'; w.append(ah);
     searchBox(w, async u => {
       if (c.members.includes(u.id)) return;
       try { await updateDoc(doc(db, 'chats', room.id), { members: arrayUnion(u.id) }); c.members = [...c.members, u.id]; toast(t('added')); openInfo(); } catch (x) { toast(x.message); }
-    });
+    }, false);
     const lv = h('button', 'btn ghost', t('leave')); lv.style.cssText = 'margin-top:16px;color:#ff8a80';
     lv.onclick = async () => {
       try {
-        const rest = c.members.filter(x => x !== me.uid), upd = { members: arrayRemove(me.uid), admins: arrayRemove(me.uid) };
-        await updateDoc(doc(db, 'chats', room.id), upd);
+        const rest = c.members.filter(x => x !== me.uid);
+        await updateDoc(doc(db, 'chats', room.id), { members: arrayRemove(me.uid), admins: arrayRemove(me.uid) });
         if (rest.length && !(c.admins || []).some(a => a !== me.uid)) await updateDoc(doc(db, 'chats', room.id), { admins: [rest[0]] }).catch(() => {});
         delete chats[room.id]; history.back();
       } catch (x) { toast(x.message); }
@@ -810,81 +1039,367 @@ window.openInfo = async () => {
   sheet(w);
 };
 
-/* ---------------- ПРОФИЛЬ ---------------- */
-function fillProfile() {
-  if (!meData) return;
-  $('p-ban').style.background = `linear-gradient(135deg,${tmpColor},#1b1b26)`;
-  $('p-av').replaceChildren(avatar({ ...meData, color: tmpColor }, 88));
-  $('p-nm').textContent = meData.name || meData.username; $('p-un').textContent = '@' + meData.username;
-  $('p-name').value = meData.name || ''; $('p-bio').value = meData.bio || ''; $('p-user').value = meData.username;
-  const sw = $('p-sw'); sw.innerHTML = '';
-  COLORS.forEach(c => { const i = h('i', c === tmpColor ? 'on' : ''); i.style.background = c; i.onclick = () => { tmpColor = c; fillProfile(); }; sw.append(i); });
+/* ---------------- ЗВОНКИ (WebRTC) ---------------- */
+let cs = null, inc = null, ringT, actx;
+function ring(on) {
+  clearInterval(ringT); if (navigator.vibrate) navigator.vibrate(0);
+  if (!on) return;
+  const beep = () => {
+    try { actx = actx || new (window.AudioContext || window.webkitAudioContext)(); const o = actx.createOscillator(), g = actx.createGain(); o.frequency.value = 440; g.gain.value = .12; o.connect(g); g.connect(actx.destination); o.start(); o.stop(actx.currentTime + .4); } catch {}
+    if (navigator.vibrate) navigator.vibrate([400, 200, 400]);
+  };
+  beep(); ringT = setInterval(beep, 2000);
 }
-window.saveProfile = async () => {
-  const name = $('p-name').value.trim().slice(0, 32) || meData.username, bio = $('p-bio').value.trim().slice(0, 120);
-  const un = $('p-user').value.trim().toLowerCase().replace(/^@/, '');
+function mkCall(ref, kind, ouid, o, local, role) {
+  const pc = new RTCPeerConnection(ICE), remote = new MediaStream();
+  const c = { id: ref.id, ref, kind, ouid, o, local, remote, pc, role, unsubs: [], pend: [], outq: [], ready: role === 'callee', muted: false, camOff: false, t0: 0 };
+  local.getTracks().forEach(tr => pc.addTrack(tr, local));
+  pc.ontrack = e => remote.addTrack(e.track);
+  pc.onconnectionstatechange = () => {
+    if (cs !== c) return;
+    if (pc.connectionState === 'connected' && !c.t0) startTimer(c);
+    if (pc.connectionState === 'failed') { toast(t('callFail')); endCall(true, false, 'ended'); }
+  };
+  return c;
+}
+function sendIce(c, sub, cand) { if (c.ready) addDoc(collection(c.ref, sub), cand).catch(() => {}); else c.outq.push([sub, cand]); }
+function addIce(c, cand) { if (c.pc.remoteDescription) c.pc.addIceCandidate(cand).catch(() => {}); else c.pend.push(cand); }
+function flushIce(c) { c.pend.splice(0).forEach(x => c.pc.addIceCandidate(x).catch(() => {})); }
+function startTimer(c) {
+  c.t0 = Date.now(); clearTimeout(c.ringTO);
+  c.timer = setInterval(() => { const s = fmtDur((Date.now() - c.t0) / 1000); $('c-st').textContent = s; $('cb-t').textContent = '📞 ' + c.o.name + ' · ' + s; }, 500);
+}
+async function getMedia(kind) {
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw 0;
+  return navigator.mediaDevices.getUserMedia({ audio: true, video: kind === 'video' ? { facingMode: 'user', width: 640, height: 480 } : false });
+}
+async function startCall(ouid, kind) {
+  if (cs) return toast(t('busy'));
+  const o = await getUser(ouid); let local;
+  try { local = await getMedia(kind); } catch { return toast(t('noCam')); }
+  const ref = doc(collection(db, 'calls')), c = cs = mkCall(ref, kind, ouid, o, local, 'caller'), pc = c.pc;
+  pc.onicecandidate = e => e.candidate && sendIce(c, 'callerCand', e.candidate.toJSON());
+  showCall();
   try {
-    if (un !== meData.username) {
-      if (!UNAME.test(un)) return toast(t('badUser'));
-      const ex = await getDoc(doc(db, 'usernames', un).withConverter ? doc(db, 'usernames', un) : doc(db, 'usernames', un));
-      if (ex.exists() && ex.data().uid !== me.uid) return toast(t('taken'));
-      await setDoc(doc(db, 'usernames', un), { uid: me.uid, email: me.email });
-      try { await deleteDoc(doc(db, 'usernames', meData.username)); } catch {}
-    }
-    await updateDoc(doc(db, 'users', me.uid), { name, bio, username: un, color: tmpColor });
-    Object.assign(meData, { name, bio, username: un, color: tmpColor }); userCache[me.uid] = meData;
-    toast(t('saved')); fillProfile();
-  } catch (e) { toast(e.message); }
+    const offer = await pc.createOffer(); await pc.setLocalDescription(offer);
+    await setDoc(ref, { from: me.uid, to: ouid, members: [me.uid, ouid], kind, status: 'ringing', offer: { type: offer.type, sdp: offer.sdp }, createdAt: serverTimestamp() });
+  } catch (e) { endCall(false); return toast(e.message); }
+  c.ready = true; c.outq.splice(0).forEach(([s, x]) => sendIce(c, s, x));
+  c.unsubs.push(onSnapshot(ref, async s => {
+    const d = s.data(); if (!d || cs !== c) return;
+    if (d.answer && !pc.currentRemoteDescription) { try { await pc.setRemoteDescription(d.answer); flushIce(c); } catch {} }
+    if (['declined', 'ended', 'missed'].includes(d.status)) endCall(false, true);
+  }));
+  c.unsubs.push(onSnapshot(collection(ref, 'calleeCand'), s => s.docChanges().forEach(x => x.type === 'added' && addIce(c, x.doc.data()))));
+  c.ringTO = setTimeout(() => { if (cs === c && !c.t0) endCall(true, false, 'missed'); }, 45000);
+}
+async function answerCall(id, d) {
+  hideIncoming(); if (cs) return;
+  const ref = doc(db, 'calls', id), o = await getUser(d.from); let local;
+  try { local = await getMedia(d.kind); } catch { updateDoc(ref, { status: 'declined', endedAt: serverTimestamp() }).catch(() => {}); return toast(t('noCam')); }
+  const c = cs = mkCall(ref, d.kind, d.from, o, local, 'callee'), pc = c.pc;
+  pc.onicecandidate = e => e.candidate && sendIce(c, 'calleeCand', e.candidate.toJSON());
+  showCall();
+  try {
+    await pc.setRemoteDescription(d.offer);
+    const ans = await pc.createAnswer(); await pc.setLocalDescription(ans);
+    await updateDoc(ref, { answer: { type: ans.type, sdp: ans.sdp }, status: 'accepted', acceptedAt: serverTimestamp() });
+  } catch (e) { endCall(false); return toast(e.message); }
+  c.unsubs.push(onSnapshot(collection(ref, 'callerCand'), s => s.docChanges().forEach(x => x.type === 'added' && addIce(c, x.doc.data()))));
+  c.unsubs.push(onSnapshot(ref, s => { const dd = s.data(); if (dd && cs === c && ['ended', 'missed'].includes(dd.status)) endCall(false, true); }));
+  flushIce(c);
+}
+function showCall() {
+  const c = cs; if (!c) return;
+  $('call').classList.toggle('v', c.kind === 'video'); $('call').classList.add('on');
+  $('callbar').classList.remove('on'); document.body.classList.remove('incall');
+  $('c-av').replaceChildren(avatar(c.o, 110)); $('c-nm').textContent = c.o.name;
+  $('c-st').textContent = c.t0 ? fmtDur((Date.now() - c.t0) / 1000) : t(c.role === 'caller' ? 'calling' : 'connecting');
+  $('l-vid').srcObject = c.kind === 'video' ? c.local : null;
+  $('r-vid').srcObject = c.remote; $('r-aud').srcObject = c.remote; $('r-aud').play().catch(() => {});
+  $('b-mic').innerHTML = ic(c.muted ? 'i-micoff' : 'i-mic'); $('b-mic').classList.toggle('off', c.muted);
+  $('b-cam').innerHTML = ic(c.camOff ? 'i-videooff' : 'i-video'); $('b-cam').classList.toggle('off', c.camOff);
+}
+window.minCall = () => { if (!cs) return; $('call').classList.remove('on'); $('cb-t').textContent = '📞 ' + cs.o.name + (cs.t0 ? ' · ' + fmtDur((Date.now() - cs.t0) / 1000) : ''); $('callbar').classList.add('on'); document.body.classList.add('incall'); };
+window.restoreCall = () => showCall();
+window.togMic = () => { const c = cs; if (!c) return; c.muted = !c.muted; c.local.getAudioTracks().forEach(x => x.enabled = !c.muted); showCall(); };
+window.togCam = () => { const c = cs; if (!c) return; c.camOff = !c.camOff; c.local.getVideoTracks().forEach(x => x.enabled = !c.camOff); showCall(); };
+window.hangUp = () => { const c = cs; if (!c) return; endCall(true, false, c.t0 ? 'ended' : (c.role === 'caller' ? 'missed' : 'declined')); };
+function endCall(notify, remoteEnded, status) {
+  const c = cs; if (!c) return; cs = null;
+  clearTimeout(c.ringTO); clearInterval(c.timer); c.unsubs.forEach(u => u());
+  if (notify) updateDoc(c.ref, { status: status || 'ended', endedAt: serverTimestamp() }).catch(() => {});
+  try { c.pc.close(); } catch {} c.local.getTracks().forEach(x => x.stop());
+  $('call').classList.remove('on'); $('callbar').classList.remove('on'); document.body.classList.remove('incall');
+  $('r-vid').srcObject = null; $('r-aud').srcObject = null; $('l-vid').srcObject = null;
+  if (remoteEnded) toast(t('callEnded'));
+}
+function showIncoming(id, d) {
+  inc = { id, d, to: setTimeout(hideIncoming, 45000) };
+  $('i-av').replaceChildren(avatar({ name: '?' }, 110)); $('i-nm').textContent = '';
+  getUser(d.from).then(u => { if (inc && inc.id === id) { $('i-av').replaceChildren(avatar(u, 110)); $('i-nm').textContent = u.name; } });
+  $('i-st').textContent = t(d.kind === 'video' ? 'incomingV' : 'incomingA'); $('incoming').classList.add('on'); ring(true);
+}
+function hideIncoming() { if (inc) clearTimeout(inc.to); inc = null; $('incoming').classList.remove('on'); ring(false); }
+window.acceptCall = () => { if (!inc) return; const { id, d } = inc; answerCall(id, d); };
+window.declineCall = () => { if (!inc) return; const { id } = inc; hideIncoming(); updateDoc(doc(db, 'calls', id), { status: 'declined', endedAt: serverTimestamp() }).catch(() => {}); };
+function listenCalls() {
+  callsUnsub && callsUnsub();
+  callsUnsub = onSnapshot(query(collection(db, 'calls'), where('members', 'array-contains', me.uid)), snap => {
+    snap.docChanges().forEach(ch => {
+      const d = ch.doc.data({ serverTimestamps: 'estimate' }), id = ch.doc.id; callMap[id] = d;
+      if (d.to === me.uid && d.status === 'ringing' && ch.type === 'added' && Date.now() - ms(d.createdAt) < 90000) {
+        if (cs || inc) updateDoc(ch.doc.ref, { status: 'declined', endedAt: serverTimestamp() }).catch(() => {}); else showIncoming(id, d);
+      }
+      if (inc && inc.id === id && d.status !== 'ringing') hideIncoming();
+    });
+    if (curTab === 'calls') renderCalls();
+  }, () => {});
+}
+function renderCalls() {
+  const box = $('calls-list'); if (!box || !me) return; box.innerHTML = '';
+  const cta = h('div', 'cta', ic('i-phone') + `<span>${t('callContact')}</span>`); cta.onclick = openCallPicker; box.append(cta);
+  const tabs = h('div', 'tabs');
+  [['all', 'fAll'], ['miss', 'fMissed']].forEach(([k, l]) => { const b = h('button', callFilter === k ? 'on' : '', t(l)); b.onclick = () => { callFilter = k; renderCalls(); }; tabs.append(b); });
+  box.append(tabs);
+  const arr = Object.entries(callMap).map(([id, d]) => ({ id, ...d })).sort((a, b) => ms(b.createdAt) - ms(a.createdAt));
+  let n = 0;
+  arr.forEach(c => {
+    const out = c.from === me.uid, ouid = out ? c.to : c.from;
+    const ok = !!c.acceptedAt && (c.status === 'ended' || c.status === 'accepted');
+    if (callFilter === 'miss' && (ok || out)) return;
+    n++;
+    const dur = ok ? Math.max(0, ((ms(c.endedAt) || ms(c.acceptedAt)) - ms(c.acceptedAt)) / 1000) : 0;
+    const it = h('div', 'ci'); it.append(avatar({ name: '…' }, 54));
+    const mid = h('div', 'mid'), nm = h('div', 'nm'), inf = h('div', 'cinfo ' + (ok ? 'mut' : (out ? 'mut' : 'red')));
+    nm.textContent = '…'; if (!ok && !out) nm.style.color = '#ff6b6b';
+    inf.textContent = (c.kind === 'video' ? '📹 ' : '') + (ok ? (out ? '↗ ' + t('outgoing') : '↙ ' + t('incoming')) + ' · ' + fmtDur(dur) : (out ? '↗ ' + t('noAnswer') : '✕ ' + t('missed')));
+    mid.append(nm, inf);
+    const rc = h('div', 'rc'); const tm = h('div', 'tm'); tm.textContent = dayLabel(c.createdAt); rc.append(tm);
+    const call = h('button', 'ib', ic('i-phone')); call.onclick = e => { e.stopPropagation(); startCall(ouid, c.kind || 'audio'); };
+    it.append(mid, rc, call); it.onclick = () => startCall(ouid, c.kind || 'audio'); box.append(it);
+    getUser(ouid).then(u => { nm.textContent = u.name; it.querySelector('.av').replaceWith(avatar(u, 54)); });
+  });
+  if (!n) box.append(h('div', 'hint', t('noCalls')));
+}
+window.openCallPicker = () => {
+  const w = h('div', '', `<h3>${t('callContact')}</h3>`);
+  searchBox(w, u => callChoice(u), false); sheet(w); setTimeout(() => w.querySelector('input').focus(), 250);
 };
-$('p-file').onchange = async e => {
-  const f = e.target.files[0]; e.target.value = ''; if (!f) return;
-  try { const url = await resizeImg(f, 256, .8); await updateDoc(doc(db, 'users', me.uid), { avatar: url }); meData.avatar = url; fillProfile(); toast(t('saved')); } catch (x) { toast(x.message); }
-};
+function callChoice(u) {
+  const w = h('div', '', `<h3>${t('callTo')}</h3>`); w.append(userRow(u));
+  const a = h('button', 'btn', t('callAudio')), v = h('button', 'btn ghost', t('callVideo')); a.style.marginTop = '14px';
+  a.onclick = () => { closeSheet(); startCall(u.id, 'audio'); }; v.onclick = () => { closeSheet(); startCall(u.id, 'video'); };
+  w.append(a, v); sheet(w);
+}
 
 /* ---------------- БОТЫ ---------------- */
-function listenBots() {
-  botsUnsub && botsUnsub();
-  botsUnsub = onSnapshot(query(collection(db, 'bots'), where('owner', '==', me.uid)), s => { myBots = s.docs.map(d => ({ id: d.id, ...d.data() })); renderBots(); }, () => {});
-}
-function renderBots() {
-  const box = $('bots-list'); if (!box || !me) return; box.innerHTML = '';
-  box.append(chatItem({ name: 'ClaudBOT', bot: true }, 'ClaudBOT', t('botHelp').split('\n')[0], 0, () => openRoom('claudbot')));
-  const hd = h('div', 'lbl', t('myBots')); hd.style.margin = '14px 4px 8px'; box.append(hd);
-  if (!myBots.length) box.append(h('div', 'hint', t('noBots')));
-  myBots.forEach(b => {
-    const it = chatItem({ name: b.name, bot: true }, b.name, 'ID: ' + b.id, 0, async () => { try { await navigator.clipboard.writeText(b.token); toast(t('copied')); } catch { toast(b.token); } });
-    box.append(it);
-  });
-  const nb = h('button', 'btn', t('createBot')); nb.style.marginTop = '12px'; nb.onclick = newBot; box.append(nb);
-}
-window.newBot = () => { openRoom('claudbot').then(() => botHandle('/newbot')); };
-let botLog = [], botFlow = null;
-const botKey = () => 'cm_bot_' + me.uid;
-function loadBotLog() {
-  try { botLog = JSON.parse(localStorage.getItem(botKey()) || '[]'); } catch { botLog = []; }
-  if (!botLog.length) botLog.push({ uid: 'claudbot', text: t('botHelp'), ts: Date.now() });
+const acts = { newbot: () => openBotEditor(), newapp: () => openAppEditor(), mine: () => { history.back(); setTimeout(() => tab('apps'), 120); } };
+async function openBot(un) {
+  let b = un === 'claudbot' ? CLAUD : null;
+  if (!b) { try { const s = await getDoc(doc(db, 'bots', un)); if (s.exists()) b = s.data(); } catch (e) { return toast(e.message); } }
+  if (!b) return toast(t('botNone'));
+  b.username = un; rememberBot(b);
+  const r = { id: 'bot:' + un, type: 'bot', bot: b, chat: {}, stick: true, log: [] };
+  try { r.log = JSON.parse(localStorage.getItem(logKey(un)) || '[]'); } catch {}
+  enterRoom(r);
+  const ch = $('chips'); ch.innerHTML = '';
+  (b.cmds || []).slice(0, 20).forEach(c => { const x = h('button', 'chip'); x.textContent = c.c; x.onclick = () => botRun(c.c); ch.append(x); });
+  r.log.forEach((m, i) => $('msgs').append(msgEl(m, 'b' + i))); stick(true);
+  if (!r.log.length) botRun('/start', true);
 }
 function pushBot(m) {
-  m.ts = Date.now(); botLog.push(m); localStorage.setItem(botKey(), JSON.stringify(botLog.slice(-100)));
-  if (room && room.type === 'bot') { $('msgs').append(msgEl(m, 'b' + botLog.length)); stick(true); }
+  const r = room; if (!r || r.type !== 'bot') return;
+  m.ts = Date.now(); r.log.push(m);
+  try { localStorage.setItem(logKey(r.bot.username), JSON.stringify(r.log.slice(-80))); } catch {}
+  $('msgs').append(msgEl(m, 'b' + r.log.length)); stick(true);
 }
-const botSay = text => pushBot({ uid: 'claudbot', text });
-async function botHandle(text) {
-  pushBot({ uid: me.uid, text });
-  const [cmd, ...args] = text.split(/\s+/);
-  if (botFlow === 'name' && !text.startsWith('/')) {
-    botFlow = null; const name = text.slice(0, 32), id = rnd(6, 'abcdefghijklmnopqrstuvwxyz0123456789'), tk = id + ':' + rnd(28, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789');
-    try { await setDoc(doc(db, 'bots', id), { owner: me.uid, token: tk, name, createdAt: serverTimestamp() }); botSay(t('botMade', { n: name, id, tk })); }
-    catch (e) { botSay(e.message); }
-    return;
+function botRun(text, silent) {
+  const r = room; if (!r || r.type !== 'bot') return;
+  const b = r.bot; if (!silent) pushBot({ uid: me.uid, text });
+  const cmd = text.trim().split(/\s+/)[0].toLowerCase();
+  const c = (b.cmds || []).find(x => (x.c || '').toLowerCase() === cmd);
+  let reply, extra = {};
+  if (c) reply = b.builtin ? t(c.r) : c.r;
+  else if (cmd === '/start') reply = b.builtin ? t('claudAbout') : (b.about || t('hello'));
+  else if (cmd === '/help') reply = t('helpTitle') + '\n' + (b.cmds || []).map(x => x.c).join('\n');
+  else reply = b.dflt || t('botUnk');
+  reply = String(reply || '').replace(/\{name\}/g, meData.name);
+  if (b.appId && cmd === '/start') extra.appId = b.appId;
+  pushBot({ uid: 'bot', text: reply, ...extra });
+  if (c && c.act && acts[c.act]) acts[c.act]();
+}
+window.openBotEditor = b => {
+  const edit = !!b; b = b || { cmds: [{ c: '/start', r: 'Привет, {name}!' }] };
+  const w = h('div', '', `<h3>${t(edit ? 'editBotT' : 'newBotT')}</h3>`);
+  const nm = fld(t('botName'), b.name, 32), un = fld('shop_bot', b.username, 29), ab = fld(t('botAbout'), b.about, 200), df = fld(t('botDflt'), b.dflt, 200);
+  if (edit) { un.disabled = true; un.style.opacity = .6; }
+  const sel = h('select', 'fld'); sel.innerHTML = `<option value="">${t('botNoApp')}</option>`;
+  myApps.forEach(a => { const o = h('option'); o.value = a.id; o.textContent = (a.icon || '') + ' ' + a.title; sel.append(o); }); sel.value = b.appId || '';
+  const list = h('div');
+  const addRow = (c, r) => {
+    const row = h('div', 'crow'), ci = fld(t('botCmdPh'), c, 30), ri = fld(t('botReplyPh'), r, 400), x = h('button', 'ib', ic('i-x'));
+    ci.style.width = '34%'; x.onclick = () => row.remove(); row.append(ci, ri, x); list.append(row);
+  };
+  (b.cmds || []).forEach(c => addRow(c.c, c.r));
+  const add = h('button', 'btn ghost sm', t('addCmd')); add.onclick = () => addRow('', '');
+  const ok = h('button', 'btn', t('save')); ok.style.marginTop = '14px';
+  w.append(lab(t('botName')), nm, lab(t('botUser')), un, lab(t('botAbout')), ab, lab(t('botCmds')), list, add, lab(t('botDflt')), df, lab(t('botApp')), sel, ok);
+  ok.onclick = async () => {
+    const name = nm.value.trim(), u = un.value.trim().toLowerCase().replace(/^@/, '');
+    if (!name) return toast(t('fill'));
+    if (!edit) {
+      if (!/^[a-z0-9_]{3,29}bot$/.test(u) || RESERVED.includes(u)) return toast(t('botUserBad'));
+      try { if ((await getDoc(doc(db, 'usernames', u))).exists()) return toast(t('taken')); } catch (e) { return toast(e.message); }
+    }
+    const cmds = [...list.children].map(r => { const i = r.querySelectorAll('input'); let c = i[0].value.trim().toLowerCase().split(/\s+/)[0]; if (c && c[0] !== '/') c = '/' + c; return { c, r: i[1].value.trim() }; }).filter(x => x.c.length > 1 && x.r).slice(0, 20);
+    const data = { owner: me.uid, username: u, name, about: ab.value.trim(), dflt: df.value.trim(), cmds, appId: sel.value };
+    const bt = writeBatch(db);
+    if (edit) bt.update(doc(db, 'bots', u), data);
+    else { bt.set(doc(db, 'usernames', u), { uid: me.uid, bot: true }); bt.set(doc(db, 'bots', u), { ...data, createdAt: serverTimestamp() }); }
+    try { await bt.commit(); closeSheet(); toast(t('saved')); catAt = 0; if (curTab === 'apps') loadCatalog(); } catch (e) { toast(e.code === 'permission-denied' ? t('taken') : e.message); }
+  };
+  if (edit) {
+    const dl = h('button', 'btn ghost', t('del')); dl.style.color = '#ff8a80';
+    dl.onclick = async () => { if (!confirm(t('delQ'))) return; const bt = writeBatch(db); bt.delete(doc(db, 'bots', b.username)); bt.delete(doc(db, 'usernames', b.username)); try { await bt.commit(); closeSheet(); catAt = 0; loadCatalog(); } catch (e) { toast(e.message); } };
+    w.append(dl);
   }
-  botFlow = null;
-  if (cmd === '/newbot') { botFlow = 'name'; botSay(t('botAsk')); }
-  else if (cmd === '/mybots') botSay(myBots.length ? t('botList') + '\n' + myBots.map(b => `• ${b.name} — ${b.id}`).join('\n') : t('botNone'));
-  else if (cmd === '/token') { const b = myBots.find(x => x.id === (args[0] || '').trim()); botSay(b ? b.token : t('botNo')); }
-  else if (cmd === '/start' || cmd === '/help') botSay(t('botHelp'));
-  else botSay(t('botUnk'));
+  sheet(w);
+};
+
+/* ---------------- МИНИ-ПРИЛОЖЕНИЯ ---------------- */
+function inject(html) {
+  const u = JSON.stringify({ id: me.uid, name: meData.name, username: meData.username, lang }).replace(/</g, '\\u003c');
+  const shim = `<script>(function(){var q={},n=0;addEventListener('message',function(e){var d=e.data;if(d&&d.cmR&&q[d.id]){q[d.id](d.v);delete q[d.id]}});function c(m,a){return new Promise(function(r){var i=++n;q[i]=r;parent.postMessage({cm:1,id:i,m:m,a:a},'*')})}window.ClaudeMAX={user:${u},close:function(){c('close')},toast:function(t){c('toast',t)},vibrate:function(){c('vib')},storage:{get:function(k){return c('sg',k)},set:function(k,v){return c('ss',[k,v])}}}})();<\/script>`;
+  return /<head[^>]*>/i.test(html) ? html.replace(/<head[^>]*>/i, m => m + shim) : shim + html;
 }
+function runApp(title, id, html) {
+  curApp = id; $('app-title').textContent = title; $('app-frame').srcdoc = inject(html);
+  $('appv').classList.add('on'); history.pushState({ app: 1 }, '');
+}
+function realCloseApp() { $('appv').classList.remove('on'); $('app-frame').srcdoc = ''; }
+async function openApp(id, meta) {
+  try {
+    const [m, c] = await Promise.all([meta ? meta : getDoc(doc(db, 'apps', id)).then(s => s.exists() ? s.data() : null), getDoc(doc(db, 'appcode', id))]);
+    if (!c.exists()) return toast(t('noApp'));
+    runApp((m && m.title) || 'App', id, c.data().html);
+  } catch (e) { toast(e.message); }
+}
+window.addEventListener('message', e => {
+  const f = $('app-frame'); if (!f || !me || e.source !== f.contentWindow) return;
+  const d = e.data; if (!d || !d.cm) return;
+  const rep = v => e.source.postMessage({ cmR: 1, id: d.id, v }, '*'), k = a => `cm_app_${curApp}_${me.uid}_${a}`;
+  if (d.m === 'close') history.back();
+  else if (d.m === 'toast') toast(String(d.a).slice(0, 120));
+  else if (d.m === 'vib') { navigator.vibrate && navigator.vibrate(30); rep(1); }
+  else if (d.m === 'sg') rep(localStorage.getItem(k(d.a)));
+  else if (d.m === 'ss') { try { localStorage.setItem(k(d.a[0]), String(d.a[1]).slice(0, 5000)); } catch {} rep(1); }
+});
+async function loadCatalog() {
+  if (Date.now() - catAt < 60000) return; catAt = Date.now();
+  try {
+    const [a, b] = await Promise.all([getDocs(query(collection(db, 'apps'), orderBy('createdAt', 'desc'), limit(30))), getDocs(query(collection(db, 'bots'), limit(30)))]);
+    catApps = a.docs.map(d => ({ id: d.id, ...d.data() })); catBots = b.docs.map(d => d.data()).filter(x => x.username);
+    if (curTab === 'apps') renderApps();
+  } catch { catAt = 0; }
+}
+const appTile = a => { const tl = h('div', 'tile'), ico = h('div', 'ico'), b = h('b'); ico.textContent = a.icon || '🧩'; b.textContent = a.title; tl.append(ico, b); tl.onclick = () => openApp(a.id, a); return tl; };
+function renderApps() {
+  const box = $('apps-body'); if (!box || !me) return; box.innerHTML = '';
+  const ac = h('div', 'acts');
+  const a1 = h('button', 'act', `<span style="font-size:26px">🧩</span><b>${t('createApp')}</b><small>${t('createAppSub')}</small>`); a1.onclick = () => openAppEditor();
+  const a2 = h('button', 'act', `<span style="font-size:26px">🤖</span><b>${t('createBot')}</b><small>${t('createBotSub')}</small>`); a2.onclick = () => openBotEditor();
+  ac.append(a1, a2); box.append(ac);
+  box.append(lab(t('mine')));
+  if (!myApps.length && !myBots.length) box.append(h('div', 'hint', t('noMine')));
+  myBots.forEach(b => box.append(lrow(avatar({ bot: true }, 44), b.name, '@' + b.username, () => openBotEditor(b), h('span', 'badge', t('bot')))));
+  if (myApps.length) { const g = h('div', 'grid'); g.style.marginTop = '8px'; myApps.forEach(a => { const tl = appTile(a); tl.onclick = () => openAppEditor(a); g.append(tl); }); box.append(g); }
+  box.append(lab(t('catalog')));
+  if (catApps.length) { const g = h('div', 'grid'); catApps.forEach(a => g.append(appTile(a))); box.append(g); } else box.append(h('div', 'hint', t('loading')));
+  if (catBots.length) { box.append(lab(t('botsCat'))); catBots.forEach(b => box.append(lrow(avatar({ bot: true }, 44), b.name, '@' + b.username, () => openBot(b.username)))); }
+}
+window.openAppEditor = async a => {
+  const edit = !!a, w = h('div', '', `<h3>${t(edit ? 'editAppT' : 'newAppT')}</h3>`);
+  const ti = fld(t('appTitle'), a && a.title, 40), ico = fld('🧩', (a && a.icon) || '🧩', 4), de = fld(t('appDesc'), a && a.desc, 100);
+  const code = h('textarea', 'fld'); code.rows = 9; code.placeholder = t('appCodePh'); code.spellcheck = false; code.style.cssText += ';font-family:monospace;font-size:13px;white-space:pre;resize:vertical';
+  const ex = h('button', 'btn ghost sm', t('example')), ts = h('button', 'btn ghost sm', t('test')); ts.style.marginLeft = '8px';
+  const pub = h('button', 'btn', t('publish')); pub.style.marginTop = '14px';
+  ex.onclick = () => { code.value = EXAMPLE; if (!ti.value) ti.value = 'Clicker'; };
+  ts.onclick = () => { if (code.value.trim()) runApp(ti.value || 'Test', 'test', code.value); };
+  w.append(lab(t('appTitle')), ti, lab(t('appIcon')), ico, lab(t('appDesc')), de, lab(t('appCode')), code, ex, ts, pub);
+  pub.onclick = async () => {
+    const title = ti.value.trim(), html = code.value;
+    if (!title) return toast(t('fill')); if (html.trim().length < 10) return toast(t('appNeedCode'));
+    if (new Blob([html]).size > 800000) return toast(t('appBig'));
+    const id = edit ? a.id : doc(collection(db, 'apps')).id, bt = writeBatch(db);
+    const meta = { owner: me.uid, ownerName: meData.name, title, icon: ico.value.trim() || '🧩', desc: de.value.trim() };
+    if (edit) bt.update(doc(db, 'apps', id), meta); else bt.set(doc(db, 'apps', id), { ...meta, createdAt: serverTimestamp() });
+    bt.set(doc(db, 'appcode', id), { owner: me.uid, html });
+    try { await bt.commit(); closeSheet(); toast(t('saved')); catAt = 0; if (curTab === 'apps') loadCatalog(); } catch (e) { toast(e.message); }
+  };
+  if (edit) {
+    const dl = h('button', 'btn ghost', t('del')); dl.style.color = '#ff8a80';
+    dl.onclick = async () => { if (!confirm(t('delQ'))) return; const bt = writeBatch(db); bt.delete(doc(db, 'apps', a.id)); bt.delete(doc(db, 'appcode', a.id)); try { await bt.commit(); closeSheet(); catAt = 0; loadCatalog(); } catch (e) { toast(e.message); } };
+    w.append(dl); code.value = t('loading');
+    getDoc(doc(db, 'appcode', a.id)).then(s => { code.value = s.exists() ? s.data().html : ''; }).catch(() => { code.value = ''; });
+  }
+  sheet(w);
+};
+
+/* ---------------- НАСТРОЙКИ ---------------- */
+function srow(icon, label, right, click) {
+  const r = h('div', 'srow', ic(icon)); const l = h('span'); l.textContent = label; l.style.flex = '1'; r.append(l);
+  if (right) r.append(right); else r.insertAdjacentHTML('beforeend', ic('i-chev', 'mut'));
+  if (click) r.onclick = click; return r;
+}
+function langPill() {
+  const p = h('div', 'lang' + (lang === 'en' ? ' en' : ''), `<i></i><b data-l="ru" class="${lang === 'ru' ? 'on' : ''}">RU</b><b data-l="en" class="${lang === 'en' ? 'on' : ''}">EN</b>`);
+  p.onclick = e => { e.stopPropagation(); toggleLang(); }; return p;
+}
+function renderSettings() {
+  const box = $('set-body'); if (!box || !me || !meData) return; box.innerHTML = '';
+  const card = h('div', 'pcard'), ban = h('div', 'pban'), pav = h('div', 'pav'), body = h('div', 'pbody');
+  ban.style.background = `linear-gradient(135deg,${meData.color || COLORS[0]},#1b1b26)`; pav.append(avatar(meData, 82)); body.style.textAlign = 'center';
+  const nm = h('b'), un = h('div'), bi = h('div', 'hint'); nm.style.fontSize = '20px'; un.style.color = 'var(--mut)'; bi.style.padding = '6px 0 0';
+  nm.textContent = meData.name || meData.username; un.textContent = '@' + meData.username; bi.textContent = meData.bio || '';
+  body.append(nm, un, bi); card.append(ban, pav, body); box.append(card);
+  const g1 = h('div', 'gc'); g1.append(srow('i-edit', t('editProfile'), null, openProfileEditor), srow('i-globe', t('language'), langPill()), srow('i-box', t('apps'), null, () => tab('apps'))); box.append(g1);
+  const g2 = h('div', 'gc'); g2.append(srow('i-info', t('about'), null, () => { const w = h('div', '', `<h3>ClaudeMAX</h3>`), p = h('div', 'hint'); p.style.whiteSpace = 'pre-wrap'; p.textContent = t('aboutTxt'); w.append(p); sheet(w); }));
+  const lo = srow('i-out', t('logout'), h('span'), logout); lo.querySelector('span').style.color = '#ff8a80'; lo.querySelector('.ic').style.stroke = '#ff8a80'; g2.append(lo); box.append(g2);
+}
+window.openProfileEditor = () => {
+  tmpColor = meData.color || COLORS[0];
+  const w = h('div', '', `<h3>${t('editProfile')}</h3>`), top = h('div'); top.style.cssText = 'display:flex;align-items:center;gap:14px;margin-bottom:12px';
+  const av = h('div'); av.append(avatar({ ...meData, color: tmpColor }, 64));
+  const lb = h('label', 'btn sm ghost', t('changePhoto')); lb.style.margin = '0'; const fi = h('input'); fi.type = 'file'; fi.accept = 'image/*'; fi.hidden = true; lb.append(fi);
+  fi.onchange = async e => {
+    const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+    try { const url = await resizeImg(f, 256, .8); await updateDoc(doc(db, 'users', me.uid), { avatar: url }); meData.avatar = url; av.replaceChildren(avatar({ ...meData, color: tmpColor }, 64)); renderSettings(); toast(t('saved')); } catch (x) { toast(x.message); }
+  };
+  top.append(av, lb);
+  const n = fld(t('name'), meData.name, 32), bio = fld(t('bio'), meData.bio, 120), u = fld(t('usernameT'), meData.username, 20);
+  const sw = h('div', 'sw'), drawSw = () => { sw.innerHTML = ''; COLORS.forEach(c => { const i = h('i', c === tmpColor ? 'on' : ''); i.style.background = c; i.onclick = () => { tmpColor = c; drawSw(); av.replaceChildren(avatar({ ...meData, color: tmpColor }, 64)); }; sw.append(i); }); }; drawSw();
+  const ok = h('button', 'btn', t('save'));
+  ok.onclick = async () => {
+    const name = n.value.trim().slice(0, 32) || meData.username, b = bio.value.trim().slice(0, 120), un = u.value.trim().toLowerCase().replace(/^@/, '');
+    try {
+      const bt = writeBatch(db);
+      if (un !== meData.username) {
+        if (!UNAME.test(un) || RESERVED.includes(un)) return toast(t('badUser'));
+        const ex = await getDoc(doc(db, 'usernames', un));
+        if (ex.exists() && ex.data().uid !== me.uid) return toast(t('taken'));
+        if (!ex.exists()) bt.set(doc(db, 'usernames', un), { uid: me.uid, email: me.email });
+        const old = await getDoc(doc(db, 'usernames', meData.username));
+        if (old.exists() && old.data().uid === me.uid) bt.delete(doc(db, 'usernames', meData.username));
+      }
+      bt.update(doc(db, 'users', me.uid), { name, bio: b, username: un, color: tmpColor });
+      await bt.commit();
+      Object.assign(meData, { name, bio: b, username: un, color: tmpColor }); userCache[me.uid] = meData;
+      closeSheet(); renderSettings(); toast(t('saved'));
+    } catch (e) { toast(e.code === 'permission-denied' ? t('taken') : e.message); }
+  };
+  w.append(top, lab(t('name')), n, lab(t('bio')), bio, lab(t('usernameT')), u, lab(t('color')), sw, ok); sheet(w);
+};
 
 /* ---------------- СТАРТ ---------------- */
 applyLang();
